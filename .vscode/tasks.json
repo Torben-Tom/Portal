@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build (Windows)",
+      "type": "shell",
+      "command": "./compile.ps1",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "develop (Windows)",
+      "type": "shell",
+      "command": "./dev.ps1",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "build (Unix)",
+      "type": "shell",
+      "command": "./compile.sh",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "develop (Unix)",
+      "type": "shell",
+      "command": "./dev.sh",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    }
+  ]
+}

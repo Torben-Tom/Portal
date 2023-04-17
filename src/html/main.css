@@ -1,0 +1,8 @@
+.centered {
+  text-align: center;
+}
+
+#game-canvas {
+  display: block;
+  margin: 0 auto;
+}
