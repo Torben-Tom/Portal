@@ -1,6 +1,6 @@
 class Entity {
-  update() {}
-  render() {}
+  update(delta: number) {}
+  render(delta: number) {}
 }
 
 export default Entity;

@@ -18,15 +18,9 @@ class EntityManager {
     }
   }
 
-  update() {
+  update(delta: number) {
     this.entities.forEach((entity) => {
-      entity.update();
-    });
-  }
-
-  render() {
-    this.entities.forEach((entity) => {
-      entity.render();
+      entity.update(delta);
     });
   }
 }

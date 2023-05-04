@@ -12,14 +12,19 @@ class Renderer {
     // Verify that the canvas element exists
     let canvasElement: HTMLElement | null =
       document.getElementById("game-canvas");
-    if (!canvasElement) throw new Error("Canvas not found");
-    if (!(canvasElement instanceof HTMLCanvasElement))
+    if (!canvasElement) {
+      throw new Error("Canvas not found");
+    }
+    if (!(canvasElement instanceof HTMLCanvasElement)) {
       throw new Error("Canvas is not a HTMLCanvasElement");
+    }
 
     //Create 2D context
     let canvas: HTMLCanvasElement = canvasElement as HTMLCanvasElement;
     let glContext = canvas.getContext("2d");
-    if (!glContext) throw new Error("Could not get 2D context");
+    if (!glContext) {
+      throw new Error("Could not get 2D context");
+    }
 
     this.canvas = canvas;
     this.glContext = glContext;
@@ -31,7 +36,7 @@ class Renderer {
     this.canvasHeight = this.canvas.height;
   }
 
-  render() {
+  render(delta: number) {
     this.glContext.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     //TODO: Render stuff
   }
