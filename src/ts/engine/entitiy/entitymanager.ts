@@ -1,25 +1,25 @@
 import Entity from "./entity.js";
 class EntityManager {
   //List of all entities
-  entities: Entity[];
+  private _entities: Entity[];
 
   constructor() {
-    this.entities = [];
+    this._entities = [];
   }
 
   register(entity: Entity) {
-    this.entities.push(entity);
+    this._entities.push(entity);
   }
 
   unregister(entity: Entity) {
-    const index = this.entities.indexOf(entity);
+    const index = this._entities.indexOf(entity);
     if (index > -1) {
-      this.entities.splice(index, 1);
+      this._entities.splice(index, 1);
     }
   }
 
   update(delta: number) {
-    this.entities.forEach((entity) => {
+    this._entities.forEach((entity) => {
       entity.update(delta);
     });
   }

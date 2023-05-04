@@ -1,58 +1,89 @@
+import Container from "./engine/dependencyinjection/container.js";
 import EntityManager from "./engine/entitiy/entitymanager.js";
 import Renderer from "./engine/renderer/renderer.js";
 
 class Game {
-  #entityManager: EntityManager;
-  #renderer: Renderer;
+  private _entityManager: EntityManager;
+  private _renderer: Renderer;
 
-  #running: boolean;
-  #lastTick: number;
-  #lastRender: number;
+  private _running: boolean;
+  private _lastTick: number;
+  private _lastRender: number;
 
-  #tpsGoal: number;
+  private _tpsGoal: number;
 
-  #currentTps: number;
-  #currentFps: number;
+  private _currentTps: number;
+  private _currentFps: number;
 
-  constructor(entityManager: EntityManager, renderer: Renderer) {
-    this.#entityManager = entityManager;
-    this.#renderer = renderer;
+  get running() {
+    return this._running;
+  }
 
-    this.#running = false;
-    this.#lastTick = Date.now();
-    this.#lastRender = Date.now();
+  get tps(): number {
+    return this._currentTps;
+  }
 
-    this.#tpsGoal = 100;
+  get fps(): number {
+    return this._currentFps;
+  }
 
-    this.#currentTps = 0;
-    this.#currentFps = 0;
+  get entityManager(): EntityManager {
+    return this._entityManager;
+  }
+
+  get renderer(): Renderer {
+    return this._renderer;
+  }
+
+  constructor() {
+    let entityManager: EntityManager | undefined =
+      Container.resolve("EntityManager");
+    if (entityManager === undefined) {
+      throw new Error("No EntityManager registered in the container");
+    }
+    this._entityManager = entityManager;
+
+    let renderer: Renderer | undefined = Container.resolve("Renderer");
+    if (renderer === undefined) {
+      throw new Error("No Renderer registered in the container");
+    }
+    this._renderer = renderer;
+
+    this._running = false;
+    this._lastTick = Date.now();
+    this._lastRender = Date.now();
+
+    this._tpsGoal = 100;
+
+    this._currentTps = 0;
+    this._currentFps = 0;
   }
 
   startUpdateLoop() {
     let updateLoopId: number = setInterval(() => {
       let now = Date.now();
-      let tickDelta = now - this.#lastTick;
-      this.#lastTick = now;
-      this.#currentTps = Math.round(1 / (tickDelta / 1000));
-      this.#entityManager.update(tickDelta);
+      let tickDelta = now - this._lastTick;
+      this._lastTick = now;
+      this._currentTps = Math.round(1 / (tickDelta / 1000));
+      this._entityManager.update(tickDelta);
 
-      if (!this.#running) {
+      if (!this._running) {
         clearInterval(updateLoopId);
         console.log("Update loop stopped");
       }
-    }, 1000 / this.#tpsGoal);
+    }, 1000 / this._tpsGoal);
   }
 
   renderLoop() {
     if (!document.hidden) {
       let now = Date.now();
-      let renderDelta = now - this.#lastRender;
-      this.#lastRender = now;
-      this.#currentFps = Math.round(1 / (renderDelta / 1000));
-      this.#renderer.render(renderDelta);
+      let renderDelta = now - this._lastRender;
+      this._lastRender = now;
+      this._currentFps = Math.round(1 / (renderDelta / 1000));
+      this._renderer.render(renderDelta);
     }
 
-    if (this.#running) {
+    if (this._running) {
       window.requestAnimationFrame(this.renderLoop.bind(this));
     } else {
       console.log("Render loop stopped");
@@ -61,33 +92,13 @@ class Game {
   }
 
   startGame() {
-    this.#running = true;
+    this._running = true;
     this.startUpdateLoop();
     this.renderLoop();
   }
 
   stopGame() {
-    this.#running = false;
-  }
-
-  isRunning() {
-    return this.#running;
-  }
-
-  getTps(): number {
-    return this.#currentTps;
-  }
-
-  getFps(): number {
-    return this.#currentFps;
-  }
-
-  getEntityManager(): EntityManager {
-    return this.#entityManager;
-  }
-
-  getRenderer(): Renderer {
-    return this.#renderer;
+    this._running = false;
   }
 }
 
