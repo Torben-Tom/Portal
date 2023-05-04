@@ -1,4 +1,4 @@
-import Entity from "./entity";
+import Entity from "./entity.js";
 class EntityManager {
   //List of all entities
   entities: Entity[];

@@ -1,31 +1,20 @@
-import EntityManager from "./engine/entitiy/entitymanager";
+import EntityManager from "./engine/entitiy/entitymanager.js";
+import Renderer from "./engine/renderer/renderer";
 
 class Game {
   entityManager: EntityManager;
 
-  constructor(entityManager: EntityManager) {
+  constructor(entityManager: EntityManager, renderer: Renderer) {
     this.entityManager = entityManager;
   }
 
   startGame() {
-    // Verify that the canvas element exists
-    let canvasElement: HTMLElement | null =
-      document.getElementById("game-canvas");
-    if (!canvasElement) throw new Error("Canvas not found");
-    if (!(canvasElement instanceof HTMLCanvasElement))
-      throw new Error("Canvas is not a HTMLCanvasElement");
-
-    //Create 2D context
-    let canvas: HTMLCanvasElement = canvasElement as HTMLCanvasElement;
-    let glContext = canvas.getContext("2d");
-    if (!glContext) throw new Error("Could not get 2D context");
-
     let xPos = 0;
     let yPos = 0;
 
     // Repeat every 10ms
-    setInterval(() => {
-      if (glContext) {
+    /*setInterval(() => {
+       if (glContext) {
         // Clear the canvas
         glContext.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -41,7 +30,7 @@ class Game {
           if (yPos > canvas.height) yPos = 0;
         }
       }
-    }, 10);
+    }, 10); */
   }
 }
 
