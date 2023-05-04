@@ -1,4 +1,9 @@
+import Container from "../dependencyinjection/container.js";
+import EntityManager from "../entitiy/entitymanager.js";
+
 class Renderer {
+  private _entityManager: EntityManager;
+
   private _canvas: HTMLCanvasElement;
   private _canvasWidth: number;
   private _canvasHeight: number;
@@ -13,6 +18,13 @@ class Renderer {
   }
 
   constructor() {
+    let entityManager: EntityManager | undefined =
+      Container.resolve("EntityManager");
+    if (!entityManager) {
+      throw new Error("No EntityManager registered in the container");
+    }
+    this._entityManager = entityManager;
+
     // Initialize canvasWidth and canvasHeight to 0 in case of errors later on
     this._canvasWidth = 0;
     this._canvasHeight = 0;
@@ -51,7 +63,9 @@ class Renderer {
   render(delta: number) {
     this.refreshSize();
     this._glContext.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
-    //TODO: Render stuff
+    this._entityManager.entities.forEach((entity) => {
+      entity.render(delta);
+    });
   }
 }
 

@@ -38,13 +38,13 @@ class Game {
   constructor() {
     let entityManager: EntityManager | undefined =
       Container.resolve("EntityManager");
-    if (entityManager === undefined) {
+    if (!entityManager) {
       throw new Error("No EntityManager registered in the container");
     }
     this._entityManager = entityManager;
 
     let renderer: Renderer | undefined = Container.resolve("Renderer");
-    if (renderer === undefined) {
+    if (!renderer) {
       throw new Error("No Renderer registered in the container");
     }
     this._renderer = renderer;

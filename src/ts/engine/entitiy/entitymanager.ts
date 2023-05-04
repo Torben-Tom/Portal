@@ -3,6 +3,10 @@ class EntityManager {
   //List of all entities
   private _entities: Entity[];
 
+  get entities(): Entity[] {
+    return this._entities;
+  }
+
   constructor() {
     this._entities = [];
   }
