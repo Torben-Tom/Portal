@@ -1,7 +1,14 @@
 class Container {
   private static _services: { [key: string]: any } = {};
 
-  public static register<T>(key: string, service: T): void {
+  public static register<T>(service: T, key?: string): void {
+    if (!key) {
+      if (typeof service === "object") {
+        key = (service as Object).constructor.name;
+      } else {
+        key = typeof service;
+      }
+    }
     if (this._services[key]) {
       console.warn(
         `Service with key ${key} registered multiple times. Overwriting existing service in favor of new one.`
@@ -16,3 +23,5 @@ class Container {
 }
 
 export default Container;
+
+//Show examples of how register can be used:

@@ -1,10 +1,10 @@
 import Container from "./engine/dependencyinjection/container.js";
 import EntityManager from "./engine/entitiy/entitymanager.js";
-import Renderer from "./engine/renderer/renderer.js";
+import Compositor from "./engine/renderer/compositor.js";
 
 class Game {
   private _entityManager: EntityManager;
-  private _renderer: Renderer;
+  private _compositor: Compositor;
 
   private _running: boolean;
   private _lastTick: number;
@@ -27,27 +27,12 @@ class Game {
     return this._currentFps;
   }
 
-  get entityManager(): EntityManager {
-    return this._entityManager;
-  }
+  constructor(htmlCanvasElement: HTMLCanvasElement) {
+    this._entityManager = new EntityManager();
+    this._compositor = new Compositor(htmlCanvasElement, this._entityManager);
 
-  get renderer(): Renderer {
-    return this._renderer;
-  }
-
-  constructor() {
-    let entityManager: EntityManager | undefined =
-      Container.resolve("EntityManager");
-    if (!entityManager) {
-      throw new Error("No EntityManager registered in the container");
-    }
-    this._entityManager = entityManager;
-
-    let renderer: Renderer | undefined = Container.resolve("Renderer");
-    if (!renderer) {
-      throw new Error("No Renderer registered in the container");
-    }
-    this._renderer = renderer;
+    Container.register(this._entityManager);
+    Container.register(this._compositor);
 
     this._running = false;
     this._lastTick = Date.now();
@@ -80,7 +65,7 @@ class Game {
       let renderDelta = now - this._lastRender;
       this._lastRender = now;
       this._currentFps = Math.round(1 / (renderDelta / 1000));
-      this._renderer.render(renderDelta);
+      this._compositor.render(renderDelta);
     }
 
     if (this._running) {
