@@ -1,4 +1,4 @@
-class Container {
+class Services {
   private static _services: { [key: string]: any } = {};
 
   public static register<T>(service: T, key?: string): void {
@@ -22,6 +22,4 @@ class Container {
   }
 }
 
-export default Container;
-
-//Show examples of how register can be used:
+export default Services;

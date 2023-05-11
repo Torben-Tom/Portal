@@ -1,8 +1,10 @@
-import Container from "./dependencyinjection/container.js";
+import AssetManager from "./assets/assetmanager.js";
+import Services from "./dependencyinjection/services.js";
 import EntityManager from "./entitiy/entitymanager.js";
 import Compositor from "./renderer/compositor.js";
 
 class Game {
+  private _assetManager: AssetManager;
   private _entityManager: EntityManager;
   private _compositor: Compositor;
 
@@ -28,11 +30,13 @@ class Game {
   }
 
   constructor(htmlCanvasElement: HTMLCanvasElement) {
+    this._assetManager = new AssetManager();
     this._entityManager = new EntityManager();
     this._compositor = new Compositor(htmlCanvasElement, this._entityManager);
 
-    Container.register(this._entityManager);
-    Container.register(this._compositor);
+    Services.register(this._assetManager);
+    Services.register(this._entityManager);
+    Services.register(this._compositor);
 
     this._running = false;
     this._lastTick = Date.now();
