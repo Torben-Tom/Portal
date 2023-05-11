@@ -1,6 +1,6 @@
-import Container from "./engine/dependencyinjection/container.js";
-import EntityManager from "./engine/entitiy/entitymanager.js";
-import Compositor from "./engine/renderer/compositor.js";
+import Container from "./dependencyinjection/container.js";
+import EntityManager from "./entitiy/entitymanager.js";
+import Compositor from "./renderer/compositor.js";
 
 class Game {
   private _entityManager: EntityManager;
