@@ -26,4 +26,4 @@ function start(): void {
   }, 3000);
 }
 
-window.addEventListener("load", start);
+window.addEventListener("DOMContentLoaded", start);
