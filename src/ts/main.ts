@@ -1,4 +1,4 @@
-import Game from "./engine/game";
+import Game from "./engine/game.js";
 
 function getGameCanvas(): HTMLCanvasElement {
   let canvasElement: HTMLElement | null =
