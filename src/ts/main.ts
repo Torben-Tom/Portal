@@ -7,6 +7,7 @@ function getGameCanvas(): HTMLCanvasElement {
   if (!canvasElement) {
     throw new Error("Canvas not found");
   }
+
   if (!(canvasElement instanceof HTMLCanvasElement)) {
     throw new Error("Canvas is not a HTMLCanvasElement");
   }

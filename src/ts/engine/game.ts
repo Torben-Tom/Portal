@@ -54,6 +54,7 @@ class Game {
       let tickDelta = now - this._lastTick;
       this._lastTick = now;
       this._currentTps = Math.round(1 / (tickDelta / 1000));
+
       this._entityManager.update(tickDelta);
 
       if (!this._running) {
@@ -64,11 +65,12 @@ class Game {
   }
 
   renderLoop() {
+    let now = Date.now();
+    let renderDelta = now - this._lastRender;
+    this._lastRender = now;
+    this._currentFps = Math.round(1 / (renderDelta / 1000));
+
     if (!document.hidden) {
-      let now = Date.now();
-      let renderDelta = now - this._lastRender;
-      this._lastRender = now;
-      this._currentFps = Math.round(1 / (renderDelta / 1000));
       this._compositor.render(renderDelta);
     }
 
