@@ -17,8 +17,11 @@ class Services {
     this._services.set(key, service);
   }
 
-  public static resolve<T>(key: string): T | undefined {
-    return this._services.get(key);
+  public static resolve<T>(key: string): T {
+    if (!this._services.has(key)) {
+      throw new Error(`Service with key ${key} not registered`);
+    }
+    return this._services.get(key) as T;
   }
 }
 

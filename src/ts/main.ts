@@ -1,3 +1,5 @@
+import AssetLoader from "./engine/assets/assetloader.js";
+import Services from "./engine/dependencyinjection/services.js";
 import Game from "./engine/game.js";
 
 function getGameCanvas(): HTMLCanvasElement {
@@ -22,9 +24,21 @@ function start(): void {
   window.addEventListener("beforeunload", game.stopGame.bind(game));
   game.startGame();
 
+  loadAssets();
+
   setInterval(() => {
     console.log(`TPS: ${game.tps} FPS: ${game.fps}`);
   }, 3000);
+}
+
+function loadAssets(): void {
+  let assetLoader: AssetLoader = Services.resolve("AssetLoader");
+  assetLoader.registerImages("image");
+  assetLoader.registerAudios("audio");
+  
+  while (!assetLoader.areAssetsReady()) {
+    console.log("Loading assets...");
+  }
 }
 
 window.addEventListener("DOMContentLoaded", start);

@@ -1,9 +1,11 @@
+import AssetLoader from "./assets/assetloader.js";
 import AssetManager from "./assets/assetmanager.js";
 import Services from "./dependencyinjection/services.js";
 import EntityManager from "./entitiy/entitymanager.js";
 import Compositor from "./renderer/compositor.js";
 
 class Game {
+  private _assetLoader: AssetLoader;
   private _assetManager: AssetManager;
   private _entityManager: EntityManager;
   private _compositor: Compositor;
@@ -30,10 +32,12 @@ class Game {
   }
 
   constructor(htmlCanvasElement: HTMLCanvasElement) {
+    this._assetLoader = new AssetLoader();
     this._assetManager = new AssetManager();
     this._entityManager = new EntityManager();
     this._compositor = new Compositor(htmlCanvasElement, this._entityManager);
 
+    Services.register(this._assetLoader);
     Services.register(this._assetManager);
     Services.register(this._entityManager);
     Services.register(this._compositor);
