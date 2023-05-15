@@ -5,7 +5,7 @@ class RenderPipeline {
   private _htmlCanvasElement: HTMLCanvasElement;
   private _canvasWidth: number;
   private _canvasHeight: number;
-  private _glContext: any;
+  private _glContext: CanvasRenderingContext2D;
   private _renderers: Renderer[];
   private _objectRenderCache: Map<any, Renderer>;
 
@@ -44,12 +44,14 @@ class RenderPipeline {
     this._glContext.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
 
     if (this._objectRenderCache.has(object)) {
-      this._objectRenderCache.get(object)?.render(object, delta);
+      this._objectRenderCache
+        .get(object)
+        ?.render(this._glContext, object, delta);
     } else {
       for (let renderer of this._renderers) {
         if (renderer.isApplicable(object)) {
           this._objectRenderCache.set(object, renderer);
-          renderer.render(object, delta);
+          renderer.render(this._glContext, object, delta);
           break;
         }
         console.warn(
