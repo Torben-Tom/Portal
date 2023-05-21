@@ -47,11 +47,11 @@ function loadAssets(): void {
   let assetManager: AssetManager = Services.resolve("AssetManager");
   assetManager.registerSpriteSheet("test", assetLoader.getImage("icons"));
   let spriteSheet: SpriteSheet = assetManager.getSpriteSheet("test");
-  spriteSheet.createSlice("network1", 0, 210, 11, 7);
-  spriteSheet.createSlice("network2", 0, 202, 11, 7);
-  spriteSheet.createSlice("network3", 0, 194, 11, 7);
-  spriteSheet.createSlice("network4", 0, 186, 11, 7);
-  spriteSheet.createSlice("network5", 0, 178, 11, 7);
+  spriteSheet.createSlice("network1", 0, 209, 10, 7);
+  spriteSheet.createSlice("network2", 0, 201, 10, 7);
+  spriteSheet.createSlice("network3", 0, 193, 10, 7);
+  spriteSheet.createSlice("network4", 0, 185, 10, 7);
+  spriteSheet.createSlice("network5", 0, 177, 10, 7);
 
   assetManager.registerSliceTexture(
     "network1",
@@ -90,7 +90,7 @@ function loadAssets(): void {
   let network: Entity = new Entity(
     10,
     10,
-    11,
+    10,
     7,
     assetManager.getTexture("network")
   );
