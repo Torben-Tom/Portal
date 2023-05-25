@@ -19,7 +19,7 @@ class Game {
   private _currentTps: number;
   private _currentFps: number;
 
-  get running() {
+  get running(): boolean {
     return this._running;
   }
 
@@ -52,7 +52,7 @@ class Game {
     this._currentFps = 0;
   }
 
-  startUpdateLoop() {
+  startUpdateLoop(): void {
     let updateLoopId: number = setInterval(() => {
       let now = Date.now();
       let tickDelta = now - this._lastTick;
@@ -68,7 +68,7 @@ class Game {
     }, 1000 / this._tpsGoal);
   }
 
-  renderLoop() {
+  renderLoop(): void {
     let now = Date.now();
     let renderDelta = now - this._lastRender;
     this._lastRender = now;
@@ -86,13 +86,13 @@ class Game {
     }
   }
 
-  startGame() {
+  startGame(): void {
     this._running = true;
     this.startUpdateLoop();
     this.renderLoop();
   }
 
-  stopGame() {
+  stopGame(): void {
     this._running = false;
   }
 }
