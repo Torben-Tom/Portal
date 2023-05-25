@@ -1,5 +1,6 @@
 import Texture from "./texture.js";
 
+//TODO: Do not use own setInterval, use engine's update loop
 class AnimatedTexture extends Texture {
   private _textures: Texture[];
   private _currentTextureIndex: number;

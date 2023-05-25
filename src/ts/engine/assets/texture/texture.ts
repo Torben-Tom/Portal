@@ -1,3 +1,4 @@
+//TODO: Rename x and y to sourceX and sourceY as they are the coordinates of the image on the source spirte sheet
 class Texture {
   get htmlImageElement(): HTMLImageElement {
     throw new Error(
