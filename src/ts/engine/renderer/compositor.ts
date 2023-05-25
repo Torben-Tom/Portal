@@ -1,4 +1,5 @@
 import EntityManager from "../entitiy/entitymanager.js";
+import DebugRenderer from "./renderers/debugrenderer.js";
 import EntityRenderer from "./renderers/entityrenderer.js";
 import RenderPipeline from "./renderpipeline.js";
 import RenderPipelineBuilder from "./renderpipelinebuilder.js";
@@ -51,6 +52,7 @@ class Compositor {
 
   private initializeRenderPipeline(): void {
     this._renderPipeline = new RenderPipelineBuilder(this._glContext)
+      .useRenderer(new DebugRenderer())
       .useRenderer(new EntityRenderer())
       .build();
   }
@@ -71,6 +73,8 @@ class Compositor {
     this._entityManager.entities.forEach((entity) => {
       this._renderPipeline.render(entity, delta);
     });
+
+    this._renderPipeline.render("debug", delta);
   }
 }
 

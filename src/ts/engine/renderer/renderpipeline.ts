@@ -18,12 +18,17 @@ class RenderPipeline {
         .get(object)
         ?.render(this._glContext, object, delta);
     } else {
+      let foundRenderer = false;
       for (let renderer of this._renderers) {
         if (renderer.isApplicable(object)) {
+          foundRenderer = true;
           this._objectRenderCache.set(object, renderer);
           renderer.render(this._glContext, object, delta);
           break;
         }
+      }
+
+      if (!foundRenderer) {
         console.warn(
           `No renderer found for object of type ${object.constructor.name}`
         );
