@@ -16,6 +16,10 @@ class SpriteSheet {
     width: number,
     height: number
   ): Slice {
+    if (this._slices.has(name)) {
+      console.warn(`Slice ${name} already exists. Overwriting with new value.`);
+    }
+
     let slice: Slice = new Slice(this._htmlImageElement, x, y, width, height);
     this._slices.set(name, slice);
     return slice;

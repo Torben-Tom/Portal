@@ -13,6 +13,16 @@ class EngineSetup {
     );
   }
 
+  public registerSpriteSheets(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entityManager: EntityManager
+  ): void {
+    console.warn(
+      "registerSpriteSheets was not defined in EngineSetup provided class. This is probably not what you want."
+    );
+  }
+
   public registerTextures(
     assetLoader: AssetLoader,
     assetManager: AssetManager,
