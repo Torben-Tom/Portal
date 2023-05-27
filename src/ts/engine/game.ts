@@ -1,6 +1,7 @@
 import AssetLoader from "./assets/assetloader.js";
 import AssetManager from "./assets/assetmanager.js";
 import Services from "./dependencyinjection/services.js";
+import EngineSetup from "./enginesetup.js";
 import EntityManager from "./entitiy/entitymanager.js";
 import InputHandler from "./input/inputhandler.js";
 import Compositor from "./renderer/compositor.js";
@@ -33,19 +34,12 @@ class Game {
     return this._currentFps;
   }
 
-  constructor(htmlCanvasElement: HTMLCanvasElement) {
+  constructor(htmlCanvasElement: HTMLCanvasElement, engineSetup: EngineSetup) {
     this._assetLoader = new AssetLoader();
     this._assetManager = new AssetManager();
     this._inputHandler = new InputHandler(htmlCanvasElement);
     this._entityManager = new EntityManager();
     this._compositor = new Compositor(htmlCanvasElement, this._entityManager);
-
-    Services.register(this._assetLoader);
-    Services.register(this._assetManager);
-    Services.register(this._inputHandler);
-    Services.register(this._entityManager);
-    Services.register(this._compositor);
-    Services.register(this);
 
     this._running = false;
     this._lastTick = Date.now();
@@ -55,9 +49,35 @@ class Game {
 
     this._currentTps = 0;
     this._currentFps = 0;
+
+    Services.register(this._assetLoader);
+    Services.register(this._assetManager);
+    Services.register(this._inputHandler);
+    Services.register(this._entityManager);
+    Services.register(this._compositor);
+    Services.register(this);
+
+    engineSetup.loadAssets(
+      this._assetLoader,
+      this._assetManager,
+      this._entityManager
+    );
+    while (!this._assetLoader.areAssetsReady()) {
+      console.log("Loading assets...");
+    }
+    engineSetup.registerTextures(
+      this._assetLoader,
+      this._assetManager,
+      this._entityManager
+    );
+    engineSetup.registerEntities(
+      this._assetLoader,
+      this._assetManager,
+      this._entityManager
+    );
   }
 
-  startUpdateLoop(): void {
+  public startUpdateLoop(): void {
     let updateLoopId: number = setInterval(() => {
       let now = Date.now();
       let tickDelta = now - this._lastTick;
@@ -73,7 +93,7 @@ class Game {
     }, 1000 / this._tpsGoal);
   }
 
-  renderLoop(): void {
+  public renderLoop(): void {
     let now = Date.now();
     let renderDelta = now - this._lastRender;
     this._lastRender = now;
@@ -91,13 +111,13 @@ class Game {
     }
   }
 
-  startGame(): void {
+  public startGame(): void {
     this._running = true;
     this.startUpdateLoop();
     this.renderLoop();
   }
 
-  stopGame(): void {
+  public stopGame(): void {
     this._running = false;
   }
 }
