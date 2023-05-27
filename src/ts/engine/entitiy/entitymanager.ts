@@ -17,7 +17,7 @@ class EntityManager {
 
   unregister(entity: Entity) {
     const index = this._entities.indexOf(entity);
-    if (index > -1) {
+    if (index >= 0) {
       this._entities.splice(index, 1);
     }
   }
