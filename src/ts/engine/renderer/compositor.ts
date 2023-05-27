@@ -52,8 +52,8 @@ class Compositor {
 
   private initializeRenderPipeline(): void {
     this._renderPipeline = new RenderPipelineBuilder(this._glContext)
-      .useRenderer(new DebugRenderer())
       .useRenderer(new EntityRenderer())
+      .useRenderer(new DebugRenderer())
       .build();
   }
 

@@ -1,6 +1,8 @@
 import Services from "../../dependencyinjection/services.js";
+import EntityManager from "../../entitiy/entitymanager.js";
 import Game from "../../game.js";
 import InputHandler from "../../input/inputhandler.js";
+import Compositor from "../compositor.js";
 import Renderer from "../renderer.js";
 
 //TODO: Fix this mess of a class.
@@ -20,6 +22,8 @@ import Renderer from "../renderer.js";
 class DebugRenderer extends Renderer {
   private _game: Game | undefined;
   private _inputHandler: InputHandler | undefined;
+  private _entityManager: EntityManager | undefined;
+  private _compositor: Compositor | undefined;
 
   isApplicable(object: any): boolean {
     return object === "debug";
@@ -30,6 +34,8 @@ class DebugRenderer extends Renderer {
     setTimeout(() => {
       this._game = Services.resolve<Game>("Game");
       this._inputHandler = Services.resolve<InputHandler>("InputHandler");
+      this._entityManager = Services.resolve<EntityManager>("EntityManager");
+      this._compositor = Services.resolve<Compositor>("Compositor");
     });
   }
 
@@ -38,7 +44,12 @@ class DebugRenderer extends Renderer {
     object: any,
     delta: number
   ): void {
-    if (this._game && this._inputHandler) {
+    if (
+      this._game &&
+      this._inputHandler &&
+      this._entityManager &&
+      this._compositor
+    ) {
       glContext.fillText(`FPS: ${this._game.fps}`, 50, 10);
       glContext.fillText(`TPS: ${this._game.tps}`, 50, 20);
       glContext.fillText(
@@ -57,6 +68,28 @@ class DebugRenderer extends Renderer {
         50,
         50
       );
+
+      if (this._inputHandler.isKeyDown("b")) {
+        this._entityManager.entities.forEach((entity) => {
+          //Draw bounding box of entity
+          let boundingBox = entity.boundingBox;
+          glContext.strokeRect(
+            boundingBox.x,
+            boundingBox.y,
+            boundingBox.width,
+            boundingBox.height
+          );
+        });
+      }
+
+      if (this._inputHandler.isKeyDown("o")) {
+        glContext.strokeRect(
+          0,
+          0,
+          this._compositor.canvasWidth,
+          this._compositor.canvasHeight
+        );
+      }
     }
   }
 }

@@ -4,9 +4,10 @@ import Slice from "../engine/assets/texture/slice.js";
 import SliceTexture from "../engine/assets/texture/slicetexture.js";
 import SpriteSheet from "../engine/assets/texture/spritesheet.js";
 import Services from "../engine/dependencyinjection/services.js";
-import Entity from "../engine/entitiy/entity.js";
 import EntityManager from "../engine/entitiy/entitymanager.js";
 import Game from "../engine/game.js";
+import InputHandler from "../engine/input/inputhandler.js";
+import NetworkEntity from "./entities/networkentity.js";
 
 function getGameCanvas(): HTMLCanvasElement {
   let canvasElement: HTMLElement | null =
@@ -28,13 +29,13 @@ function start(): void {
   let htmlCanvasElement: HTMLCanvasElement = getGameCanvas();
   let game: Game = new Game(htmlCanvasElement);
   window.addEventListener("beforeunload", game.stopGame.bind(game));
+
   game.startGame();
+  let inputHandler: InputHandler =
+    Services.resolve<InputHandler>("InputHandler");
+  inputHandler.addWhiteListedKeys(["F5", "F11", "F12", "Alt"]);
 
   loadAssets();
-
-  setInterval(() => {
-    console.log(`TPS: ${game.tps} FPS: ${game.fps}`);
-  }, 3000);
 }
 
 function loadAssets(): void {
@@ -123,14 +124,7 @@ function loadAssets(): void {
   );
 
   let entityManager: EntityManager = Services.resolve("EntityManager");
-  let networkEntity: Entity = new Entity(
-    10,
-    10,
-    10,
-    7,
-    assetManager.getTexture("network")
-  );
-  entityManager.register(networkEntity);
+  entityManager.register(new NetworkEntity());
 }
 
 window.addEventListener("DOMContentLoaded", start);

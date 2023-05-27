@@ -48,6 +48,10 @@ class InputHandler {
     );
   }
 
+  get whiteListedKeys(): string[] {
+    return this._whiteListedKeys;
+  }
+
   get mouseMoveEvent(): EngineEventHandler<
     MouseEvent,
     EngineEvent<MouseEvent>
@@ -81,7 +85,7 @@ class InputHandler {
     this._mouseX = 0;
     this._mouseY = 0;
     this._pressedKeys = new Map<string, boolean>();
-    this._whiteListedKeys = ["Alt", "F5"];
+    this._whiteListedKeys = [];
 
     this._engineMouseMoveEvent = new EngineEventHandler<
       MouseEvent,
@@ -141,6 +145,31 @@ class InputHandler {
 
   public isKeyDown(key: string): boolean {
     return (this._pressedKeys.has(key) && this._pressedKeys.get(key)) ?? false;
+  }
+
+  public addWhiteListedKey(key: string): void {
+    if (!this._whiteListedKeys.includes(key)) {
+      this._whiteListedKeys.push(key);
+    }
+  }
+
+  public addWhiteListedKeys(keys: string[]): void {
+    keys.forEach((key) => {
+      this.addWhiteListedKey(key);
+    });
+  }
+
+  public removeWhiteListedKey(key: string): void {
+    let index = this._whiteListedKeys.indexOf(key);
+    if (index >= 0) {
+      this._whiteListedKeys.splice(index, 1);
+    }
+  }
+
+  public removeWhiteListedKeys(keys: string[]): void {
+    keys.forEach((key) => {
+      this.removeWhiteListedKey(key);
+    });
   }
 }
 
