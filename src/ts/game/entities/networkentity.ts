@@ -9,8 +9,10 @@ class NetworkEntity extends Entity {
     super(
       10,
       10,
-      10,
-      7,
+      2,
+      2,
+      0,
+      0,
       Services.resolve<AssetManager>("AssetManager").getTexture("network")
     );
 

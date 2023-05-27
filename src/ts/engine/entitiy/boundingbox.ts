@@ -14,17 +14,22 @@ class BoundingBox {
   }
 
   get width(): number {
-    return this._entity.texture.width + this._widthExpansion;
+    return (
+      this._entity.texture.width * this._entity.scalingX + this._widthExpansion
+    );
   }
 
   get height(): number {
-    return this._entity.texture.height + this._heightExpansion;
+    return (
+      this._entity.texture.height * this._entity.scalingY +
+      this._heightExpansion
+    );
   }
 
-  constructor(entity: Entity, width: number, height: number) {
+  constructor(entity: Entity, widthExpasion: number, heightExpansion: number) {
     this._entity = entity;
-    this._widthExpansion = width;
-    this._heightExpansion = height;
+    this._widthExpansion = widthExpasion;
+    this._heightExpansion = heightExpansion;
   }
 
   isInside(x: number, y: number): boolean {

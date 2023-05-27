@@ -5,11 +5,13 @@ class BackgroundTileEntity extends TileEntity {
   constructor(
     x: number,
     y: number,
+    scalingX: number,
+    scalingY: number,
     width: number,
     height: number,
     texture: Texture
   ) {
-    super(x, y, width, height, texture);
+    super(x, y, scalingX, scalingY, width, height, texture);
   }
 }
 

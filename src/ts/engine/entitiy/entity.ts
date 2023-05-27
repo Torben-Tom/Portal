@@ -4,6 +4,8 @@ import BoundingBox from "./boundingbox.js";
 class Entity {
   protected _x: number;
   protected _y: number;
+  private _scalingX: number;
+  private _scalingY: number;
   private _boundingBox: BoundingBox;
   private _texture: Texture;
 
@@ -13,6 +15,14 @@ class Entity {
 
   get y(): number {
     return this._y;
+  }
+
+  get scalingX(): number {
+    return this._scalingX;
+  }
+
+  get scalingY(): number {
+    return this._scalingY;
   }
 
   get boundingBox(): BoundingBox {
@@ -26,13 +36,17 @@ class Entity {
   constructor(
     x: number,
     y: number,
-    width: number,
-    height: number,
+    scalingX: number,
+    scalingY: number,
+    widthExpansion: number,
+    heightExpansion: number,
     texture: Texture
   ) {
     this._x = x;
     this._y = y;
-    this._boundingBox = new BoundingBox(this, width, height);
+    this._scalingX = scalingX;
+    this._scalingY = scalingY;
+    this._boundingBox = new BoundingBox(this, widthExpansion, heightExpansion);
     this._texture = texture;
   }
 

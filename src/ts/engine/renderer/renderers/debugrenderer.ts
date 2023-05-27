@@ -73,6 +73,16 @@ class DebugRenderer extends Renderer {
         this._entityManager.entities.forEach((entity) => {
           //Draw bounding box of entity
           let boundingBox = entity.boundingBox;
+          if (
+            boundingBox.isInside(
+              this._inputHandler!.mouseRelativeX,
+              this._inputHandler!.mouseRelativeY
+            )
+          ) {
+            glContext.strokeStyle = "green";
+          } else {
+            glContext.strokeStyle = "black";
+          }
           glContext.strokeRect(
             boundingBox.x,
             boundingBox.y,
