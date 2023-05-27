@@ -1,9 +1,9 @@
 import EngineEventHandler from "../event/engineventhandler.js";
 import EntitiesCollideEvent from "../event/events/entitiescollideevent.js";
+import BoundingBox from "./boundingbox.js";
 import Collision from "./collision.js";
 import Entity from "./entity.js";
 class EntityManager {
-  //List of all entities
   private _entities: Entity[];
   private _collisions: Collision[];
   private _collisionEvent: EngineEventHandler<Collision, EntitiesCollideEvent>;
@@ -42,7 +42,7 @@ class EntityManager {
 
   public getCollision(entity1: Entity, entity2: Entity): Collision | null {
     for (let collision of this._collisions) {
-      if (collision.areEntities(entity1, entity2)) {
+      if (collision.belongsTo(entity1, entity2)) {
         return collision;
       }
     }
@@ -71,18 +71,25 @@ class EntityManager {
   }
 
   public update(delta: number) {
-    this._entities.forEach((entity) => {
+    for (let entity of this._entities) {
       entity.update(delta);
 
+      if (entity.boundingBox === null) {
+        continue;
+      }
+
       for (let otherEntity of this._entities) {
-        if (otherEntity === entity) {
+        if (otherEntity === entity || otherEntity.boundingBox === null) {
           continue;
         }
 
-        if (entity.boundingBox.collidesWith(otherEntity.boundingBox)) {
+        let boundingBox: BoundingBox = entity.boundingBox;
+        let otherBoundingBox: BoundingBox = otherEntity.boundingBox;
+
+        if (boundingBox.collidesWith(otherBoundingBox)) {
           let exists = false;
           for (let collision of this._collisions) {
-            if (collision.areEntities(entity, otherEntity)) {
+            if (collision.belongsTo(entity, otherEntity)) {
               exists = true;
               break;
             }
@@ -96,17 +103,19 @@ class EntityManager {
           }
         }
       }
+    }
 
-      for (let collision of this._collisions) {
-        if (
-          !collision.entity1.boundingBox.collidesWith(
-            collision.entity2.boundingBox
-          )
-        ) {
-          this._collisions.splice(this._collisions.indexOf(collision), 1);
-        }
+    for (let collision of this._collisions) {
+      if (
+        !collision.entity1.boundingBox ||
+        !collision.entity2.boundingBox ||
+        !collision.entity1.boundingBox.collidesWith(
+          collision.entity2.boundingBox
+        )
+      ) {
+        this._collisions.splice(this._collisions.indexOf(collision), 1);
       }
-    });
+    }
   }
 }
 

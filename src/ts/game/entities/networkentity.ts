@@ -16,9 +16,9 @@ class NetworkEntity extends Entity {
       10,
       5,
       5,
+      Services.resolve<AssetManager>("AssetManager").getTexture("network"),
       0,
-      0,
-      Services.resolve<AssetManager>("AssetManager").getTexture("network")
+      0
     );
 
     this._inputHandler = Services.resolve<InputHandler>("InputHandler");
@@ -32,11 +32,15 @@ class NetworkEntity extends Entity {
     let isCollidingTop = false;
     let isCollidingBottom = false;
     for (let collision of this._entityManager.getCollisions(this)) {
+      if (!collision.entity1.boundingBox || !collision.entity2.boundingBox) {
+        continue;
+      }
+
       let intersection = collision.entity1.boundingBox.intersection(
         collision.entity2.boundingBox
       );
-      let xDiff = this.boundingBox.centerX - intersection.centerX;
-      let yDiff = this.boundingBox.centerY - intersection.centerY;
+      let xDiff = this.boundingBox!.centerX - intersection.centerX;
+      let yDiff = this.boundingBox!.centerY - intersection.centerY;
       if (Math.abs(xDiff) > Math.abs(yDiff)) {
         if (xDiff > 0) {
           isCollidingLeft = true;

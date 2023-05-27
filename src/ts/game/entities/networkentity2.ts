@@ -16,9 +16,9 @@ class NetworkEntity2 extends Entity {
       y,
       scalingX,
       scalingY,
+      Services.resolve<AssetManager>("AssetManager").getTexture("network"),
       widthExpansion,
-      heightExpansion,
-      Services.resolve<AssetManager>("AssetManager").getTexture("network")
+      heightExpansion
     );
   }
 }

@@ -17,7 +17,7 @@ class Collision {
     this._entity2 = entity2;
   }
 
-  public areEntities(entity1: Entity, entity2: Entity): boolean {
+  public belongsTo(entity1: Entity, entity2: Entity): boolean {
     return (
       (this._entity1 === entity1 && this._entity2 === entity2) ||
       (this._entity1 === entity2 && this._entity2 === entity1)

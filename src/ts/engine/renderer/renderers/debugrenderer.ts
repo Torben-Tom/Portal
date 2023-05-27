@@ -71,7 +71,10 @@ class DebugRenderer extends Renderer {
 
       if (this._inputHandler.isKeyDown("b")) {
         this._entityManager.entities.forEach((entity) => {
-          //Draw bounding box of entity
+          if (!entity.boundingBox) {
+            return;
+          }
+
           let boundingBox = entity.boundingBox;
           if (
             boundingBox.isInside(
@@ -91,7 +94,14 @@ class DebugRenderer extends Renderer {
           );
         });
 
-        this._entityManager.collisions.forEach((collision) => {
+        for (let collision of this._entityManager.collisions) {
+          if (
+            !collision.entity1.boundingBox ||
+            !collision.entity2.boundingBox
+          ) {
+            continue;
+          }
+
           let collisionArea = collision.entity1.boundingBox.intersection(
             collision.entity2.boundingBox
           );
@@ -102,7 +112,7 @@ class DebugRenderer extends Renderer {
             collisionArea.width,
             collisionArea.height
           );
-        });
+        }
       }
 
       if (this._inputHandler.isKeyDown("o")) {

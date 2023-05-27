@@ -36,16 +36,6 @@ function start(): void {
     Services.resolve<InputHandler>("InputHandler");
   inputHandler.addWhiteListedKeys(["F5", "F11", "F12", "Alt"]);
 
-  let entityManager: EntityManager =
-    Services.resolve<EntityManager>("EntityManager");
-  entityManager.collisionEvent.subscribe((entitiesCollideEvent) => {
-    console.log(
-      `Entity ${typeof entitiesCollideEvent.eventData
-        .entity1} collided with ${typeof entitiesCollideEvent.eventData
-        .entity2}`
-    );
-  });
-
   loadAssets();
   loadEntities();
 }

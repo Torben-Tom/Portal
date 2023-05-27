@@ -7,11 +7,9 @@ class BackgroundTileEntity extends TileEntity {
     y: number,
     scalingX: number,
     scalingY: number,
-    width: number,
-    height: number,
     texture: Texture
   ) {
-    super(x, y, scalingX, scalingY, width, height, texture);
+    super(x, y, scalingX, scalingY, texture, NaN, NaN);
   }
 }
 

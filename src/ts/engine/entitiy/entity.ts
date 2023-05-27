@@ -6,7 +6,7 @@ class Entity {
   protected _y: number;
   private _scalingX: number;
   private _scalingY: number;
-  private _boundingBox: BoundingBox;
+  private _boundingBox: BoundingBox | null;
   private _texture: Texture;
 
   get x(): number {
@@ -25,7 +25,7 @@ class Entity {
     return this._scalingY;
   }
 
-  get boundingBox(): BoundingBox {
+  get boundingBox(): BoundingBox | null {
     return this._boundingBox;
   }
 
@@ -38,16 +38,30 @@ class Entity {
     y: number,
     scalingX: number,
     scalingY: number,
-    widthExpansion: number,
-    heightExpansion: number,
-    texture: Texture
+    texture: Texture,
+    widthExpansion?: number,
+    heightExpansion?: number
   ) {
     this._x = x;
     this._y = y;
     this._scalingX = scalingX;
     this._scalingY = scalingY;
-    this._boundingBox = new BoundingBox(this, widthExpansion, heightExpansion);
     this._texture = texture;
+
+    if (
+      widthExpansion === undefined ||
+      heightExpansion === undefined ||
+      Number.isNaN(widthExpansion) ||
+      Number.isNaN(heightExpansion)
+    ) {
+      this._boundingBox = null;
+    } else {
+      this._boundingBox = new BoundingBox(
+        this,
+        widthExpansion,
+        heightExpansion
+      );
+    }
   }
 
   update(delta: number) {}
