@@ -90,6 +90,19 @@ class DebugRenderer extends Renderer {
             boundingBox.height
           );
         });
+
+        this._entityManager.collisions.forEach((collision) => {
+          let collisionArea = collision.entity1.boundingBox.intersection(
+            collision.entity2.boundingBox
+          );
+          glContext.strokeStyle = "red";
+          glContext.strokeRect(
+            collisionArea.x,
+            collisionArea.y,
+            collisionArea.width,
+            collisionArea.height
+          );
+        });
       }
 
       if (this._inputHandler.isKeyDown("o")) {

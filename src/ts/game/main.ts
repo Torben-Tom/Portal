@@ -8,6 +8,7 @@ import EntityManager from "../engine/entitiy/entitymanager.js";
 import Game from "../engine/game.js";
 import InputHandler from "../engine/input/inputhandler.js";
 import NetworkEntity from "./entities/networkentity.js";
+import NetworkEntity2 from "./entities/networkentity2.js";
 
 function getGameCanvas(): HTMLCanvasElement {
   let canvasElement: HTMLElement | null =
@@ -35,7 +36,18 @@ function start(): void {
     Services.resolve<InputHandler>("InputHandler");
   inputHandler.addWhiteListedKeys(["F5", "F11", "F12", "Alt"]);
 
+  let entityManager: EntityManager =
+    Services.resolve<EntityManager>("EntityManager");
+  entityManager.collisionEvent.subscribe((entitiesCollideEvent) => {
+    console.log(
+      `Entity ${typeof entitiesCollideEvent.eventData
+        .entity1} collided with ${typeof entitiesCollideEvent.eventData
+        .entity2}`
+    );
+  });
+
   loadAssets();
+  loadEntities();
 }
 
 function loadAssets(): void {
@@ -120,11 +132,15 @@ function loadAssets(): void {
       network4Texture,
       network5Texture,
     ],
-    100
+    1000
   );
+}
 
+function loadEntities() {
   let entityManager: EntityManager = Services.resolve("EntityManager");
   entityManager.register(new NetworkEntity());
+  entityManager.register(new NetworkEntity2(0, 150, 50, 5, 0, 0));
+  entityManager.register(new NetworkEntity2(500, 150, 5, 50, 0, 0));
 }
 
 window.addEventListener("DOMContentLoaded", start);

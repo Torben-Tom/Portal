@@ -1,9 +1,9 @@
-import Entity from "../../entitiy/entity.js";
+import Collision from "../../entitiy/collision.js";
 import EngineEvent from "../engineevent.js";
 
-class EntitiesCollideEvent extends EngineEvent<Entity[]> {
-  constructor(entities: Entity[]) {
-    super(entities);
+class EntitiesCollideEvent extends EngineEvent<Collision> {
+  constructor(eventData: Collision) {
+    super(eventData);
   }
 }
 
