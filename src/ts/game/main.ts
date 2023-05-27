@@ -1,13 +1,12 @@
-import AssetLoader from "./engine/assets/assetloader.js";
-import AssetManager from "./engine/assets/assetmanager.js";
-import AnimatedTexture from "./engine/assets/texture/animatedtexture.js";
-import Slice from "./engine/assets/texture/slice.js";
-import SliceTexture from "./engine/assets/texture/slicetexture.js";
-import SpriteSheet from "./engine/assets/texture/spritesheet.js";
-import Services from "./engine/dependencyinjection/services.js";
-import Entity from "./engine/entitiy/entity.js";
-import EntityManager from "./engine/entitiy/entitymanager.js";
-import Game from "./engine/game.js";
+import AssetLoader from "../engine/assets/assetloader.js";
+import AssetManager from "../engine/assets/assetmanager.js";
+import Slice from "../engine/assets/texture/slice.js";
+import SliceTexture from "../engine/assets/texture/slicetexture.js";
+import SpriteSheet from "../engine/assets/texture/spritesheet.js";
+import Services from "../engine/dependencyinjection/services.js";
+import Entity from "../engine/entitiy/entity.js";
+import EntityManager from "../engine/entitiy/entitymanager.js";
+import Game from "../engine/game.js";
 
 function getGameCanvas(): HTMLCanvasElement {
   let canvasElement: HTMLElement | null =
