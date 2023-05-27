@@ -13,13 +13,19 @@ class AssetManager {
     this._spriteSheets = new Map();
   }
 
-  registerSpriteSheet(name: string, htmlImageElement: HTMLImageElement): void {
+  registerSpriteSheet(
+    name: string,
+    htmlImageElement: HTMLImageElement
+  ): SpriteSheet {
     if (this._spriteSheets.has(name)) {
       console.warn(
         `SpriteSheet ${name} already registered. Overwriting with new value.`
       );
     }
-    this._spriteSheets.set(name, new SpriteSheet(htmlImageElement));
+
+    let spriteSheet = new SpriteSheet(htmlImageElement);
+    this._spriteSheets.set(name, spriteSheet);
+    return spriteSheet;
   }
 
   hasSpriteSheet(name: string): boolean {
@@ -36,35 +42,44 @@ class AssetManager {
   registerStaticTexture(
     name: string,
     htmlImageElement: HTMLImageElement
-  ): void {
+  ): StaticTexture {
     if (this._textures.has(name)) {
       console.warn(
         `Texture ${name} already registered. Overwriting with new value.`
       );
     }
-    this._textures.set(name, new StaticTexture(htmlImageElement));
+
+    let staticTexture = new StaticTexture(htmlImageElement);
+    this._textures.set(name, staticTexture);
+    return staticTexture;
   }
 
-  registerSliceTexture(name: string, slice: Slice): void {
+  registerSliceTexture(name: string, slice: Slice): SliceTexture {
     if (this._textures.has(name)) {
       console.warn(
         `Texture ${name} already registered. Overwriting with new value.`
       );
     }
-    this._textures.set(name, new SliceTexture(slice));
+
+    let sliceTexture = new SliceTexture(slice);
+    this._textures.set(name, sliceTexture);
+    return sliceTexture;
   }
 
   registerAnimatedTexture(
     name: string,
     textures: Texture[],
     tickspeed: number
-  ): void {
+  ): AnimatedTexture {
     if (this._textures.has(name)) {
       console.warn(
         `Texture ${name} already registered. Overwriting with new value.`
       );
     }
-    this._textures.set(name, new AnimatedTexture(textures, tickspeed));
+
+    let animatedTexture = new AnimatedTexture(textures, tickspeed);
+    this._textures.set(name, animatedTexture);
+    return animatedTexture;
   }
 
   hasTexture(name: string): boolean {

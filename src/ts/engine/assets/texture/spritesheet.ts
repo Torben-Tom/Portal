@@ -15,11 +15,10 @@ class SpriteSheet {
     y: number,
     width: number,
     height: number
-  ): void {
-    this._slices.set(
-      name,
-      new Slice(this._htmlImageElement, x, y, width, height)
-    );
+  ): Slice {
+    let slice: Slice = new Slice(this._htmlImageElement, x, y, width, height);
+    this._slices.set(name, slice);
+    return slice;
   }
 
   getSlice(name: string): Slice {

@@ -1,5 +1,8 @@
 import AssetLoader from "./engine/assets/assetloader.js";
 import AssetManager from "./engine/assets/assetmanager.js";
+import AnimatedTexture from "./engine/assets/texture/animatedtexture.js";
+import Slice from "./engine/assets/texture/slice.js";
+import SliceTexture from "./engine/assets/texture/slicetexture.js";
 import SpriteSheet from "./engine/assets/texture/spritesheet.js";
 import Services from "./engine/dependencyinjection/services.js";
 import Entity from "./engine/entitiy/entity.js";
@@ -45,56 +48,90 @@ function loadAssets(): void {
   }
 
   let assetManager: AssetManager = Services.resolve("AssetManager");
-  assetManager.registerSpriteSheet("test", assetLoader.getImage("icons"));
-  let spriteSheet: SpriteSheet = assetManager.getSpriteSheet("test");
-  spriteSheet.createSlice("network1", 0, 209, 10, 7);
-  spriteSheet.createSlice("network2", 0, 201, 10, 7);
-  spriteSheet.createSlice("network3", 0, 193, 10, 7);
-  spriteSheet.createSlice("network4", 0, 185, 10, 7);
-  spriteSheet.createSlice("network5", 0, 177, 10, 7);
 
-  assetManager.registerSliceTexture(
+  let iconsSpriteSheet: SpriteSheet = assetManager.registerSpriteSheet(
+    "icons",
+    assetLoader.getImage("icons")
+  );
+
+  let network1Slice: Slice = iconsSpriteSheet.createSlice(
     "network1",
-    spriteSheet.getSlice("network1")
+    0,
+    209,
+    10,
+    7
   );
-  assetManager.registerSliceTexture(
+  let network2Slice: Slice = iconsSpriteSheet.createSlice(
     "network2",
-    spriteSheet.getSlice("network2")
+    0,
+    201,
+    10,
+    7
   );
-  assetManager.registerSliceTexture(
+  let network3Slice: Slice = iconsSpriteSheet.createSlice(
     "network3",
-    spriteSheet.getSlice("network3")
+    0,
+    193,
+    10,
+    7
   );
-  assetManager.registerSliceTexture(
+  let network4Slice: Slice = iconsSpriteSheet.createSlice(
     "network4",
-    spriteSheet.getSlice("network4")
+    0,
+    185,
+    10,
+    7
   );
-  assetManager.registerSliceTexture(
+  let network5Slice: Slice = iconsSpriteSheet.createSlice(
     "network5",
-    spriteSheet.getSlice("network5")
+    0,
+    177,
+    10,
+    7
+  );
+
+  let network1Texture: SliceTexture = assetManager.registerSliceTexture(
+    "network1",
+    network1Slice
+  );
+  let network2Texture: SliceTexture = assetManager.registerSliceTexture(
+    "network2",
+    network2Slice
+  );
+  let network3Texture: SliceTexture = assetManager.registerSliceTexture(
+    "network3",
+    network3Slice
+  );
+  let network4Texture: SliceTexture = assetManager.registerSliceTexture(
+    "network4",
+    network4Slice
+  );
+  let network5Texture: SliceTexture = assetManager.registerSliceTexture(
+    "network5",
+    network5Slice
   );
 
   assetManager.registerAnimatedTexture(
     "network",
     [
-      assetManager.getTexture("network1"),
-      assetManager.getTexture("network2"),
-      assetManager.getTexture("network3"),
-      assetManager.getTexture("network4"),
-      assetManager.getTexture("network5"),
+      network1Texture,
+      network2Texture,
+      network3Texture,
+      network4Texture,
+      network5Texture,
     ],
     100
   );
 
   let entityManager: EntityManager = Services.resolve("EntityManager");
-  let network: Entity = new Entity(
+  let networkEntity: Entity = new Entity(
     10,
     10,
     10,
     7,
     assetManager.getTexture("network")
   );
-  entityManager.register(network);
+  entityManager.register(networkEntity);
 }
 
 window.addEventListener("DOMContentLoaded", start);
