@@ -12,8 +12,8 @@ class NetworkEntity extends Entity {
 
   constructor() {
     super(
-      10,
-      10,
+      60,
+      400,
       5,
       5,
       Services.resolve<AssetManager>("AssetManager").getTexture("network"),

@@ -35,6 +35,48 @@ class GameSetup extends EngineSetup {
       entityManager,
       levelManager
     );
+    this.registerBottomBrickTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerRightBrickTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerLeftBrickTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerMiddleBrickTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerLeftCornerBrickTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerRightCornerBrickTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerBridgeTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
     this.registerLevel1Textures(
       assetLoader,
       assetManager,
@@ -53,6 +95,89 @@ class GameSetup extends EngineSetup {
     assetManager.registerSpriteSheet(
       "level1-background-window-sheet",
       assetLoader.getImage("level1-background-window")
+    );
+  }
+
+  private registerBottomBrickTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    assetManager.registerStaticTexture(
+      "bottomBrick",
+      assetLoader.getImage("bottomBrick")
+    );
+  }
+  private registerBridgeTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    assetManager.registerStaticTexture(
+      "bridge",
+      assetLoader.getImage("bridge")
+    );
+  }
+
+  private registerLeftCornerBrickTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    assetManager.registerStaticTexture(
+      "leftCornerBrick",
+      assetLoader.getImage("leftCornerBrick")
+    );
+  }
+
+  private registerRightCornerBrickTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    assetManager.registerStaticTexture(
+      "rightCornerBrick",
+      assetLoader.getImage("rightCornerBrick")
+    );
+  }
+
+  private registerRightBrickTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    assetManager.registerStaticTexture(
+      "rightBrick",
+      assetLoader.getImage("rightBrick")
+    );
+  }
+
+  private registerLeftBrickTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    assetManager.registerStaticTexture(
+      "leftBrick",
+      assetLoader.getImage("leftBrick")
+    );
+  }
+
+  private registerMiddleBrickTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    assetManager.registerStaticTexture(
+      "middleBrick",
+      assetLoader.getImage("middleBrick")
     );
   }
 
