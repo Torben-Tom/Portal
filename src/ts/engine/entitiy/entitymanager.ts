@@ -33,11 +33,34 @@ class EntityManager {
     this._entities.push(entity);
   }
 
+  public registerAll(entities: Entity[]) {
+    for (let entity of entities) {
+      this.register(entity);
+    }
+  }
+
   public unregister(entity: Entity) {
     const index = this._entities.indexOf(entity);
     if (index >= 0) {
       this._entities.splice(index, 1);
     }
+
+    for (let collision of this._collisions) {
+      if (collision.entity1 === entity || collision.entity2 === entity) {
+        this._collisions.splice(this._collisions.indexOf(collision), 1);
+      }
+    }
+  }
+
+  public unregisterAll(entities: Entity[]) {
+    for (let entity of entities) {
+      this.unregister(entity);
+    }
+  }
+
+  public clear() {
+    this._entities = [];
+    this._collisions = [];
   }
 
   public getCollision(entity1: Entity, entity2: Entity): Collision | null {

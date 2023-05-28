@@ -4,6 +4,7 @@ import Services from "./dependencyinjection/services.js";
 import EngineSetup from "./enginesetup.js";
 import EntityManager from "./entitiy/entitymanager.js";
 import InputHandler from "./input/inputhandler.js";
+import LevelManager from "./level/levelmanager.js";
 import Compositor from "./renderer/compositor.js";
 
 class Game {
@@ -11,6 +12,7 @@ class Game {
   private _assetManager: AssetManager;
   private _inputHandler: InputHandler;
   private _entityManager: EntityManager;
+  private _levelManager: LevelManager;
   private _compositor: Compositor;
 
   private _running: boolean;
@@ -39,6 +41,10 @@ class Game {
     this._assetManager = new AssetManager();
     this._inputHandler = new InputHandler(htmlCanvasElement);
     this._entityManager = new EntityManager();
+    this._levelManager = new LevelManager(
+      this._assetManager,
+      this._entityManager
+    );
     this._compositor = new Compositor(htmlCanvasElement, this._entityManager);
 
     this._running = false;
@@ -54,26 +60,33 @@ class Game {
     Services.register(this._assetManager);
     Services.register(this._inputHandler);
     Services.register(this._entityManager);
+    Services.register(this._levelManager);
     Services.register(this._compositor);
     Services.register(this);
 
     engineSetup.loadAssets(
       this._assetLoader,
       this._assetManager,
-      this._entityManager
+      this._entityManager,
+      this._levelManager
     );
+
     while (!this._assetLoader.areAssetsReady()) {
       console.log("Loading assets...");
     }
+
     engineSetup.registerTextures(
       this._assetLoader,
       this._assetManager,
-      this._entityManager
+      this._entityManager,
+      this._levelManager
     );
-    engineSetup.registerEntities(
+
+    engineSetup.registerLevels(
       this._assetLoader,
       this._assetManager,
-      this._entityManager
+      this._entityManager,
+      this._levelManager
     );
   }
 

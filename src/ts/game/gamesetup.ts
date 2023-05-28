@@ -2,25 +2,52 @@ import AssetLoader from "../engine/assets/assetloader.js";
 import AssetManager from "../engine/assets/assetmanager.js";
 import SpriteSheet from "../engine/assets/texture/spritesheet.js";
 import EngineSetup from "../engine/enginesetup.js";
-import BackgroundTileEntity from "../engine/entitiy/backgroundtileentity.js";
 import EntityManager from "../engine/entitiy/entitymanager.js";
-import NetworkEntity from "./entities/networkentity.js";
-import NetworkEntity2 from "./entities/networkentity2.js";
+import LevelManager from "../engine/level/levelmanager.js";
+import Level1 from "./levels/level1.js";
 
 class GameSetup extends EngineSetup {
   public loadAssets(
     assetLoader: AssetLoader,
     assetManager: AssetManager,
-    entityManager: EntityManager
+    entityManager: EntityManager,
+    levelManager: LevelManager
   ): void {
     assetLoader.registerImages("image");
     assetLoader.registerAudios("audio");
   }
 
+  public registerTextures(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entityManager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    this.registerSpriteSheets(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerNetworkTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerLevel1Textures(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+  }
+
   public registerSpriteSheets(
     assetLoader: AssetLoader,
     assetManager: AssetManager,
-    entityManager: EntityManager
+    entityManager: EntityManager,
+    levelManager: LevelManager
   ): void {
     assetManager.registerSpriteSheet("icons", assetLoader.getImage("icons"));
     assetManager.registerSpriteSheet(
@@ -29,47 +56,11 @@ class GameSetup extends EngineSetup {
     );
   }
 
-  public registerTextures(
-    assetLoader: AssetLoader,
-    assetManager: AssetManager,
-    entityManager: EntityManager
-  ): void {
-    this.registerSpriteSheets(assetLoader, assetManager, entityManager);
-    this.registerNetworkTexture(assetLoader, assetManager);
-    this.registerLevel1Textures(assetLoader, assetManager);
-  }
-
-  public registerEntities(
-    assetLoader: AssetLoader,
-    assetManager: AssetManager,
-    entityManager: EntityManager
-  ): void {
-    entityManager.register(
-      new BackgroundTileEntity(
-        552,
-        141,
-        1,
-        1,
-        assetManager.getTexture("window")
-      )
-    );
-    entityManager.register(
-      new BackgroundTileEntity(
-        0,
-        0,
-        1,
-        1,
-        assetManager.getTexture("level1-background")
-      )
-    );
-    entityManager.register(new NetworkEntity());
-    entityManager.register(new NetworkEntity2(0, 150, 50, 5, 0, 0));
-    entityManager.register(new NetworkEntity2(500, 150, 5, 50, 0, 0));
-  }
-
   private registerNetworkTexture(
     assetLoader: AssetLoader,
-    assetManager: AssetManager
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
   ): void {
     let iconsSpriteSheet: SpriteSheet = assetManager.getSpriteSheet("icons");
 
@@ -103,8 +94,10 @@ class GameSetup extends EngineSetup {
 
   private registerLevel1Textures(
     assetLoader: AssetLoader,
-    assetManager: AssetManager
-  ) {
+    assetManager: AssetManager,
+    entityManager: EntityManager,
+    levelManager: LevelManager
+  ): void {
     assetManager.registerStaticTexture(
       "level1-background",
       assetLoader.getImage("level1-background")
@@ -159,6 +152,15 @@ class GameSetup extends EngineSetup {
       ],
       200
     );
+  }
+
+  registerLevels(
+    _assetLoader: AssetLoader,
+    _assetManager: AssetManager,
+    _entityManager: EntityManager,
+    _levelManager: LevelManager
+  ): void {
+    _levelManager.registerLevel("level1", new Level1());
   }
 }
 

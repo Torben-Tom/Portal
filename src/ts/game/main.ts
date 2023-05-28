@@ -4,11 +4,9 @@ import Slice from "../engine/assets/texture/slice.js";
 import SliceTexture from "../engine/assets/texture/slicetexture.js";
 import SpriteSheet from "../engine/assets/texture/spritesheet.js";
 import Services from "../engine/dependencyinjection/services.js";
-import EntityManager from "../engine/entitiy/entitymanager.js";
 import Game from "../engine/game.js";
 import InputHandler from "../engine/input/inputhandler.js";
-import NetworkEntity from "./entities/networkentity.js";
-import NetworkEntity2 from "./entities/networkentity2.js";
+import LevelManager from "../engine/level/levelmanager.js";
 import GameSetup from "./gamesetup.js";
 
 function getGameCanvas(): HTMLCanvasElement {
@@ -32,10 +30,15 @@ function start(): void {
   let game: Game = new Game(htmlCanvasElement, new GameSetup());
   window.addEventListener("beforeunload", game.stopGame.bind(game));
 
-  game.startGame();
   let inputHandler: InputHandler =
     Services.resolve<InputHandler>("InputHandler");
   inputHandler.addWhiteListedKeys(["F5", "F11", "F12", "Alt"]);
+
+  game.startGame();
+
+  let levelManager: LevelManager =
+    Services.resolve<LevelManager>("LevelManager");
+  levelManager.startLevel("level1");
 }
 
 window.addEventListener("DOMContentLoaded", start);
