@@ -1,6 +1,6 @@
 import Entity from "./entity.js";
 
-class Collision {
+class Touch {
   private _entity1: Entity;
   private _entity2: Entity;
 
@@ -17,7 +17,11 @@ class Collision {
     this._entity2 = entity2;
   }
 
-  public belongsTo(entity1: Entity, entity2: Entity): boolean {
+  public belongsToEntity(entity: Entity): boolean {
+    return this._entity1 === entity || this._entity2 === entity;
+  }
+
+  public belongsToEntities(entity1: Entity, entity2: Entity): boolean {
     return (
       (this._entity1 === entity1 && this._entity2 === entity2) ||
       (this._entity1 === entity2 && this._entity2 === entity1)
@@ -25,4 +29,4 @@ class Collision {
   }
 }
 
-export default Collision;
+export default Touch;

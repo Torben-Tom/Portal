@@ -102,7 +102,7 @@ class DebugRenderer extends Renderer {
             continue;
           }
 
-          let collisionArea = collision.entity1.boundingBox.intersection(
+          let collisionArea = collision.entity1.boundingBox.intersect(
             collision.entity2.boundingBox
           );
           glContext.strokeStyle = "red";

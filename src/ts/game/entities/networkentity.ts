@@ -16,9 +16,10 @@ class NetworkEntity extends Entity {
       10,
       5,
       5,
-      Services.resolve<AssetManager>("AssetManager").getTexture("network"),
       0,
-      0
+      0,
+      false,
+      Services.resolve<AssetManager>("AssetManager").getTexture("network")
     );
 
     this._inputHandler = Services.resolve<InputHandler>("InputHandler");
@@ -36,7 +37,7 @@ class NetworkEntity extends Entity {
         continue;
       }
 
-      let intersection = collision.entity1.boundingBox.intersection(
+      let intersection = collision.entity1.boundingBox.intersect(
         collision.entity2.boundingBox
       );
       let xDiff = this.boundingBox!.centerX - intersection.centerX;
@@ -55,9 +56,9 @@ class NetworkEntity extends Entity {
         }
       }
     }
-    console.log(
-      `Networkentity collisions:\nLeft: ${isCollidingLeft}\nRight: ${isCollidingRight}\nTop: ${isCollidingTop}\nBottom: ${isCollidingBottom}`
-    );
+    //console.log(
+    // `Networkentity collisions:\nLeft: ${isCollidingLeft}\nRight: ${isCollidingRight}\nTop: ${isCollidingTop}\nBottom: ${isCollidingBottom}`
+    //);
 
     if (!isCollidingBottom) {
       this._yVelocity += 0.0008 * delta;

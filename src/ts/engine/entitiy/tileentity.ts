@@ -1,4 +1,5 @@
 import Texture from "../assets/texture/texture.js";
+import BoundingBox from "./boundingbox.js";
 import Entity from "./entity.js";
 
 class TileEntity extends Entity {
@@ -7,11 +8,21 @@ class TileEntity extends Entity {
     y: number,
     scalingX: number,
     scalingY: number,
-    texture: Texture,
-    widthExpansion?: number,
-    heightExpansion?: number
+    expansionX: number,
+    expansionY: number,
+    passThrough: boolean,
+    texture: Texture
   ) {
-    super(x, y, scalingX, scalingY, texture, widthExpansion, heightExpansion);
+    super(
+      x,
+      y,
+      scalingX,
+      scalingY,
+      expansionX,
+      expansionY,
+      passThrough,
+      texture
+    );
   }
 }
 

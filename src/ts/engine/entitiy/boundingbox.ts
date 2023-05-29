@@ -6,6 +6,7 @@ class BoundingBox implements RectangularArea {
   private _entity: Entity;
   private _widthExpansion: number;
   private _heightExpansion: number;
+  private _passThrough: boolean;
 
   get x(): number {
     return this._entity.x - this._widthExpansion / 2;
@@ -36,10 +37,20 @@ class BoundingBox implements RectangularArea {
     return this.y + this.height / 2;
   }
 
-  constructor(entity: Entity, widthExpasion: number, heightExpansion: number) {
+  get passThrough(): boolean {
+    return this._passThrough;
+  }
+
+  constructor(
+    entity: Entity,
+    widthExpasion: number,
+    heightExpansion: number,
+    passThrough: boolean
+  ) {
     this._entity = entity;
     this._widthExpansion = widthExpasion;
     this._heightExpansion = heightExpansion;
+    this._passThrough = passThrough;
   }
 
   public isInside(x: number, y: number): boolean {
@@ -51,7 +62,7 @@ class BoundingBox implements RectangularArea {
     );
   }
 
-  public collidesWith(boundingBox: BoundingBox): boolean {
+  public touches(boundingBox: BoundingBox): boolean {
     return (
       this.x < boundingBox.x + boundingBox.width &&
       this.x + this.width > boundingBox.x &&
@@ -60,7 +71,7 @@ class BoundingBox implements RectangularArea {
     );
   }
 
-  public intersection(boundingBox: BoundingBox): Rectangle {
+  public intersect(boundingBox: BoundingBox): Rectangle {
     let x = Math.max(this.x, boundingBox.x);
     let y = Math.max(this.y, boundingBox.y);
     let width = Math.min(
