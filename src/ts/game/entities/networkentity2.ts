@@ -17,6 +17,7 @@ class NetworkEntity2 extends Entity {
       y,
       scalingX,
       scalingY,
+      true,
       expansionX,
       expansionY,
       false,

@@ -3,6 +3,7 @@ import EntitiesCollideEvent from "../event/events/entitiescollideevent.js";
 import EntitiesTouchEvent from "../event/events/entitiestouchevent.js";
 import EntitiesUncollideEvent from "../event/events/entitiesuncollideevent.js";
 import EntitiesUntouchEvent from "../event/events/entitiesuntouchevent.js";
+import Vector2D from "../math/vector2d.js";
 import Entity from "./entity.js";
 import Touch from "./touch.js";
 class EntityManager {
@@ -127,7 +128,7 @@ class EntityManager {
     return this.getCollisions(entity).length > 0;
   }
 
-  private updateTouch(entity1: Entity, entity2: Entity) {
+  private checkTouch(entity1: Entity, entity2: Entity) {
     if (
       !this.areTouching(entity1, entity2) &&
       entity1.boundingBox.touches(entity2.boundingBox)
@@ -139,7 +140,7 @@ class EntityManager {
     }
   }
 
-  private updateCollision(entity1: Entity, entity2: Entity) {
+  private checkCollision(entity1: Entity, entity2: Entity) {
     if (
       !this.areColliding(entity1, entity2) &&
       entity1.boundingBox.touches(entity2.boundingBox) &&
@@ -181,6 +182,35 @@ class EntityManager {
     }
   }
 
+  private unstuckEntities() {
+    for (let entity of this._entities) {
+      if (entity.static) {
+        continue;
+      }
+
+      for (let otherEntity of this._entities) {
+        if (otherEntity === entity || otherEntity.boundingBox.passThrough) {
+          continue;
+        }
+
+        if (entity.boundingBox.touches(otherEntity.boundingBox)) {
+          let intersection = entity.boundingBox.intersect(
+            otherEntity.boundingBox
+          );
+          const intersectionCenter = intersection.center;
+          const pushDirection = entity.boundingBox.center
+            .subtract(intersectionCenter)
+            .normalize()
+            .multiply(new Vector2D(intersection.width, 1))
+            .multiply(new Vector2D(1, intersection.height));
+          entity.teleport(
+            entity.location.add(pushDirection.resolve()).resolve()
+          );
+        }
+      }
+    }
+  }
+
   public update(delta: number) {
     for (let entity of this._entities) {
       entity.update(delta);
@@ -190,13 +220,14 @@ class EntityManager {
           continue;
         }
 
-        this.updateTouch(entity, otherEntity);
-        this.updateCollision(entity, otherEntity);
+        this.checkTouch(entity, otherEntity);
+        this.checkCollision(entity, otherEntity);
       }
     }
-
     this.cleanupTouches();
     this.cleanupCollisions();
+
+    this.unstuckEntities();
   }
 }
 

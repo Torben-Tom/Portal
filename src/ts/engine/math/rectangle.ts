@@ -1,17 +1,13 @@
-import RectangularArea from "./rectangulararea";
+import Point from "./point.js";
+import RectangularArea from "./rectangulararea.js";
 
 class Rectangle implements RectangularArea {
-  private _x: number;
-  private _y: number;
+  private _location: Point;
   private _width: number;
   private _height: number;
 
-  get x(): number {
-    return this._x;
-  }
-
-  get y(): number {
-    return this._y;
+  get location(): Point {
+    return this._location;
   }
 
   get width(): number {
@@ -22,17 +18,15 @@ class Rectangle implements RectangularArea {
     return this._height;
   }
 
-  get centerX(): number {
-    return this.x + this.width / 2;
-  }
-
-  get centerY(): number {
-    return this.y + this.height / 2;
+  get center(): Point {
+    return new Point(
+      this.location.x + this.width / 2,
+      this.location.y + this.height / 2
+    );
   }
 
   constructor(x: number, y: number, width: number, height: number) {
-    this._x = x;
-    this._y = y;
+    this._location = new Point(x, y);
     this._width = width;
     this._height = height;
   }

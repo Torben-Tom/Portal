@@ -1,10 +1,10 @@
+import Point from "./point.js";
+
 interface RectangularArea {
-  get x(): number;
-  get y(): number;
+  get location(): Point;
   get width(): number;
   get height(): number;
-  get centerX(): number;
-  get centerY(): number;
+  get center(): Point;
 }
 
 export default RectangularArea;

@@ -1,6 +1,7 @@
+import Point from "../math/point.js";
 import Entity from "./entity.js";
-import Rectangle from "./rectangle.js";
-import RectangularArea from "./rectangulararea.js";
+import Rectangle from "../math/rectangle.js";
+import RectangularArea from "../math/rectangulararea.js";
 
 class BoundingBox implements RectangularArea {
   private _entity: Entity;
@@ -8,12 +9,11 @@ class BoundingBox implements RectangularArea {
   private _heightExpansion: number;
   private _passThrough: boolean;
 
-  get x(): number {
-    return this._entity.x - this._widthExpansion / 2;
-  }
-
-  get y(): number {
-    return this._entity.y - this._heightExpansion / 2;
+  get location(): Point {
+    return new Point(
+      this._entity.location.xCord - this._widthExpansion / 2,
+      this._entity.location.yCord - this._heightExpansion / 2
+    );
   }
 
   get width(): number {
@@ -29,12 +29,11 @@ class BoundingBox implements RectangularArea {
     );
   }
 
-  get centerX(): number {
-    return this.x + this.width / 2;
-  }
-
-  get centerY(): number {
-    return this.y + this.height / 2;
+  get center(): Point {
+    return new Point(
+      this.location.xCord + this.width / 2,
+      this.location.yCord + this.height / 2
+    );
   }
 
   get passThrough(): boolean {
@@ -53,34 +52,34 @@ class BoundingBox implements RectangularArea {
     this._passThrough = passThrough;
   }
 
-  public isInside(x: number, y: number): boolean {
+  public isInside(point: Point): boolean {
     return (
-      x >= this.x &&
-      x <= this.x + this.width &&
-      y >= this.y &&
-      y <= this.y + this.height
+      point.x >= this.location.x &&
+      point.x <= this.location.x + this.width &&
+      point.y >= this.location.y &&
+      point.y <= this.location.y + this.height
     );
   }
 
   public touches(boundingBox: BoundingBox): boolean {
     return (
-      this.x < boundingBox.x + boundingBox.width &&
-      this.x + this.width > boundingBox.x &&
-      this.y < boundingBox.y + boundingBox.height &&
-      this.y + this.height > boundingBox.y
+      this.location.x < boundingBox.location.x + boundingBox.width &&
+      this.location.x + this.width > boundingBox.location.x &&
+      this.location.y < boundingBox.location.y + boundingBox.height &&
+      this.location.y + this.height > boundingBox.location.y
     );
   }
 
-  public intersect(boundingBox: BoundingBox): Rectangle {
-    let x = Math.max(this.x, boundingBox.x);
-    let y = Math.max(this.y, boundingBox.y);
+  public intersect(rectangularArea: RectangularArea): Rectangle {
+    let x = Math.max(this.location.x, rectangularArea.location.x);
+    let y = Math.max(this.location.y, rectangularArea.location.y);
     let width = Math.min(
-      this.x + this.width,
-      boundingBox.x + boundingBox.width
+      this.location.x + this.width,
+      rectangularArea.location.x + rectangularArea.width
     );
     let height = Math.min(
-      this.y + this.height,
-      boundingBox.y + boundingBox.height
+      this.location.y + this.height,
+      rectangularArea.location.y + rectangularArea.height
     );
 
     return new Rectangle(x, y, width - x, height - y);

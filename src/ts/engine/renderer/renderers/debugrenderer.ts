@@ -58,12 +58,12 @@ class DebugRenderer extends Renderer {
       glContext.fillText(`FPS: ${this._game.fps}`, 600, 512);
       glContext.fillText(`TPS: ${this._game.tps}`, 600, 525);
       glContext.fillText(
-        `Mouse relative: ${this._inputHandler.mouseRelativeX}, ${this._inputHandler.mouseRelativeY}`,
+        `Mouse relative: ${this._inputHandler.mouseRelative.x}, ${this._inputHandler.mouseRelative.y}`,
         600,
         538
       );
       glContext.fillText(
-        `Mouse absolute: ${this._inputHandler.mouseAbsoluteX}, ${this._inputHandler.mouseAbsoluteY}`,
+        `Mouse absolute: ${this._inputHandler.mouseAbsolute.x}, ${this._inputHandler.mouseAbsolute.y}`,
         600,
         551
       );
@@ -83,19 +83,14 @@ class DebugRenderer extends Renderer {
           }
 
           let boundingBox = entity.boundingBox;
-          if (
-            boundingBox.isInside(
-              this._inputHandler!.mouseRelativeX,
-              this._inputHandler!.mouseRelativeY
-            )
-          ) {
+          if (boundingBox.isInside(this._inputHandler!.mouseRelative)) {
             glContext.strokeStyle = "green";
           } else {
             glContext.strokeStyle = "black";
           }
           glContext.strokeRect(
-            boundingBox.x,
-            boundingBox.y,
+            boundingBox.location.x,
+            boundingBox.location.y,
             boundingBox.width,
             boundingBox.height
           );
@@ -114,8 +109,8 @@ class DebugRenderer extends Renderer {
           );
           glContext.strokeStyle = "red";
           glContext.strokeRect(
-            collisionArea.x,
-            collisionArea.y,
+            collisionArea.location.x,
+            collisionArea.location.y,
             collisionArea.width,
             collisionArea.height
           );
