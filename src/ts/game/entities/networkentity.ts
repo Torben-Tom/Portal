@@ -60,7 +60,7 @@ class NetworkEntity extends Entity {
     );
 
     if (!isCollidingBottom) {
-      this._yVelocity += 0.0008 * delta;
+      this._yVelocity += 0.003 * delta;
       if (this._yVelocity > 2) {
         this._yVelocity = 2;
       }
@@ -70,7 +70,7 @@ class NetworkEntity extends Entity {
       }
 
       if (this._inputHandler.isKeyDown(" ")) {
-        this._yVelocity = -0.33;
+        this._yVelocity = -0.7;
       }
     }
 

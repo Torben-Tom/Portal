@@ -2,7 +2,7 @@ import AssetManager from "../../engine/assets/assetmanager.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import Entity from "../../engine/entitiy/entity.js";
 
-class BridgeEntity extends Entity {
+class PortalPurpleCreate extends Entity {
   constructor(
     x: number,
     y: number,
@@ -16,15 +16,13 @@ class BridgeEntity extends Entity {
       y,
       scalingX,
       scalingY,
-      Services.resolve<AssetManager>("AssetManager").getTexture("bridge"),
+      Services.resolve<AssetManager>("AssetManager").getTexture(
+        "portalPurpleCreate"
+      ),
       widthExpansion,
       heightExpansion
     );
   }
-
-  update(delta: number): void {
-    // Do nothing
-  }
 }
 
-export default BridgeEntity;
+export default PortalPurpleCreate;

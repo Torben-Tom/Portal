@@ -35,6 +35,42 @@ class GameSetup extends EngineSetup {
       entityManager,
       levelManager
     );
+    this.registerPortalGreenTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerPortalGreenCloseTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerPortalGreenCreateTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerPortalPurpleCreateTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerPortalPurpleTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerPortalPurpleCloseTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
     this.registerBottomBrickTexture(
       assetLoader,
       assetManager,
@@ -92,6 +128,14 @@ class GameSetup extends EngineSetup {
     levelManager: LevelManager
   ): void {
     assetManager.registerSpriteSheet("icons", assetLoader.getImage("icons"));
+    assetManager.registerSpriteSheet(
+      "greenPortal",
+      assetLoader.getImage("greenPortal")
+    );
+    assetManager.registerSpriteSheet(
+      "purplePortal",
+      assetLoader.getImage("purplePortal")
+    );
     assetManager.registerSpriteSheet(
       "level1-background-window-sheet",
       assetLoader.getImage("level1-background-window")
@@ -214,6 +258,306 @@ class GameSetup extends EngineSetup {
         ),
       ],
       1000
+    );
+  }
+
+  private registerPortalGreenCloseTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let portalGreenSpriteSheet: SpriteSheet =
+      assetManager.getSpriteSheet("greenPortal");
+
+    assetManager.registerAnimatedTexture(
+      "portalGreenClose",
+      [
+        assetManager.registerSliceTexture(
+          "portalGreen17",
+          portalGreenSpriteSheet.createSlice("portalGreen17", 0, 128, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen18",
+          portalGreenSpriteSheet.createSlice("portalGreen18", 64, 128, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen19",
+          portalGreenSpriteSheet.createSlice("portalGreen19", 128, 128, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen20",
+          portalGreenSpriteSheet.createSlice("portalGreen20", 192, 128, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen21",
+          portalGreenSpriteSheet.createSlice("portalGreen21", 256, 128, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen22",
+          portalGreenSpriteSheet.createSlice("portalGreen22", 320, 128, 65, 65)
+        ),
+      ],
+      100
+    );
+  }
+  private registerPortalGreenCreateTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let portalGreenSpriteSheet: SpriteSheet =
+      assetManager.getSpriteSheet("greenPortal");
+
+    assetManager.registerAnimatedTexture(
+      "portalGreenCreate",
+      [
+        assetManager.registerSliceTexture(
+          "portalGreen9",
+          portalGreenSpriteSheet.createSlice("portalGreen9", 0, 64, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen10",
+          portalGreenSpriteSheet.createSlice("portalGreen10", 64, 64, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen11",
+          portalGreenSpriteSheet.createSlice("portalGreen11", 128, 64, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen12",
+          portalGreenSpriteSheet.createSlice("portalGreen12", 192, 64, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen13",
+          portalGreenSpriteSheet.createSlice("portalGreen13", 256, 64, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen14",
+          portalGreenSpriteSheet.createSlice("portalGreen14", 320, 64, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen15",
+          portalGreenSpriteSheet.createSlice("portalGreen15", 384, 64, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen16",
+          portalGreenSpriteSheet.createSlice("portalGreen16", 448, 64, 65, 65)
+        ),
+      ],
+      100
+    );
+  }
+
+  private registerPortalGreenTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let portalGreenSpriteSheet: SpriteSheet =
+      assetManager.getSpriteSheet("greenPortal");
+
+    assetManager.registerAnimatedTexture(
+      "portalGreen",
+      [
+        assetManager.registerSliceTexture(
+          "portalGreen1",
+          portalGreenSpriteSheet.createSlice("portalGreen1", 0, 0, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen2",
+          portalGreenSpriteSheet.createSlice("portalGreen2", 64, 0, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen3",
+          portalGreenSpriteSheet.createSlice("portalGreen3", 128, 0, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen4",
+          portalGreenSpriteSheet.createSlice("portalGreen4", 192, 0, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen5",
+          portalGreenSpriteSheet.createSlice("portalGreen5", 256, 0, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen6",
+          portalGreenSpriteSheet.createSlice("portalGreen6", 320, 0, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen7",
+          portalGreenSpriteSheet.createSlice("portalGreen7", 384, 0, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalGreen8",
+          portalGreenSpriteSheet.createSlice("portalGreen8", 448, 0, 65, 65)
+        ),
+      ],
+      100
+    );
+  }
+
+  private registerPortalPurpleCloseTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let portalPurpleSpriteSheet: SpriteSheet =
+      assetManager.getSpriteSheet("purplePortal");
+
+    assetManager.registerAnimatedTexture(
+      "portalPurpleClose",
+      [
+        assetManager.registerSliceTexture(
+          "portalPurple17",
+          portalPurpleSpriteSheet.createSlice("portalPurple17", 0, 128, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple18",
+          portalPurpleSpriteSheet.createSlice("portalPurple18", 64, 128, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple19",
+          portalPurpleSpriteSheet.createSlice(
+            "portalPurple19",
+            128,
+            128,
+            65,
+            65
+          )
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple20",
+          portalPurpleSpriteSheet.createSlice(
+            "portalPurple20",
+            192,
+            128,
+            65,
+            65
+          )
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple21",
+          portalPurpleSpriteSheet.createSlice(
+            "portalPurple21",
+            256,
+            128,
+            65,
+            65
+          )
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple22",
+          portalPurpleSpriteSheet.createSlice(
+            "portalPurple22",
+            320,
+            128,
+            65,
+            65
+          )
+        ),
+      ],
+      100
+    );
+  }
+  private registerPortalPurpleCreateTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let portalPurpleSpriteSheet: SpriteSheet =
+      assetManager.getSpriteSheet("purplePortal");
+
+    assetManager.registerAnimatedTexture(
+      "portalPurpleCreate",
+      [
+        assetManager.registerSliceTexture(
+          "portalPurple9",
+          portalPurpleSpriteSheet.createSlice("portalPurple9", 0, 64, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple10",
+          portalPurpleSpriteSheet.createSlice("portalPurple10", 64, 64, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple11",
+          portalPurpleSpriteSheet.createSlice("portalPurple11", 128, 64, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple12",
+          portalPurpleSpriteSheet.createSlice("portalPurple12", 192, 64, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple13",
+          portalPurpleSpriteSheet.createSlice("portalPurple13", 256, 64, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple14",
+          portalPurpleSpriteSheet.createSlice("portalPurple14", 320, 64, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple15",
+          portalPurpleSpriteSheet.createSlice("portalPurple15", 384, 64, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple16",
+          portalPurpleSpriteSheet.createSlice("portalPurple16", 448, 64, 65, 65)
+        ),
+      ],
+      100
+    );
+  }
+
+  private registerPortalPurpleTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let portalPurpleSpriteSheet: SpriteSheet =
+      assetManager.getSpriteSheet("purplePortal");
+
+    assetManager.registerAnimatedTexture(
+      "portalPurple",
+      [
+        assetManager.registerSliceTexture(
+          "portalPurple1",
+          portalPurpleSpriteSheet.createSlice("portalPurple1", 0, 0, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple2",
+          portalPurpleSpriteSheet.createSlice("portalPurple2", 64, 0, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple3",
+          portalPurpleSpriteSheet.createSlice("portalPurple3", 128, 0, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple4",
+          portalPurpleSpriteSheet.createSlice("portalPurple4", 192, 0, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple5",
+          portalPurpleSpriteSheet.createSlice("portalPurple5", 256, 0, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple6",
+          portalPurpleSpriteSheet.createSlice("portalPurple6", 320, 0, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple7",
+          portalPurpleSpriteSheet.createSlice("portalPurple7", 384, 0, 65, 65)
+        ),
+        assetManager.registerSliceTexture(
+          "portalPurple8",
+          portalPurpleSpriteSheet.createSlice("portalPurple8", 448, 0, 65, 65)
+        ),
+      ],
+      100
     );
   }
 

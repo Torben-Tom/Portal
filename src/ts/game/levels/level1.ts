@@ -12,16 +12,24 @@ import MiddleBrickEntity from "../entities/middlebrickentity.js";
 import BridgeEntity from "../entities/bridgeentity.js";
 import InputHandler from "../../engine/input/inputhandler.js";
 import Services from "../../engine/dependencyinjection/services.js";
+import EngineEvent from "../../engine/event/engineevent.js";
+import EntityManager from "../../engine/entitiy/entitymanager.js";
+import PortalGreen from "../entities/portalgreen.js";
+import PortalGreenCreate from "../entities/portalgreencreate.js";
+import PortalPurple from "../entities/portalpurple.js";
+import PortalPurpleCreate from "../entities/portalpurplecreate.js";
+import PortalPurpleClose from "../entities/portalpurpleclose.js";
+import PortalGreenClose from "../entities/portalgreenclose.js";
 
 class Level1 implements Level {
   private _inputHandler: InputHandler;
+  private _entityManager: EntityManager;
 
   constructor() {
     this._inputHandler = Services.resolve<InputHandler>("InputHandler");
+    this._entityManager = Services.resolve<EntityManager>("EntityManager");
   }
   public getEntities(assetManager: AssetManager): Entity[] {
-    let buttonClicked = false;
-
     let window = new BackgroundTileEntity(
       552,
       141,
@@ -42,12 +50,25 @@ class Level1 implements Level {
     let cornerBrickLeft = new LeftCornerBrickEntity(0, 550, 1.5, 1.5, 0, 0);
     let cornerBrickRight = new RightCornerBrickEntity(750, 550, 1.5, 1.5, 0, 0);
 
+    let greenPortal = new PortalGreen(670, 430, 2, 2, -110, 0);
+    let greenPortalCreate = new PortalGreenCreate(600, 430, 2, 2, 0, 0);
+    let greenPortalClose = new PortalGreenClose(640, 430, 2, 2, 0, 0);
+    let purplePortal = new PortalPurple(0, 180, 2, 2, -110, 0);
+    let purplePortalCreate = new PortalPurpleCreate(600, 230, 2, 2, 0, 0);
+    let purplePortalClose = new PortalPurpleClose(640, 230, 2, 2, 0, 0);
+
     let returnArray: Entity[] = [];
     returnArray.push(window);
     returnArray.push(background);
     returnArray.push(player);
     returnArray.push(cornerBrickLeft);
     returnArray.push(cornerBrickRight);
+    returnArray.push(greenPortal);
+    // returnArray.push(greenPortalCreate);
+    // returnArray.push(greenPortalClose);
+    returnArray.push(purplePortal);
+    // returnArray.push(purplePortalCreate);
+    // returnArray.push(purplePortalClose);
 
     for (let i = 0; i < 14; i++) {
       let bottomBrick = new BottomBrickEntity(50 + i * 50, 550, 1.5, 1.5, 0, 0);
@@ -77,22 +98,40 @@ class Level1 implements Level {
       returnArray.push(middleBrick);
     }
 
-    // if (this._inputHandler.isKeyDown("f")) {
-    //   console.log("f pressed");
-    //   buttonClicked = true;
-    // }
-    buttonClicked = true; //erscheinen der Brücke
-    if (buttonClicked == true) {
-      for (let i = 0; i < 5; i++) {
-        let bridge = new BridgeEntity(300 + i * 50, 300, 1.5, 1.5, 0, 0);
-        returnArray.push(bridge);
-      }
-    }
     return returnArray;
   }
 
   public load(): void {
-    console.log("Level1 loaded");
+    this._inputHandler.keyDownEvent.subscribe(
+      (key: EngineEvent<KeyboardEvent>) => {
+        if (key.eventData.key == "f") {
+          if (
+            this._entityManager.entities.filter(
+              (entity) => entity instanceof BridgeEntity
+            ).length >= 5
+          ) {
+            return;
+          }
+          for (let i = 0; i < 5; i++) {
+            this._entityManager.register(
+              new BridgeEntity(300 + i * 50, 300, 1.5, 1.5, 0, 0)
+            );
+          }
+        }
+      }
+    );
+
+    this._inputHandler.keyUpEvent.subscribe(
+      (key: EngineEvent<KeyboardEvent>) => {
+        if (key.eventData.key == "f") {
+          this._entityManager.unregisterAll(
+            this._entityManager.entities.filter(
+              (entity) => entity instanceof BridgeEntity
+            )
+          );
+        }
+      }
+    );
   }
 
   public unload(): void {
