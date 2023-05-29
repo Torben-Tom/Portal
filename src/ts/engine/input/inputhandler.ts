@@ -5,7 +5,7 @@ class InputHandler {
   private _htmlCanvasElement: HTMLCanvasElement;
   private _mouseX: number;
   private _mouseY: number;
-  private _pressedKeys: Map<string, boolean>;
+  private _keystates: Map<string, boolean>;
   private _whiteListedKeys: string[];
 
   private _engineMouseMoveEvent: EngineEventHandler<
@@ -48,6 +48,10 @@ class InputHandler {
     );
   }
 
+  get keystates(): Map<string, boolean> {
+    return this._keystates;
+  }
+
   get whiteListedKeys(): string[] {
     return this._whiteListedKeys;
   }
@@ -84,7 +88,7 @@ class InputHandler {
     this._htmlCanvasElement = htmlCanvasElement;
     this._mouseX = 0;
     this._mouseY = 0;
-    this._pressedKeys = new Map<string, boolean>();
+    this._keystates = new Map<string, boolean>();
     this._whiteListedKeys = [];
 
     this._engineMouseMoveEvent = new EngineEventHandler<
@@ -124,7 +128,7 @@ class InputHandler {
   private onKeyDown(keyboardEvent: KeyboardEvent): void {
     if (!this._whiteListedKeys.includes(keyboardEvent.key)) {
       if (!this.isKeyDown(keyboardEvent.key)) {
-        this._pressedKeys.set(keyboardEvent.key, true);
+        this._keystates.set(keyboardEvent.key, true);
       }
 
       keyboardEvent.preventDefault();
@@ -135,7 +139,7 @@ class InputHandler {
   private onKeyUp(keyboardEvent: KeyboardEvent): void {
     if (!this._whiteListedKeys.includes(keyboardEvent.key)) {
       if (this.isKeyDown(keyboardEvent.key)) {
-        this._pressedKeys.set(keyboardEvent.key, false);
+        this._keystates.set(keyboardEvent.key, false);
       }
 
       keyboardEvent.preventDefault();
@@ -144,7 +148,7 @@ class InputHandler {
   }
 
   public isKeyDown(key: string): boolean {
-    return (this._pressedKeys.has(key) && this._pressedKeys.get(key)) ?? false;
+    return (this._keystates.has(key) && this._keystates.get(key)) ?? false;
   }
 
   public addWhiteListedKey(key: string): void {

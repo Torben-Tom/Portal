@@ -50,23 +50,30 @@ class DebugRenderer extends Renderer {
       this._entityManager &&
       this._compositor
     ) {
-      glContext.fillText(`FPS: ${this._game.fps}`, 50, 10);
-      glContext.fillText(`TPS: ${this._game.tps}`, 50, 20);
+      glContext.fillStyle = "rgba(0, 0, 0, 0.5)";
+      glContext.fillRect(600, 500, 200, 100);
+
+      glContext.fillStyle = "white";
+      glContext.font = "15px Arial";
+      glContext.fillText(`FPS: ${this._game.fps}`, 600, 512);
+      glContext.fillText(`TPS: ${this._game.tps}`, 600, 525);
       glContext.fillText(
         `Mouse relative: ${this._inputHandler.mouseRelativeX}, ${this._inputHandler.mouseRelativeY}`,
-        50,
-        30
+        600,
+        538
       );
       glContext.fillText(
         `Mouse absolute: ${this._inputHandler.mouseAbsoluteX}, ${this._inputHandler.mouseAbsoluteY}`,
-        50,
-        40
+        600,
+        551
       );
-
       glContext.fillText(
-        `space pressed: ${this._inputHandler.isKeyDown(" ")}`,
-        50,
-        50
+        `Keys pressed: ${Array.from(this._inputHandler.keystates)
+          .filter((keystate) => keystate[1])
+          .map((keystate) => keystate[0])
+          .join(", ")}`,
+        600,
+        564
       );
 
       if (this._inputHandler.isKeyDown("b")) {
