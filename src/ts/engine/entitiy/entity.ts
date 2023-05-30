@@ -62,7 +62,7 @@ class Entity {
     this._location = point;
   }
 
-  update(delta: number) {}
+  update(tickDelta: number) {}
 }
 
 export default Entity;

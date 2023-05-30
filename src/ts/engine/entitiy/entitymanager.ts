@@ -3,6 +3,7 @@ import EntitiesCollideEvent from "../event/events/entitiescollideevent.js";
 import EntitiesTouchEvent from "../event/events/entitiestouchevent.js";
 import EntitiesUncollideEvent from "../event/events/entitiesuncollideevent.js";
 import EntitiesUntouchEvent from "../event/events/entitiesuntouchevent.js";
+import Rectangle from "../math/rectangle.js";
 import Vector2D from "../math/vector2d.js";
 import Entity from "./entity.js";
 import Touch from "./touch.js";
@@ -182,11 +183,13 @@ class EntityManager {
     }
   }
 
-  private unstuckEntities() {
+  private applyCollisionResponse() {
     for (let entity of this._entities) {
       if (entity.static) {
         continue;
       }
+
+      let intersections: Rectangle[] = [];
 
       for (let otherEntity of this._entities) {
         if (otherEntity === entity || otherEntity.boundingBox.passThrough) {
@@ -194,26 +197,63 @@ class EntityManager {
         }
 
         if (entity.boundingBox.touches(otherEntity.boundingBox)) {
-          let intersection = entity.boundingBox.intersect(
-            otherEntity.boundingBox
-          );
-          const intersectionCenter = intersection.center;
-          const pushDirection = entity.boundingBox.center
-            .subtract(intersectionCenter)
-            .normalize()
-            .multiply(new Vector2D(intersection.width, 1))
-            .multiply(new Vector2D(1, intersection.height));
-          entity.teleport(
-            entity.location.add(pushDirection.resolve()).resolve()
+          intersections.push(
+            entity.boundingBox.intersect(otherEntity.boundingBox)
           );
         }
       }
+
+      let totalBottomIntersectionsWith = 0;
+      for (let intersection of intersections) {
+        if (intersection.center.y > entity.boundingBox.center.y) {
+          totalBottomIntersectionsWith += intersection.width;
+        }
+      }
+
+      let totalBottomIntersectionsWithPercentage =
+        (totalBottomIntersectionsWith / entity.boundingBox.width) * 100;
+
+      let outOfWallVelocities: Vector2D[] = [];
+
+      let i = 0;
+      for (let intersection of intersections) {
+        i++;
+        let intersectionCenter = intersection.center;
+        let pushDirection = entity.boundingBox.center
+          .subtract(intersectionCenter)
+          .normalize()
+          .multiply(new Vector2D(intersection.width, 1))
+          .multiply(new Vector2D(1, intersection.height));
+        if (
+          pushDirection.y < 0 &&
+          totalBottomIntersectionsWithPercentage > 25
+        ) {
+          pushDirection = pushDirection.multiply(new Vector2D(0, 1));
+        }
+
+        outOfWallVelocities.push(pushDirection);
+      }
+
+      let outOfWallVelocity = new Vector2D(0, 0);
+      for (let velocity of outOfWallVelocities) {
+        if (Math.abs(velocity.x) > Math.abs(outOfWallVelocity.x)) {
+          outOfWallVelocity = new Vector2D(velocity.x, outOfWallVelocity.y);
+        }
+
+        if (Math.abs(velocity.y) > Math.abs(outOfWallVelocity.y)) {
+          outOfWallVelocity = new Vector2D(outOfWallVelocity.x, velocity.y);
+        }
+      }
+
+      entity.teleport(
+        entity.location.add(outOfWallVelocity.resolve()).resolve()
+      );
     }
   }
 
-  public update(delta: number) {
+  public update(tickDelta: number) {
     for (let entity of this._entities) {
-      entity.update(delta);
+      entity.update(tickDelta);
 
       for (let otherEntity of this._entities) {
         if (otherEntity === entity) {
@@ -227,7 +267,7 @@ class EntityManager {
     this.cleanupTouches();
     this.cleanupCollisions();
 
-    this.unstuckEntities();
+    this.applyCollisionResponse();
   }
 }
 

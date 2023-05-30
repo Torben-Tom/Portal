@@ -1,5 +1,4 @@
 import Texture from "../assets/texture/texture.js";
-import BoundingBox from "./boundingbox.js";
 import Entity from "./entity.js";
 
 class TileEntity extends Entity {

@@ -41,10 +41,7 @@ class Game {
     this._assetManager = new AssetManager();
     this._inputHandler = new InputHandler(htmlCanvasElement);
     this._entityManager = new EntityManager();
-    this._levelManager = new LevelManager(
-      this._assetManager,
-      this._entityManager
-    );
+    this._levelManager = new LevelManager(this._entityManager);
     this._compositor = new Compositor(htmlCanvasElement, this._entityManager);
 
     this._running = false;
@@ -97,6 +94,7 @@ class Game {
       this._lastTick = now;
       this._currentTps = Math.round(1 / (tickDelta / 1000));
 
+      this._levelManager.update(tickDelta);
       this._entityManager.update(tickDelta);
 
       if (!this._running) {

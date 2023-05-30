@@ -1,21 +1,18 @@
-import AssetManager from "../assets/assetmanager.js";
 import EntityManager from "../entitiy/entitymanager.js";
 import Level from "./level.js";
 
 class LevelManager {
   private _levels: Map<string, Level>;
   private _currentLevel: Level | null;
-  private _assetManager: AssetManager;
   private _entityManager: EntityManager;
 
   get currentLevel(): Level | null {
     return this._currentLevel;
   }
 
-  constructor(assetManager: AssetManager, entityManager: EntityManager) {
+  constructor(entityManager: EntityManager) {
     this._levels = new Map<string, Level>();
     this._currentLevel = null;
-    this._assetManager = assetManager;
     this._entityManager = entityManager;
   }
 
@@ -33,19 +30,24 @@ class LevelManager {
   }
 
   public startLevel(name: string): void {
-    if (!this._levels.has(name)) {
+    let level: Level | undefined = this._levels.get(name);
+    if (!level) {
       throw new Error(`Level with name ${name} does not exist!`);
     }
 
     if (this._currentLevel !== null) {
       this._currentLevel.unload();
     }
-
     this._entityManager.clear();
 
-    let level: Level = this._levels.get(name)!;
-    this._entityManager.registerAll(level.getEntities(this._assetManager));
     level.load();
+    this._entityManager.registerAll(level.getEntities());
+  }
+
+  public update(tickDelta: number): void {
+    if (this._currentLevel) {
+      this._currentLevel.update(tickDelta);
+    }
   }
 }
 

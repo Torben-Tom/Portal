@@ -11,8 +11,8 @@ class BoundingBox implements RectangularArea {
 
   get location(): Point {
     return new Point(
-      this._entity.location.xCord - this._widthExpansion / 2,
-      this._entity.location.yCord - this._heightExpansion / 2
+      this._entity.location.x - this._widthExpansion / 2,
+      this._entity.location.y - this._heightExpansion / 2
     );
   }
 
@@ -31,8 +31,8 @@ class BoundingBox implements RectangularArea {
 
   get center(): Point {
     return new Point(
-      this.location.xCord + this.width / 2,
-      this.location.yCord + this.height / 2
+      this.location.x + this.width / 2,
+      this.location.y + this.height / 2
     );
   }
 

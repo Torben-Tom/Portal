@@ -1,8 +1,8 @@
 import Point from "./point.js";
 
 class Vector2D {
-  xCord: number;
-  yCord: number;
+  private xCord: number;
+  private yCord: number;
 
   get x(): number {
     return this.xCord;
@@ -22,10 +22,7 @@ class Vector2D {
   }
 
   public static fromPoints(point1: Point, point2: Point): Vector2D {
-    return new Vector2D(
-      point2.xCord - point1.xCord,
-      point2.yCord - point1.yCord
-    );
+    return new Vector2D(point2.x - point1.x, point2.y - point1.y);
   }
 
   public add(vector: Vector2D): Vector2D {

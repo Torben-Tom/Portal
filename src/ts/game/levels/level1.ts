@@ -1,4 +1,5 @@
 import AssetManager from "../../engine/assets/assetmanager.js";
+import Services from "../../engine/dependencyinjection/services.js";
 import BackgroundTileEntity from "../../engine/entitiy/backgroundtileentity.js";
 import Entity from "../../engine/entitiy/entity.js";
 import Level from "../../engine/level/level.js";
@@ -6,13 +7,27 @@ import NetworkEntity from "../entities/networkentity.js";
 import NetworkEntity2 from "../entities/networkentity2.js";
 
 class Level1 implements Level {
-  public getEntities(assetManager: AssetManager): Entity[] {
+  private _assetManager: AssetManager;
+
+  constructor() {
+    this._assetManager = Services.resolve<AssetManager>("AssetManager");
+  }
+
+  public load(): void {
+    console.log("Level1 loaded");
+  }
+
+  public unload(): void {
+    console.log("Level1 unloaded");
+  }
+
+  public getEntities(): Entity[] {
     let window = new BackgroundTileEntity(
       552,
       141,
       1,
       1,
-      assetManager.getTexture("window")
+      this._assetManager.getTexture("window")
     );
 
     let background = new BackgroundTileEntity(
@@ -20,7 +35,7 @@ class Level1 implements Level {
       0,
       1,
       1,
-      assetManager.getTexture("level1-background")
+      this._assetManager.getTexture("level1-background")
     );
 
     let player = new NetworkEntity();
@@ -31,13 +46,7 @@ class Level1 implements Level {
     return [window, background, player, ground, wall];
   }
 
-  public load(): void {
-    console.log("Level1 loaded");
-  }
-
-  public unload(): void {
-    console.log("Level1 unloaded");
-  }
+  public update(tickDelta: number): void {}
 }
 
 export default Level1;

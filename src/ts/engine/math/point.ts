@@ -1,8 +1,8 @@
 import Vector2D from "./vector2d.js";
 
 class Point {
-  xCord: number;
-  yCord: number;
+  private xCord: number;
+  private yCord: number;
 
   get x(): number {
     return this.xCord;

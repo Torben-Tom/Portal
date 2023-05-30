@@ -55,7 +55,6 @@ class NetworkEntity extends Entity {
       newX += 1 * delta * 0.33;
     }
 
-    //Simulate gravity
     newY += 1 * delta * 0.33;
 
     this._location = new Point(newX, newY);
