@@ -7,11 +7,23 @@ class TileEntity extends Entity {
     y: number,
     scalingX: number,
     scalingY: number,
-    texture: Texture,
-    widthExpansion?: number,
-    heightExpansion?: number
+    _static: boolean,
+    expansionX: number,
+    expansionY: number,
+    passThrough: boolean,
+    texture: Texture
   ) {
-    super(x, y, scalingX, scalingY, texture, widthExpansion, heightExpansion);
+    super(
+      x,
+      y,
+      scalingX,
+      scalingY,
+      _static,
+      expansionX,
+      expansionY,
+      passThrough,
+      texture
+    );
   }
 }
 

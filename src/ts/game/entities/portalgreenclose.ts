@@ -16,11 +16,13 @@ class PortalGreenClose extends Entity {
       y,
       scalingX,
       scalingY,
+      true,
+      widthExpansion,
+      heightExpansion,
+      true,
       Services.resolve<AssetManager>("AssetManager").getTexture(
         "portalGreenClose"
-      ),
-      widthExpansion,
-      heightExpansion
+      )
     );
   }
 }

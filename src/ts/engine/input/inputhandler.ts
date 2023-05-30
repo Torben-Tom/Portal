@@ -1,11 +1,11 @@
 import EngineEvent from "../event/engineevent.js";
 import EngineEventHandler from "../event/engineventhandler.js";
+import Point from "../math/point.js";
 
 class InputHandler {
   private _htmlCanvasElement: HTMLCanvasElement;
-  private _mouseX: number;
-  private _mouseY: number;
-  private _pressedKeys: Map<string, boolean>;
+  private _mouseLocation: Point;
+  private _keystates: Map<string, boolean>;
   private _whiteListedKeys: string[];
 
   private _engineMouseMoveEvent: EngineEventHandler<
@@ -28,24 +28,25 @@ class InputHandler {
     EngineEvent<KeyboardEvent>
   >;
 
-  get mouseAbsoluteX(): number {
-    return this._mouseX;
+  get mouseAbsolute(): Point {
+    return this._mouseLocation;
   }
 
-  get mouseAbsoluteY(): number {
-    return this._mouseY;
-  }
-
-  get mouseRelativeX(): number {
-    return Math.floor(
-      this._mouseX - this._htmlCanvasElement.getBoundingClientRect().left
+  get mouseRelative(): Point {
+    return new Point(
+      Math.floor(
+        this._mouseLocation.x -
+          this._htmlCanvasElement.getBoundingClientRect().left
+      ),
+      Math.floor(
+        this._mouseLocation.y -
+          this._htmlCanvasElement.getBoundingClientRect().top
+      )
     );
   }
 
-  get mouseRelativeY(): number {
-    return Math.floor(
-      this._mouseY - this._htmlCanvasElement.getBoundingClientRect().top
-    );
+  get keystates(): Map<string, boolean> {
+    return this._keystates;
   }
 
   get whiteListedKeys(): string[] {
@@ -82,9 +83,8 @@ class InputHandler {
 
   constructor(htmlCanvasElement: HTMLCanvasElement) {
     this._htmlCanvasElement = htmlCanvasElement;
-    this._mouseX = 0;
-    this._mouseY = 0;
-    this._pressedKeys = new Map<string, boolean>();
+    this._mouseLocation = new Point(0, 0);
+    this._keystates = new Map<string, boolean>();
     this._whiteListedKeys = [];
 
     this._engineMouseMoveEvent = new EngineEventHandler<
@@ -111,8 +111,7 @@ class InputHandler {
   }
 
   private onMouseMove(mouseEvent: MouseEvent): void {
-    this._mouseX = mouseEvent.clientX;
-    this._mouseY = mouseEvent.clientY;
+    this._mouseLocation = new Point(mouseEvent.clientX, mouseEvent.clientY);
     this._engineMouseMoveEvent.dispatch(new EngineEvent(mouseEvent));
   }
 
@@ -124,7 +123,7 @@ class InputHandler {
   private onKeyDown(keyboardEvent: KeyboardEvent): void {
     if (!this._whiteListedKeys.includes(keyboardEvent.key)) {
       if (!this.isKeyDown(keyboardEvent.key)) {
-        this._pressedKeys.set(keyboardEvent.key, true);
+        this._keystates.set(keyboardEvent.key, true);
       }
 
       keyboardEvent.preventDefault();
@@ -135,7 +134,7 @@ class InputHandler {
   private onKeyUp(keyboardEvent: KeyboardEvent): void {
     if (!this._whiteListedKeys.includes(keyboardEvent.key)) {
       if (this.isKeyDown(keyboardEvent.key)) {
-        this._pressedKeys.set(keyboardEvent.key, false);
+        this._keystates.set(keyboardEvent.key, false);
       }
 
       keyboardEvent.preventDefault();
@@ -144,7 +143,7 @@ class InputHandler {
   }
 
   public isKeyDown(key: string): boolean {
-    return (this._pressedKeys.has(key) && this._pressedKeys.get(key)) ?? false;
+    return (this._keystates.has(key) && this._keystates.get(key)) ?? false;
   }
 
   public addWhiteListedKey(key: string): void {

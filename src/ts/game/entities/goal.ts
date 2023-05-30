@@ -16,9 +16,11 @@ class Goal extends Entity {
       y,
       scalingX,
       scalingY,
-      Services.resolve<AssetManager>("AssetManager").getTexture("goal"),
+      true,
       widthExpansion,
-      heightExpansion
+      heightExpansion,
+      true,
+      Services.resolve<AssetManager>("AssetManager").getTexture("goal")
     );
   }
 }

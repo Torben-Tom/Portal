@@ -16,9 +16,11 @@ class ButtonGround extends Entity {
       y,
       scalingX,
       scalingY,
-      Services.resolve<AssetManager>("AssetManager").getTexture("buttonGround"),
+      true,
       widthExpansion,
-      heightExpansion
+      heightExpansion,
+      true,
+      Services.resolve<AssetManager>("AssetManager").getTexture("buttonGround")
     );
   }
 }

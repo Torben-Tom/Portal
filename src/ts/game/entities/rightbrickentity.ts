@@ -16,9 +16,11 @@ class RightBrickEntity extends Entity {
       y,
       scalingX,
       scalingY,
-      Services.resolve<AssetManager>("AssetManager").getTexture("rightBrick"),
+      true,
       widthExpansion,
-      heightExpansion
+      heightExpansion,
+      false,
+      Services.resolve<AssetManager>("AssetManager").getTexture("rightBrick")
     );
   }
 }

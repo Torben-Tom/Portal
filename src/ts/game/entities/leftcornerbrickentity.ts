@@ -16,11 +16,13 @@ class LeftCornerBrickEntity extends Entity {
       y,
       scalingX,
       scalingY,
+      true,
+      widthExpansion,
+      heightExpansion,
+      false,
       Services.resolve<AssetManager>("AssetManager").getTexture(
         "leftCornerBrick"
-      ),
-      widthExpansion,
-      heightExpansion
+      )
     );
   }
 }

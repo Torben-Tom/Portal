@@ -25,8 +25,8 @@ class EntityRenderer extends Renderer {
       texture.y,
       texture.width,
       texture.height,
-      entity.x,
-      entity.y,
+      entity.location.x,
+      entity.location.y,
       texture.width * entity.scalingX,
       texture.height * entity.scalingY
     );

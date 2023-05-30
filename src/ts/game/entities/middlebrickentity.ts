@@ -16,9 +16,11 @@ class MiddleBrickEntity extends Entity {
       y,
       scalingX,
       scalingY,
-      Services.resolve<AssetManager>("AssetManager").getTexture("middleBrick"),
+      true,
       widthExpansion,
-      heightExpansion
+      heightExpansion,
+      false,
+      Services.resolve<AssetManager>("AssetManager").getTexture("middleBrick")
     );
   }
 }

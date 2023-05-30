@@ -50,23 +50,30 @@ class DebugRenderer extends Renderer {
       this._entityManager &&
       this._compositor
     ) {
-      glContext.fillText(`FPS: ${this._game.fps}`, 50, 10);
-      glContext.fillText(`TPS: ${this._game.tps}`, 50, 20);
-      glContext.fillText(
-        `Mouse relative: ${this._inputHandler.mouseRelativeX}, ${this._inputHandler.mouseRelativeY}`,
-        50,
-        30
-      );
-      glContext.fillText(
-        `Mouse absolute: ${this._inputHandler.mouseAbsoluteX}, ${this._inputHandler.mouseAbsoluteY}`,
-        50,
-        40
-      );
+      glContext.fillStyle = "rgba(0, 0, 0, 0.5)";
+      glContext.fillRect(600, 500, 200, 100);
 
+      glContext.fillStyle = "white";
+      glContext.font = "15px Arial";
+      glContext.fillText(`FPS: ${this._game.fps}`, 600, 512);
+      glContext.fillText(`TPS: ${this._game.tps}`, 600, 525);
       glContext.fillText(
-        `space pressed: ${this._inputHandler.isKeyDown(" ")}`,
-        50,
-        50
+        `Mouse relative: ${this._inputHandler.mouseRelative.x}, ${this._inputHandler.mouseRelative.y}`,
+        600,
+        538
+      );
+      glContext.fillText(
+        `Mouse absolute: ${this._inputHandler.mouseAbsolute.x}, ${this._inputHandler.mouseAbsolute.y}`,
+        600,
+        551
+      );
+      glContext.fillText(
+        `Keys pressed: ${Array.from(this._inputHandler.keystates)
+          .filter((keystate) => keystate[1])
+          .map((keystate) => keystate[0])
+          .join(", ")}`,
+        600,
+        564
       );
 
       if (this._inputHandler.isKeyDown("b")) {
@@ -76,19 +83,14 @@ class DebugRenderer extends Renderer {
           }
 
           let boundingBox = entity.boundingBox;
-          if (
-            boundingBox.isInside(
-              this._inputHandler!.mouseRelativeX,
-              this._inputHandler!.mouseRelativeY
-            )
-          ) {
+          if (boundingBox.isInside(this._inputHandler!.mouseRelative)) {
             glContext.strokeStyle = "green";
           } else {
             glContext.strokeStyle = "black";
           }
           glContext.strokeRect(
-            boundingBox.x,
-            boundingBox.y,
+            boundingBox.location.x,
+            boundingBox.location.y,
             boundingBox.width,
             boundingBox.height
           );
@@ -102,13 +104,13 @@ class DebugRenderer extends Renderer {
             continue;
           }
 
-          let collisionArea = collision.entity1.boundingBox.intersection(
+          let collisionArea = collision.entity1.boundingBox.intersect(
             collision.entity2.boundingBox
           );
           glContext.strokeStyle = "red";
           glContext.strokeRect(
-            collisionArea.x,
-            collisionArea.y,
+            collisionArea.location.x,
+            collisionArea.location.y,
             collisionArea.width,
             collisionArea.height
           );

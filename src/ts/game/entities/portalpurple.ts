@@ -16,9 +16,11 @@ class PortalPurple extends Entity {
       y,
       scalingX,
       scalingY,
-      Services.resolve<AssetManager>("AssetManager").getTexture("portalPurple"),
+      true,
       widthExpansion,
-      heightExpansion
+      heightExpansion,
+      true,
+      Services.resolve<AssetManager>("AssetManager").getTexture("portalPurple")
     );
   }
 }

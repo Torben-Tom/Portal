@@ -16,11 +16,13 @@ class PlayerRunRight extends Entity {
       y,
       scalingX,
       scalingY,
+      false,
+      widthExpansion,
+      heightExpansion,
+      false,
       Services.resolve<AssetManager>("AssetManager").getTexture(
         "playerRunRight"
-      ),
-      widthExpansion,
-      heightExpansion
+      )
     );
   }
 }

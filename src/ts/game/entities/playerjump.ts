@@ -16,9 +16,11 @@ class PlayerJump extends Entity {
       y,
       scalingX,
       scalingY,
-      Services.resolve<AssetManager>("AssetManager").getTexture("playerJump"),
+      false,
       widthExpansion,
-      heightExpansion
+      heightExpansion,
+      false,
+      Services.resolve<AssetManager>("AssetManager").getTexture("playerJump")
     );
   }
 }

@@ -16,11 +16,13 @@ class PortalGreenCreate extends Entity {
       y,
       scalingX,
       scalingY,
+      true,
+      widthExpansion,
+      heightExpansion,
+      true,
       Services.resolve<AssetManager>("AssetManager").getTexture(
         "portalGreenCreate"
-      ),
-      widthExpansion,
-      heightExpansion
+      )
     );
   }
 }

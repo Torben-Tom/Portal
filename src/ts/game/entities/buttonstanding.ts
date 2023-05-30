@@ -16,11 +16,13 @@ class ButtonStanding extends Entity {
       y,
       scalingX,
       scalingY,
+      true,
+      widthExpansion,
+      heightExpansion,
+      true,
       Services.resolve<AssetManager>("AssetManager").getTexture(
         "buttonStanding"
-      ),
-      widthExpansion,
-      heightExpansion
+      )
     );
   }
 }

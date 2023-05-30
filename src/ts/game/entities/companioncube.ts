@@ -16,11 +16,11 @@ class CompanionCube extends Entity {
       y,
       scalingX,
       scalingY,
-      Services.resolve<AssetManager>("AssetManager").getTexture(
-        "companionCube"
-      ),
+      false,
       widthExpansion,
-      heightExpansion
+      heightExpansion,
+      false,
+      Services.resolve<AssetManager>("AssetManager").getTexture("companionCube")
     );
   }
 }

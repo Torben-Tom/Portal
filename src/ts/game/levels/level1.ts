@@ -31,18 +31,58 @@ import PlayerRunRight from "../entities/playerrunright.js";
 class Level1 implements Level {
   private _inputHandler: InputHandler;
   private _entityManager: EntityManager;
+  private _assetManager: AssetManager;
 
   constructor() {
     this._inputHandler = Services.resolve<InputHandler>("InputHandler");
     this._entityManager = Services.resolve<EntityManager>("EntityManager");
+    this._assetManager = Services.resolve<AssetManager>("AssetManager");
   }
-  public getEntities(assetManager: AssetManager): Entity[] {
+
+  public load(): void {
+    this._inputHandler.keyDownEvent.subscribe(
+      (key: EngineEvent<KeyboardEvent>) => {
+        if (key.eventData.key == "f") {
+          if (
+            this._entityManager.entities.filter(
+              (entity) => entity instanceof BridgeEntity
+            ).length >= 5
+          ) {
+            return;
+          }
+          for (let i = 0; i < 5; i++) {
+            this._entityManager.register(
+              new BridgeEntity(300 + i * 50, 300, 1.5, 1.5, 0, 0)
+            );
+          }
+        }
+      }
+    );
+
+    this._inputHandler.keyUpEvent.subscribe(
+      (key: EngineEvent<KeyboardEvent>) => {
+        if (key.eventData.key == "f") {
+          this._entityManager.unregisterAll(
+            this._entityManager.entities.filter(
+              (entity) => entity instanceof BridgeEntity
+            )
+          );
+        }
+      }
+    );
+  }
+
+  public unload(): void {
+    console.log("Level1 unloaded");
+  }
+
+  public getEntities(): Entity[] {
     let window = new BackgroundTileEntity(
       552,
       141,
       1,
       1,
-      assetManager.getTexture("window")
+      this._assetManager.getTexture("window")
     );
 
     let background = new BackgroundTileEntity(
@@ -50,7 +90,7 @@ class Level1 implements Level {
       0,
       1,
       1,
-      assetManager.getTexture("level1-background")
+      this._assetManager.getTexture("level1-background")
     );
 
     let player = new NetworkEntity();
@@ -122,42 +162,7 @@ class Level1 implements Level {
     return returnArray;
   }
 
-  public load(): void {
-    this._inputHandler.keyDownEvent.subscribe(
-      (key: EngineEvent<KeyboardEvent>) => {
-        if (key.eventData.key == "f") {
-          if (
-            this._entityManager.entities.filter(
-              (entity) => entity instanceof BridgeEntity
-            ).length >= 5
-          ) {
-            return;
-          }
-          for (let i = 0; i < 5; i++) {
-            this._entityManager.register(
-              new BridgeEntity(300 + i * 50, 300, 1.5, 1.5, 0, 0)
-            );
-          }
-        }
-      }
-    );
-
-    this._inputHandler.keyUpEvent.subscribe(
-      (key: EngineEvent<KeyboardEvent>) => {
-        if (key.eventData.key == "f") {
-          this._entityManager.unregisterAll(
-            this._entityManager.entities.filter(
-              (entity) => entity instanceof BridgeEntity
-            )
-          );
-        }
-      }
-    );
-  }
-
-  public unload(): void {
-    console.log("Level1 unloaded");
-  }
+  public update(tickDelta: number): void {}
 }
 
 export default Level1;

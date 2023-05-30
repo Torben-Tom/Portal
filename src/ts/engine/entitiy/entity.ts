@@ -1,20 +1,17 @@
 import Texture from "../assets/texture/texture.js";
+import Point from "../math/point.js";
 import BoundingBox from "./boundingbox.js";
 
 class Entity {
-  protected _x: number;
-  protected _y: number;
+  protected _location: Point;
   private _scalingX: number;
   private _scalingY: number;
-  private _boundingBox: BoundingBox | null;
+  private _static: boolean;
+  private _boundingBox: BoundingBox;
   private _texture: Texture;
 
-  get x(): number {
-    return this._x;
-  }
-
-  get y(): number {
-    return this._y;
+  get location(): Point {
+    return this._location;
   }
 
   get scalingX(): number {
@@ -25,7 +22,11 @@ class Entity {
     return this._scalingY;
   }
 
-  get boundingBox(): BoundingBox | null {
+  get static(): boolean {
+    return this._static;
+  }
+
+  get boundingBox(): BoundingBox {
     return this._boundingBox;
   }
 
@@ -38,33 +39,30 @@ class Entity {
     y: number,
     scalingX: number,
     scalingY: number,
-    texture: Texture,
-    widthExpansion?: number,
-    heightExpansion?: number
+    _static: boolean,
+    expansionX: number,
+    expansionY: number,
+    passThrough: boolean,
+    texture: Texture
   ) {
-    this._x = x;
-    this._y = y;
+    this._location = new Point(x, y);
     this._scalingX = scalingX;
     this._scalingY = scalingY;
+    this._static = _static;
+    this._boundingBox = new BoundingBox(
+      this,
+      expansionX,
+      expansionY,
+      passThrough
+    );
     this._texture = texture;
-
-    if (
-      widthExpansion === undefined ||
-      heightExpansion === undefined ||
-      Number.isNaN(widthExpansion) ||
-      Number.isNaN(heightExpansion)
-    ) {
-      this._boundingBox = null;
-    } else {
-      this._boundingBox = new BoundingBox(
-        this,
-        widthExpansion,
-        heightExpansion
-      );
-    }
   }
 
-  update(delta: number) {}
+  public teleport(point: Point) {
+    this._location = point;
+  }
+
+  update(tickDelta: number) {}
 }
 
 export default Entity;
