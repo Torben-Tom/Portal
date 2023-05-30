@@ -20,6 +20,13 @@ import PortalPurple from "../entities/portalpurple.js";
 import PortalPurpleCreate from "../entities/portalpurplecreate.js";
 import PortalPurpleClose from "../entities/portalpurpleclose.js";
 import PortalGreenClose from "../entities/portalgreenclose.js";
+import ButtonGround from "../entities/buttonground.js";
+import ButtonStanding from "../entities/buttonstanding.js";
+import Goal from "../entities/goal.js";
+import CompanionCube from "../entities/companioncube.js";
+import PlayerJump from "../entities/playerjump.js";
+import PlayerRunLeft from "../entities/playerrunleft.js";
+import PlayerRunRight from "../entities/playerrunright.js";
 
 class Level1 implements Level {
   private _inputHandler: InputHandler;
@@ -50,12 +57,19 @@ class Level1 implements Level {
     let cornerBrickLeft = new LeftCornerBrickEntity(0, 550, 1.5, 1.5, 0, 0);
     let cornerBrickRight = new RightCornerBrickEntity(750, 550, 1.5, 1.5, 0, 0);
 
-    let greenPortal = new PortalGreen(670, 430, 2, 2, -110, 0);
+    let greenPortal = new PortalGreen(650, 400, 2.5, 2.5, -110, 0);
     let greenPortalCreate = new PortalGreenCreate(600, 430, 2, 2, 0, 0);
     let greenPortalClose = new PortalGreenClose(640, 430, 2, 2, 0, 0);
-    let purplePortal = new PortalPurple(0, 180, 2, 2, -110, 0);
+    let purplePortal = new PortalPurple(0, 150, 2.5, 2.5, -110, 0);
     let purplePortalCreate = new PortalPurpleCreate(600, 230, 2, 2, 0, 0);
     let purplePortalClose = new PortalPurpleClose(640, 230, 2, 2, 0, 0);
+    let buttonGround = new ButtonGround(300, 490, 1.3, 1.3, 0, 0);
+    let buttonStanding = new ButtonStanding(550, 470, 1.1, 1.1, 0, 0);
+    let companionCube = new CompanionCube(200, 250, 0.5, 0.5, 0, 0);
+    let goal = new Goal(685, 275, 1.6, 1.6, 0, 0);
+    let playerJump = new PlayerJump(130, 460, 2, 2, 0, 0);
+    let playerRunLeft = new PlayerRunLeft(30, 455, 2, 2, 0, 0);
+    let playerRunRight = new PlayerRunRight(190, 455, 2, 2, 0, 0);
 
     let returnArray: Entity[] = [];
     returnArray.push(window);
@@ -69,6 +83,13 @@ class Level1 implements Level {
     returnArray.push(purplePortal);
     // returnArray.push(purplePortalCreate);
     // returnArray.push(purplePortalClose);
+    returnArray.push(buttonGround);
+    returnArray.push(buttonStanding);
+    returnArray.push(companionCube);
+    returnArray.push(goal);
+    returnArray.push(playerJump);
+    returnArray.push(playerRunLeft);
+    returnArray.push(playerRunRight);
 
     for (let i = 0; i < 14; i++) {
       let bottomBrick = new BottomBrickEntity(50 + i * 50, 550, 1.5, 1.5, 0, 0);

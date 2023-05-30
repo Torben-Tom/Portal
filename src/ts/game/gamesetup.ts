@@ -113,6 +113,48 @@ class GameSetup extends EngineSetup {
       entityManager,
       levelManager
     );
+    this.registerButtonGroundTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerButtonStandingTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerCompanionCubeTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerGoalTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerPlayerJumpTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerPlayerRunLeftTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerPlayerRunRightTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
     this.registerLevel1Textures(
       assetLoader,
       assetManager,
@@ -135,6 +177,27 @@ class GameSetup extends EngineSetup {
     assetManager.registerSpriteSheet(
       "purplePortal",
       assetLoader.getImage("purplePortal")
+    );
+    assetManager.registerSpriteSheet(
+      "buttonGround",
+      assetLoader.getImage("buttonGround")
+    );
+    assetManager.registerSpriteSheet(
+      "buttonStanding",
+      assetLoader.getImage("buttonStanding")
+    );
+    assetManager.registerSpriteSheet("goal", assetLoader.getImage("goal"));
+    assetManager.registerSpriteSheet(
+      "playerJump",
+      assetLoader.getImage("playerJump")
+    );
+    assetManager.registerSpriteSheet(
+      "playerRunLeft",
+      assetLoader.getImage("playerRunLeft")
+    );
+    assetManager.registerSpriteSheet(
+      "playerRunRight",
+      assetLoader.getImage("playerRunRight")
     );
     assetManager.registerSpriteSheet(
       "level1-background-window-sheet",
@@ -225,6 +288,18 @@ class GameSetup extends EngineSetup {
     );
   }
 
+  private registerCompanionCubeTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    assetManager.registerStaticTexture(
+      "companionCube",
+      assetLoader.getImage("companionCube")
+    );
+  }
+
   private registerNetworkTexture(
     assetLoader: AssetLoader,
     assetManager: AssetManager,
@@ -255,6 +330,233 @@ class GameSetup extends EngineSetup {
         assetManager.registerSliceTexture(
           "network5",
           iconsSpriteSheet.createSlice("network5", 0, 177, 10, 7)
+        ),
+      ],
+      1000
+    );
+  }
+
+  private registerButtonGroundTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let buttonGroundSpriteSheet: SpriteSheet =
+      assetManager.getSpriteSheet("buttonGround");
+
+    assetManager.registerAnimatedTexture(
+      "buttonGround",
+      [
+        assetManager.registerSliceTexture(
+          "buttonUnClicked",
+          buttonGroundSpriteSheet.createSlice("buttonUnClicked", 2, 0, 67, 77)
+        ),
+        assetManager.registerSliceTexture(
+          "buttonClicked",
+          buttonGroundSpriteSheet.createSlice("buttonClicked", 69, 0, 136, 77)
+        ),
+      ],
+      1000
+    );
+  }
+
+  private registerPlayerRunRightTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let playerRunRightSpriteSheet: SpriteSheet =
+      assetManager.getSpriteSheet("playerRunRight");
+
+    assetManager.registerAnimatedTexture(
+      "playerRunRight",
+      [
+        assetManager.registerSliceTexture(
+          "playerRunRight1",
+          playerRunRightSpriteSheet.createSlice("playerRunRight1", 0, 0, 48, 48)
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunRight2",
+          playerRunRightSpriteSheet.createSlice(
+            "playerRunRight2",
+            48,
+            0,
+            48,
+            48
+          )
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunRight3",
+          playerRunRightSpriteSheet.createSlice(
+            "playerRunRight3",
+            96,
+            0,
+            48,
+            48
+          )
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunRight4",
+          playerRunRightSpriteSheet.createSlice(
+            "playerRunRight4",
+            144,
+            0,
+            48,
+            48
+          )
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunRight5",
+          playerRunRightSpriteSheet.createSlice(
+            "playerRunRight5",
+            192,
+            0,
+            48,
+            48
+          )
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunRight6",
+          playerRunRightSpriteSheet.createSlice(
+            "playerRunRight6",
+            240,
+            0,
+            48,
+            48
+          )
+        ),
+      ],
+      100
+    );
+  }
+
+  private registerPlayerRunLeftTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let playerRunLeftSpriteSheet: SpriteSheet =
+      assetManager.getSpriteSheet("playerRunLeft");
+
+    assetManager.registerAnimatedTexture(
+      "playerRunLeft",
+      [
+        assetManager.registerSliceTexture(
+          "playerRunLeft6",
+          playerRunLeftSpriteSheet.createSlice("playerRunLeft6", 240, 0, 48, 48)
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunLeft5",
+          playerRunLeftSpriteSheet.createSlice("playerRunLeft5", 192, 0, 48, 48)
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunLeft4",
+          playerRunLeftSpriteSheet.createSlice("playerRunLeft4", 144, 0, 48, 48)
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunLeft3",
+          playerRunLeftSpriteSheet.createSlice("playerRunLeft3", 96, 0, 48, 48)
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunLeft2",
+          playerRunLeftSpriteSheet.createSlice("playerRunLeft2", 48, 0, 48, 48)
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunLeft1",
+          playerRunLeftSpriteSheet.createSlice("playerRunLeft1", 0, 0, 48, 48)
+        ),
+      ],
+      100
+    );
+  }
+
+  private registerPlayerJumpTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let playerJumpSpriteSheet: SpriteSheet =
+      assetManager.getSpriteSheet("playerJump");
+
+    assetManager.registerAnimatedTexture(
+      "playerJump",
+      [
+        assetManager.registerSliceTexture(
+          "playerJump1",
+          playerJumpSpriteSheet.createSlice("playerJump1", 0, 0, 48, 48)
+        ),
+        assetManager.registerSliceTexture(
+          "playerJump2",
+          playerJumpSpriteSheet.createSlice("playerJump2", 48, 0, 48, 48)
+        ),
+        assetManager.registerSliceTexture(
+          "playerJump3",
+          playerJumpSpriteSheet.createSlice("playerJump3", 96, 0, 48, 48)
+        ),
+        assetManager.registerSliceTexture(
+          "playerJump4",
+          playerJumpSpriteSheet.createSlice("playerJump4", 144, 0, 48, 48)
+        ),
+      ],
+      100
+    );
+  }
+
+  private registerGoalTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let goalSpriteSheet: SpriteSheet = assetManager.getSpriteSheet("goal");
+
+    assetManager.registerAnimatedTexture(
+      "goal",
+      [
+        assetManager.registerSliceTexture(
+          "goal1",
+          goalSpriteSheet.createSlice("goal1", 0, 0, 32, 48)
+        ),
+        assetManager.registerSliceTexture(
+          "goal2",
+          goalSpriteSheet.createSlice("goal2", 32, 0, 32, 48)
+        ),
+        assetManager.registerSliceTexture(
+          "goal3",
+          goalSpriteSheet.createSlice("goal3", 64, 0, 32, 48)
+        ),
+        assetManager.registerSliceTexture(
+          "goal4",
+          goalSpriteSheet.createSlice("goal4", 96, 0, 32, 48)
+        ),
+      ],
+      100
+    );
+  }
+
+  private registerButtonStandingTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let buttonStandingSpriteSheet: SpriteSheet =
+      assetManager.getSpriteSheet("buttonStanding");
+
+    assetManager.registerAnimatedTexture(
+      "buttonStanding",
+      [
+        assetManager.registerSliceTexture(
+          "buttonUnClicked",
+          buttonStandingSpriteSheet.createSlice("buttonUnClicked", 6, 0, 46, 82)
+        ),
+        assetManager.registerSliceTexture(
+          "buttonClicked",
+          buttonStandingSpriteSheet.createSlice("buttonClicked", 48, 0, 86, 82)
         ),
       ],
       1000
