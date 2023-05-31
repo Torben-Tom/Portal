@@ -27,6 +27,8 @@ import CompanionCube from "../entities/companioncube.js";
 import PlayerJump from "../entities/playerjump.js";
 import PlayerRunLeft from "../entities/playerrunleft.js";
 import PlayerRunRight from "../entities/playerrunright.js";
+import PlayerArmLeft from "../entities/playerarmleft.js";
+import PlayerArmRight from "../entities/playerarmright.js";
 
 class Level1 implements Level {
   private _inputHandler: InputHandler;
@@ -108,13 +110,15 @@ class Level1 implements Level {
     let companionCube = new CompanionCube(200, 250, 0.5, 0.5, 0, 0);
     let goal = new Goal(685, 275, 1.6, 1.6, 0, 0);
     let playerJump = new PlayerJump(130, 460, 2, 2, 0, 0);
-    let playerRunLeft = new PlayerRunLeft(30, 455, 2, 2, 0, 0);
-    let playerRunRight = new PlayerRunRight(190, 455, 2, 2, 0, 0);
+    let playerRunLeft = new PlayerRunLeft(100, 455, 1, 1, 0, 0);
+    let playerRunRight = new PlayerRunRight(190, 455, 1, 1, 0, 0);
+    let playerArmLeft = new PlayerArmLeft(100, 455, 1, 1, 0, 0);
+    let playerArmRight = new PlayerArmRight(190, 455, 1, 1, 0, 0);
 
     let returnArray: Entity[] = [];
     returnArray.push(window);
     returnArray.push(background);
-    returnArray.push(player);
+    // returnArray.push(player);
     returnArray.push(cornerBrickLeft);
     returnArray.push(cornerBrickRight);
     returnArray.push(greenPortal);
@@ -127,9 +131,11 @@ class Level1 implements Level {
     returnArray.push(buttonStanding);
     returnArray.push(companionCube);
     returnArray.push(goal);
-    returnArray.push(playerJump);
+    // returnArray.push(playerJump);
     returnArray.push(playerRunLeft);
     returnArray.push(playerRunRight);
+    returnArray.push(playerArmLeft);
+    returnArray.push(playerArmRight);
 
     for (let i = 0; i < 14; i++) {
       let bottomBrick = new BottomBrickEntity(50 + i * 50, 550, 1.5, 1.5, 0, 0);

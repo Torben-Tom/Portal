@@ -155,6 +155,18 @@ class GameSetup extends EngineSetup {
       entityManager,
       levelManager
     );
+    this.registerPlayerArmRightTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerPlayerArmLeftTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
     this.registerLevel1Textures(
       assetLoader,
       assetManager,
@@ -193,11 +205,19 @@ class GameSetup extends EngineSetup {
     );
     assetManager.registerSpriteSheet(
       "playerRunLeft",
-      assetLoader.getImage("playerRunLeft")
+      assetLoader.getImage("characterLeft")
     );
     assetManager.registerSpriteSheet(
       "playerRunRight",
-      assetLoader.getImage("playerRunRight")
+      assetLoader.getImage("characterRight")
+    );
+    assetManager.registerSpriteSheet(
+      "playerArmRight",
+      assetLoader.getImage("playerArmRight")
+    );
+    assetManager.registerSpriteSheet(
+      "playerArmLeft",
+      assetLoader.getImage("playerArmLeft")
     );
     assetManager.registerSpriteSheet(
       "level1-background-window-sheet",
@@ -375,56 +395,42 @@ class GameSetup extends EngineSetup {
       [
         assetManager.registerSliceTexture(
           "playerRunRight1",
-          playerRunRightSpriteSheet.createSlice("playerRunRight1", 0, 0, 48, 48)
+          playerRunRightSpriteSheet.createSlice(
+            "playerRunRight1",
+            14,
+            0,
+            48,
+            98
+          )
         ),
         assetManager.registerSliceTexture(
           "playerRunRight2",
           playerRunRightSpriteSheet.createSlice(
             "playerRunRight2",
-            48,
+            64,
             0,
             48,
-            48
+            98
           )
         ),
         assetManager.registerSliceTexture(
           "playerRunRight3",
           playerRunRightSpriteSheet.createSlice(
             "playerRunRight3",
-            96,
+            118,
             0,
             48,
-            48
+            98
           )
         ),
         assetManager.registerSliceTexture(
           "playerRunRight4",
           playerRunRightSpriteSheet.createSlice(
             "playerRunRight4",
-            144,
+            167,
             0,
             48,
-            48
-          )
-        ),
-        assetManager.registerSliceTexture(
-          "playerRunRight5",
-          playerRunRightSpriteSheet.createSlice(
-            "playerRunRight5",
-            192,
-            0,
-            48,
-            48
-          )
-        ),
-        assetManager.registerSliceTexture(
-          "playerRunRight6",
-          playerRunRightSpriteSheet.createSlice(
-            "playerRunRight6",
-            240,
-            0,
-            48,
-            48
+            98
           )
         ),
       ],
@@ -445,31 +451,85 @@ class GameSetup extends EngineSetup {
       "playerRunLeft",
       [
         assetManager.registerSliceTexture(
-          "playerRunLeft6",
-          playerRunLeftSpriteSheet.createSlice("playerRunLeft6", 240, 0, 48, 48)
-        ),
-        assetManager.registerSliceTexture(
-          "playerRunLeft5",
-          playerRunLeftSpriteSheet.createSlice("playerRunLeft5", 192, 0, 48, 48)
-        ),
-        assetManager.registerSliceTexture(
-          "playerRunLeft4",
-          playerRunLeftSpriteSheet.createSlice("playerRunLeft4", 144, 0, 48, 48)
-        ),
-        assetManager.registerSliceTexture(
-          "playerRunLeft3",
-          playerRunLeftSpriteSheet.createSlice("playerRunLeft3", 96, 0, 48, 48)
+          "playerRunLeft1",
+          playerRunLeftSpriteSheet.createSlice("playerRunLeft1", 160, 0, 48, 98)
         ),
         assetManager.registerSliceTexture(
           "playerRunLeft2",
-          playerRunLeftSpriteSheet.createSlice("playerRunLeft2", 48, 0, 48, 48)
+          playerRunLeftSpriteSheet.createSlice("playerRunLeft2", 111, 0, 48, 98)
         ),
         assetManager.registerSliceTexture(
-          "playerRunLeft1",
-          playerRunLeftSpriteSheet.createSlice("playerRunLeft1", 0, 0, 48, 48)
+          "playerRunLeft3",
+          playerRunLeftSpriteSheet.createSlice("playerRunLeft3", 57, 0, 48, 98)
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunLeft4",
+          playerRunLeftSpriteSheet.createSlice("playerRunLeft4", 7, 0, 48, 98)
         ),
       ],
       100
+    );
+  }
+
+  private registerPlayerArmLeftTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let playerArmLeftSpriteSheet: SpriteSheet =
+      assetManager.getSpriteSheet("playerArmLeft");
+
+    assetManager.registerAnimatedTexture(
+      "playerArmLeft",
+      [
+        assetManager.registerSliceTexture(
+          "playerArmLeft1",
+          playerArmLeftSpriteSheet.createSlice("playerArmLeft1", 34, 1, 51, 98)
+        ),
+        assetManager.registerSliceTexture(
+          "playerArmLeft2",
+          playerArmLeftSpriteSheet.createSlice("playerArmLeft2", 93, 0, 51, 98)
+        ),
+      ],
+      250
+    );
+  }
+
+  private registerPlayerArmRightTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let registerPlayerArmRightTexture: SpriteSheet =
+      assetManager.getSpriteSheet("playerArmRight");
+
+    assetManager.registerAnimatedTexture(
+      "playerArmRight",
+      [
+        assetManager.registerSliceTexture(
+          "playerArmRight1",
+          registerPlayerArmRightTexture.createSlice(
+            "playerArmRight1",
+            34,
+            0,
+            51,
+            98
+          )
+        ),
+        assetManager.registerSliceTexture(
+          "playerArmRight2",
+          registerPlayerArmRightTexture.createSlice(
+            "playerArmRight2",
+            93,
+            1,
+            51,
+            98
+          )
+        ),
+      ],
+      250
     );
   }
 
