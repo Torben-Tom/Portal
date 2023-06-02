@@ -1,9 +1,9 @@
 class Renderer {
-  isApplicable(object: any): boolean {
+  public isApplicable(object: any): boolean {
     return true;
   }
 
-  render(
+  public render(
     glContext: CanvasRenderingContext2D,
     object: any,
     delta: number

@@ -1,22 +1,14 @@
 import Texture from "../../assets/texture/texture.js";
+import ComplexEntity from "../../entitiy/complexentity.js";
 import Entity from "../../entitiy/entity.js";
 import Renderer from "../renderer.js";
 
 class EntityRenderer extends Renderer {
-  isApplicable(object: any): boolean {
+  public isApplicable(object: any): boolean {
     return object instanceof Entity;
   }
 
-  render(
-    glContext: CanvasRenderingContext2D,
-    object: any,
-    delta: number
-  ): void {
-    if (!(object instanceof Entity)) {
-      throw new Error("Object is not an Entity");
-    }
-
-    let entity: Entity = object as Entity;
+  private renderEntity(entity: Entity, glContext: CanvasRenderingContext2D) {
     let texture: Texture = entity.texture;
 
     glContext.drawImage(
@@ -30,6 +22,25 @@ class EntityRenderer extends Renderer {
       texture.width * entity.scalingX,
       texture.height * entity.scalingY
     );
+
+    if (entity instanceof ComplexEntity) {
+      for (let part of entity.parts) {
+        this.renderEntity(part[1], glContext);
+      }
+    }
+  }
+
+  public render(
+    glContext: CanvasRenderingContext2D,
+    object: any,
+    delta: number
+  ): void {
+    if (!(object instanceof Entity)) {
+      throw new Error("Object is not an Entity");
+    }
+
+    let entity: Entity = object as Entity;
+    this.renderEntity(entity, glContext);
   }
 }
 

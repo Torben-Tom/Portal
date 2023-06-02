@@ -1,36 +1,40 @@
 import Vector2D from "./vector2d.js";
 
 class Point {
-  private xCord: number;
-  private yCord: number;
+  private _x: number;
+  private _y: number;
 
   get x(): number {
-    return this.xCord;
+    return this._x;
   }
 
   get y(): number {
-    return this.yCord;
+    return this._y;
+  }
+
+  get vector2D(): Vector2D {
+    return new Vector2D(this._x, this._y);
   }
 
   constructor(x: number = 0, y: number = 0) {
-    this.xCord = x;
-    this.yCord = y;
+    this._x = x;
+    this._y = y;
   }
 
-  public add(point: Point): Vector2D {
-    return new Vector2D(this.xCord + point.xCord, this.yCord + point.yCord);
+  public add(vector2d: Vector2D): Vector2D {
+    return new Vector2D(this._x + vector2d.x, this._y + vector2d.y);
   }
 
-  public subtract(point: Point): Vector2D {
-    return new Vector2D(this.xCord - point.xCord, this.yCord - point.yCord);
+  public subtract(vector2d: Vector2D): Vector2D {
+    return new Vector2D(this._x - vector2d.x, this._y - vector2d.y);
   }
 
-  public multiply(point: Point): Vector2D {
-    return new Vector2D(this.xCord * point.xCord, this.yCord * point.yCord);
+  public multiply(vector2d: Vector2D): Vector2D {
+    return new Vector2D(this._x * vector2d.x, this._y * vector2d.y);
   }
 
-  public divide(point: Point): Vector2D {
-    return new Vector2D(this.xCord / point.xCord, this.yCord / point.yCord);
+  public divide(vector2d: Vector2D): Vector2D {
+    return new Vector2D(this._x / vector2d.x, this._y / vector2d.y);
   }
 }
 

@@ -29,6 +29,8 @@ import PlayerRunLeft from "../entities/playerrunleft.js";
 import PlayerRunRight from "../entities/playerrunright.js";
 import PlayerArmLeft from "../entities/playerarmleft.js";
 import PlayerArmRight from "../entities/playerarmright.js";
+import ComplexEntity from "../../engine/entitiy/complexentity.js";
+import PlayerEntity from "../entities/playerentity.js";
 
 class Level1 implements Level {
   private _inputHandler: InputHandler;
@@ -79,14 +81,6 @@ class Level1 implements Level {
   }
 
   public getEntities(): Entity[] {
-    let window = new BackgroundTileEntity(
-      552,
-      141,
-      1,
-      1,
-      this._assetManager.getTexture("window")
-    );
-
     let background = new BackgroundTileEntity(
       0,
       0,
@@ -95,7 +89,14 @@ class Level1 implements Level {
       this._assetManager.getTexture("level1-background")
     );
 
-    let player = new NetworkEntity();
+    let window = new BackgroundTileEntity(
+      552,
+      141,
+      1,
+      1,
+      this._assetManager.getTexture("window")
+    );
+
     let cornerBrickLeft = new LeftCornerBrickEntity(0, 550, 1.5, 1.5, 0, 0);
     let cornerBrickRight = new RightCornerBrickEntity(750, 550, 1.5, 1.5, 0, 0);
 
@@ -114,31 +115,26 @@ class Level1 implements Level {
     let playerRunRight = new PlayerRunRight(190, 455, 1, 1, 0, 0);
     let playerArmLeft = new PlayerArmLeft(100, 455, 1, 1, 0, 0);
     let playerArmRight = new PlayerArmRight(190, 455, 1, 1, 0, 0);
+    let player = new PlayerEntity(400, 300, false, 0, 0, false);
 
-    let returnArray: Entity[] = [];
-    returnArray.push(window);
-    returnArray.push(background);
-    // returnArray.push(player);
-    returnArray.push(cornerBrickLeft);
-    returnArray.push(cornerBrickRight);
-    returnArray.push(greenPortal);
-    // returnArray.push(greenPortalCreate);
-    // returnArray.push(greenPortalClose);
-    returnArray.push(purplePortal);
-    // returnArray.push(purplePortalCreate);
-    // returnArray.push(purplePortalClose);
-    returnArray.push(buttonGround);
-    returnArray.push(buttonStanding);
-    returnArray.push(companionCube);
-    returnArray.push(goal);
-    // returnArray.push(playerJump);
-    returnArray.push(playerRunLeft);
-    returnArray.push(playerRunRight);
-    returnArray.push(playerArmLeft);
-    returnArray.push(playerArmRight);
+    let returnArray: Entity[] = [
+      window,
+      background,
+      greenPortal,
+      purplePortal,
+      buttonGround,
+      buttonStanding,
+      companionCube,
+      goal,
+      playerRunLeft,
+      playerRunRight,
+      playerArmLeft,
+      playerArmRight,
+      player,
+    ];
 
-    for (let i = 0; i < 14; i++) {
-      let bottomBrick = new BottomBrickEntity(50 + i * 50, 550, 1.5, 1.5, 0, 0);
+    for (let i = 0; i < 16; i++) {
+      let bottomBrick = new BottomBrickEntity(i * 50, 550, 1.5, 1.5, 0, 0);
       returnArray.push(bottomBrick);
     }
     for (let i = 0; i < 11; i++) {

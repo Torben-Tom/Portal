@@ -17,6 +17,56 @@ class GameSetup extends EngineSetup {
     assetLoader.registerAudios("audio");
   }
 
+  public registerSpriteSheets(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entityManager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    assetManager.registerSpriteSheet("icons", assetLoader.getImage("icons"));
+    assetManager.registerSpriteSheet(
+      "greenPortal",
+      assetLoader.getImage("greenPortal")
+    );
+    assetManager.registerSpriteSheet(
+      "purplePortal",
+      assetLoader.getImage("purplePortal")
+    );
+    assetManager.registerSpriteSheet(
+      "buttonGround",
+      assetLoader.getImage("buttonGround")
+    );
+    assetManager.registerSpriteSheet(
+      "buttonStanding",
+      assetLoader.getImage("buttonStanding")
+    );
+    assetManager.registerSpriteSheet("goal", assetLoader.getImage("goal"));
+    assetManager.registerSpriteSheet(
+      "playerJump",
+      assetLoader.getImage("playerJump")
+    );
+    assetManager.registerSpriteSheet(
+      "playerRunLeft",
+      assetLoader.getImage("characterLeft")
+    );
+    assetManager.registerSpriteSheet(
+      "playerRunRight",
+      assetLoader.getImage("characterRight")
+    );
+    assetManager.registerSpriteSheet(
+      "playerArmRight",
+      assetLoader.getImage("playerArmRight")
+    );
+    assetManager.registerSpriteSheet(
+      "playerArmLeft",
+      assetLoader.getImage("playerArmLeft")
+    );
+    assetManager.registerSpriteSheet(
+      "level1-background-window-sheet",
+      assetLoader.getImage("level1-background-window")
+    );
+  }
+
   public registerTextures(
     assetLoader: AssetLoader,
     assetManager: AssetManager,
@@ -175,56 +225,6 @@ class GameSetup extends EngineSetup {
     );
   }
 
-  public registerSpriteSheets(
-    assetLoader: AssetLoader,
-    assetManager: AssetManager,
-    entityManager: EntityManager,
-    levelManager: LevelManager
-  ): void {
-    assetManager.registerSpriteSheet("icons", assetLoader.getImage("icons"));
-    assetManager.registerSpriteSheet(
-      "greenPortal",
-      assetLoader.getImage("greenPortal")
-    );
-    assetManager.registerSpriteSheet(
-      "purplePortal",
-      assetLoader.getImage("purplePortal")
-    );
-    assetManager.registerSpriteSheet(
-      "buttonGround",
-      assetLoader.getImage("buttonGround")
-    );
-    assetManager.registerSpriteSheet(
-      "buttonStanding",
-      assetLoader.getImage("buttonStanding")
-    );
-    assetManager.registerSpriteSheet("goal", assetLoader.getImage("goal"));
-    assetManager.registerSpriteSheet(
-      "playerJump",
-      assetLoader.getImage("playerJump")
-    );
-    assetManager.registerSpriteSheet(
-      "playerRunLeft",
-      assetLoader.getImage("characterLeft")
-    );
-    assetManager.registerSpriteSheet(
-      "playerRunRight",
-      assetLoader.getImage("characterRight")
-    );
-    assetManager.registerSpriteSheet(
-      "playerArmRight",
-      assetLoader.getImage("playerArmRight")
-    );
-    assetManager.registerSpriteSheet(
-      "playerArmLeft",
-      assetLoader.getImage("playerArmLeft")
-    );
-    assetManager.registerSpriteSheet(
-      "level1-background-window-sheet",
-      assetLoader.getImage("level1-background-window")
-    );
-  }
-
   private registerBottomBrickTexture(
     assetLoader: AssetLoader,
     assetManager: AssetManager,
@@ -236,6 +236,7 @@ class GameSetup extends EngineSetup {
       assetLoader.getImage("bottomBrick")
     );
   }
+
   private registerBridgeTexture(
     assetLoader: AssetLoader,
     assetManager: AssetManager,
@@ -663,6 +664,7 @@ class GameSetup extends EngineSetup {
       100
     );
   }
+
   private registerPortalGreenCreateTexture(
     assetLoader: AssetLoader,
     assetManager: AssetManager,
@@ -825,6 +827,7 @@ class GameSetup extends EngineSetup {
       100
     );
   }
+
   private registerPortalPurpleCreateTexture(
     assetLoader: AssetLoader,
     assetManager: AssetManager,

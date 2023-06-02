@@ -220,7 +220,7 @@ class EntityManager {
         i++;
         let intersectionCenter = intersection.center;
         let pushDirection = entity.boundingBox.center
-          .subtract(intersectionCenter)
+          .subtract(intersectionCenter.vector2D)
           .normalize()
           .multiply(new Vector2D(intersection.width, 1))
           .multiply(new Vector2D(1, intersection.height));
@@ -245,9 +245,7 @@ class EntityManager {
         }
       }
 
-      entity.teleport(
-        entity.location.add(outOfWallVelocity.resolve()).resolve()
-      );
+      entity.teleport(entity.location.add(outOfWallVelocity).resolve());
     }
   }
 
