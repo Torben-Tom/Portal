@@ -25,4 +25,4 @@ jobs:
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        run: COMMIT_HASH=$(git rev-parse --short "$GITHUB_SHA") && gh release create "$COMMIT_HASH" --repo="$GITHUB_REPOSITORY" --title="${GITHUB_REPOSITORY#*/} Beta ${COMMIT_HASH}" \./portal.zip --generate-notes --prerelease
+        run: COMMIT_HASH=$(git rev-parse --short "$GITHUB_SHA") && gh release create "$COMMIT_HASH" --repo="$GITHUB_REPOSITORY" --title="${GITHUB_REPOSITORY#*/} Beta ${COMMIT_HASH}" \./portal.zip --generate-notes --latest --prerelease
