@@ -84,6 +84,16 @@ class Matrix2D {
       this._d * scalar
     );
   }
+
+  public transpose(): Matrix2D {
+    return new Matrix2D(this._a, this._c, this._b, this._d);
+  }
+
+  public static rotationMatrix(angle: number): Matrix2D {
+    let cos = Math.cos(angle);
+    let sin = Math.sin(angle);
+    return new Matrix2D(cos, -sin, sin, cos);
+  }
 }
 
 export default Matrix2D;
