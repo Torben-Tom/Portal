@@ -7,6 +7,9 @@ class NetworkEntity2 extends Entity {
   constructor(
     x: number,
     y: number,
+    rotation: number,
+    centerOfMassX: number,
+    centerOfMassY: number,
     scalingX: number,
     scalingY: number,
     expansionX: number,
@@ -15,6 +18,9 @@ class NetworkEntity2 extends Entity {
     super(
       x,
       y,
+      rotation,
+      centerOfMassX,
+      centerOfMassY,
       scalingX,
       scalingY,
       true,
@@ -47,6 +53,10 @@ class NetworkEntity2 extends Entity {
         console.log("NetworkEntity2 uncollided");
       }
     });
+  }
+
+  update(tickDelta: number): void {
+    this._rotation += 0.1;
   }
 }
 

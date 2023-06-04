@@ -1,3 +1,5 @@
+import Matrix2D from "./matrix2d.js";
+
 class Vector2D {
   private xCord: number;
   private yCord: number;
@@ -37,6 +39,10 @@ class Vector2D {
 
   public divide(vector: Vector2D): Vector2D {
     return new Vector2D(this.xCord / vector.xCord, this.yCord / vector.yCord);
+  }
+
+  public concatenate(vector: Vector2D): Matrix2D {
+    return new Matrix2D(this.xCord, vector.x, this.yCord, vector.y);
   }
 
   public normalize(): Vector2D {

@@ -22,7 +22,7 @@ class Matrix2D {
     return this._d;
   }
 
-  get Inverse(): Matrix2D {
+  get inverse(): Matrix2D {
     let det: number = this._a * this._d - this._b * this._c;
     if (det === 0) {
       throw new Error("Matrix not invertible");
