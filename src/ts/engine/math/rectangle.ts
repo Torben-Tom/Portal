@@ -1,12 +1,12 @@
-import Point from "./point.js";
 import RectangularArea from "./rectangulararea.js";
+import Vector2D from "./vector2d.js";
 
 class Rectangle implements RectangularArea {
-  private _location: Point;
+  private _location: Vector2D;
   private _width: number;
   private _height: number;
 
-  get location(): Point {
+  get location(): Vector2D {
     return this._location;
   }
 
@@ -18,15 +18,15 @@ class Rectangle implements RectangularArea {
     return this._height;
   }
 
-  get center(): Point {
-    return new Point(
+  get center(): Vector2D {
+    return new Vector2D(
       this.location.x + this.width / 2,
       this.location.y + this.height / 2
     );
   }
 
   constructor(x: number, y: number, width: number, height: number) {
-    this._location = new Point(x, y);
+    this._location = new Vector2D(x, y);
     this._width = width;
     this._height = height;
   }

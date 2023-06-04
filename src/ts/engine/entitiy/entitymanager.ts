@@ -245,9 +245,7 @@ class EntityManager {
         }
       }
 
-      entity.teleport(
-        entity.location.add(outOfWallVelocity.resolve()).resolve()
-      );
+      entity.teleport(entity.location.add(outOfWallVelocity));
     }
   }
 
