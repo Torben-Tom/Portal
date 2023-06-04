@@ -4,6 +4,8 @@ import RectangularArea from "../math/rectangulararea.js";
 import Vector2D from "../math/vector2d.js";
 import Matrix2D from "../math/matrix2d.js";
 import Direction from "../math/direction.js";
+import PolygonBuilder from "../math/polygonbuilder.js";
+import Polygon from "../math/polygon.js";
 
 class BoundingBox implements RectangularArea {
   private _entity: Entity;
@@ -102,37 +104,75 @@ class BoundingBox implements RectangularArea {
       corners[Direction.TOP_LEFT]
     );
 
-    let B = b1.concatenate(b2);
-    let lambda: Vector2D = B.inverse.multiplyVector(
+    let B = b1.concatenate(b2); //TODO: Remove !
+    let lambda: Vector2D = B.inverse!.multiplyVector(
       location.subtract(corners[Direction.TOP_LEFT])
     );
 
     return 0 <= lambda.x && lambda.x <= 1 && 0 <= lambda.y && lambda.y <= 1;
   }
 
-  public touches(boundingBox: BoundingBox): boolean {
-    return (
-      this.location.x < boundingBox.location.x + boundingBox.width &&
-      this.location.x + this.width > boundingBox.location.x &&
-      this.location.y < boundingBox.location.y + boundingBox.height &&
-      this.location.y + this.height > boundingBox.location.y
-    );
+  public intersect(boundingBox: BoundingBox): Polygon {
+    let intersectionPoints: Vector2D[] = [];
+    let corners1 = this.corners;
+    let corners2 = boundingBox.corners;
+    for (let c of corners2) {
+      if (this.isInside(c)) {
+        intersectionPoints.push(c);
+      }
+    }
+    let combinations1 = [
+      [corners1[0], corners1[1]],
+      [corners1[0], corners1[2]],
+      [corners1[3], corners1[1]],
+      [corners1[3], corners1[2]],
+    ];
+    let combinations2 = [
+      [corners2[0], corners2[1]],
+      [corners2[0], corners2[2]],
+      [corners2[3], corners2[1]],
+      [corners2[3], corners2[2]],
+    ];
+    for (let a of combinations1) {
+      for (let b of combinations2) {
+        let m = a[0].subtract(a[1]).concatenate(b[1].subtract(b[0]));
+
+        let lambda = m.inverse?.multiplyVector(b[1].subtract(a[1]));
+        if (!lambda) {
+          if (
+            (a[0].x - b[1].x) / (b[0].x - b[1].x) ==
+            (a[0].y - b[1].y) / (b[0].y - b[1].y)
+          ) {
+            intersectionPoints.push(b[0]);
+            intersectionPoints.push(b[1]);
+          }
+          continue;
+        }
+
+        if (0 <= lambda.x && lambda.x <= 1 && 0 <= lambda.y && lambda.y <= 1) {
+          intersectionPoints.push(
+            a[0].subtract(a[1]).multiplyScalar(lambda.x).add(a[1])
+          );
+        }
+      }
+    }
+    return new PolygonBuilder().addPoints(intersectionPoints).build();
   }
 
-  public intersect(rectangularArea: RectangularArea): Rectangle {
-    let x = Math.max(this.location.x, rectangularArea.location.x);
-    let y = Math.max(this.location.y, rectangularArea.location.y);
-    let width = Math.min(
-      this.location.x + this.width,
-      rectangularArea.location.x + rectangularArea.width
-    );
-    let height = Math.min(
-      this.location.y + this.height,
-      rectangularArea.location.y + rectangularArea.height
-    );
+  // public intersect(rectangularArea: RectangularArea): Rectangle {
+  //   let x = Math.max(this.location.x, rectangularArea.location.x);
+  //   let y = Math.max(this.location.y, rectangularArea.location.y);
+  //   let width = Math.min(
+  //     this.location.x + this.width,
+  //     rectangularArea.location.x + rectangularArea.width
+  //   );
+  //   let height = Math.min(
+  //     this.location.y + this.height,
+  //     rectangularArea.location.y + rectangularArea.height
+  //   );
 
-    return new Rectangle(x, y, width - x, height - y);
-  }
+  //   return new Rectangle(x, y, width - x, height - y);
+  // }
 }
 
 export default BoundingBox;

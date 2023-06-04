@@ -3,6 +3,7 @@ import EntitiesCollideEvent from "../event/events/entitiescollideevent.js";
 import EntitiesTouchEvent from "../event/events/entitiestouchevent.js";
 import EntitiesUncollideEvent from "../event/events/entitiesuncollideevent.js";
 import EntitiesUntouchEvent from "../event/events/entitiesuntouchevent.js";
+import Polygon from "../math/polygon.js";
 import Rectangle from "../math/rectangle.js";
 import Vector2D from "../math/vector2d.js";
 import Entity from "./entity.js";
@@ -132,7 +133,7 @@ class EntityManager {
   private checkTouch(entity1: Entity, entity2: Entity) {
     if (
       !this.areTouching(entity1, entity2) &&
-      entity1.boundingBox.touches(entity2.boundingBox)
+      entity1.boundingBox.intersect(entity2.boundingBox).points.length > 0
     ) {
       this._touches.push(new Touch(entity1, entity2));
       this._touchEvent.dispatch(
@@ -144,9 +145,9 @@ class EntityManager {
   private checkCollision(entity1: Entity, entity2: Entity) {
     if (
       !this.areColliding(entity1, entity2) &&
-      entity1.boundingBox.touches(entity2.boundingBox) &&
       !entity1.boundingBox.passThrough &&
-      !entity2.boundingBox.passThrough
+      !entity2.boundingBox.passThrough &&
+      entity1.boundingBox.intersect(entity2.boundingBox).points.length > 0
     ) {
       this._collisions.push(new Touch(entity1, entity2));
       this._collideEvent.dispatch(
@@ -160,7 +161,8 @@ class EntityManager {
       if (
         this._entities.indexOf(touch.entity1) < 0 ||
         this._entities.indexOf(touch.entity2) < 0 ||
-        !touch.entity1.boundingBox.touches(touch.entity2.boundingBox)
+        touch.entity1.boundingBox.intersect(touch.entity2.boundingBox).points
+          .length == 0
       ) {
         this._touches.splice(this._touches.indexOf(touch), 1);
         this._untouchEvent.dispatch(new EntitiesUntouchEvent(touch));
@@ -175,7 +177,8 @@ class EntityManager {
         this._entities.indexOf(touch.entity2) < 0 ||
         touch.entity1.boundingBox.passThrough ||
         touch.entity2.boundingBox.passThrough ||
-        !touch.entity1.boundingBox.touches(touch.entity2.boundingBox)
+        touch.entity1.boundingBox.intersect(touch.entity2.boundingBox).points
+          .length == 0
       ) {
         this._collisions.splice(this._collisions.indexOf(touch), 1);
         this._uncollideEvent.dispatch(new EntitiesUncollideEvent(touch));
@@ -184,69 +187,58 @@ class EntityManager {
   }
 
   private applyCollisionResponse() {
-    for (let entity of this._entities) {
-      if (entity.static) {
-        continue;
-      }
-
-      let intersections: Rectangle[] = [];
-
-      for (let otherEntity of this._entities) {
-        if (otherEntity === entity || otherEntity.boundingBox.passThrough) {
-          continue;
-        }
-
-        if (entity.boundingBox.touches(otherEntity.boundingBox)) {
-          intersections.push(
-            entity.boundingBox.intersect(otherEntity.boundingBox)
-          );
-        }
-      }
-
-      let totalBottomIntersectionsWith = 0;
-      for (let intersection of intersections) {
-        if (intersection.center.y > entity.boundingBox.center.y) {
-          totalBottomIntersectionsWith += intersection.width;
-        }
-      }
-
-      let totalBottomIntersectionsWithPercentage =
-        (totalBottomIntersectionsWith / entity.boundingBox.width) * 100;
-
-      let outOfWallVelocities: Vector2D[] = [];
-
-      let i = 0;
-      for (let intersection of intersections) {
-        i++;
-        let intersectionCenter = intersection.center;
-        let pushDirection = entity.boundingBox.center
-          .subtract(intersectionCenter)
-          .normalize()
-          .multiply(new Vector2D(intersection.width, 1))
-          .multiply(new Vector2D(1, intersection.height));
-        if (
-          pushDirection.y < 0 &&
-          totalBottomIntersectionsWithPercentage > 25
-        ) {
-          pushDirection = pushDirection.multiply(new Vector2D(0, 1));
-        }
-
-        outOfWallVelocities.push(pushDirection);
-      }
-
-      let outOfWallVelocity = new Vector2D(0, 0);
-      for (let velocity of outOfWallVelocities) {
-        if (Math.abs(velocity.x) > Math.abs(outOfWallVelocity.x)) {
-          outOfWallVelocity = new Vector2D(velocity.x, outOfWallVelocity.y);
-        }
-
-        if (Math.abs(velocity.y) > Math.abs(outOfWallVelocity.y)) {
-          outOfWallVelocity = new Vector2D(outOfWallVelocity.x, velocity.y);
-        }
-      }
-
-      entity.teleport(entity.location.add(outOfWallVelocity));
-    }
+    // for (let entity of this._entities) {
+    //   if (entity.static) {
+    //     continue;
+    //   }
+    //   let intersections: Polygon[] = [];
+    //   for (let otherEntity of this._entities) {
+    //     if (otherEntity === entity || otherEntity.boundingBox.passThrough) {
+    //       continue;
+    //     }
+    //     if (entity.boundingBox.touches(otherEntity.boundingBox)) {
+    //       intersections.push(
+    //         entity.boundingBox.intersect(otherEntity.boundingBox)
+    //       );
+    //     }
+    //   }
+    //   let totalBottomIntersectionsWith = 0;
+    //   for (let intersection of intersections) {
+    //     if (intersection.center.y > entity.boundingBox.center.y) {
+    //       totalBottomIntersectionsWith += intersection.width;
+    //     }
+    //   }
+    //   let totalBottomIntersectionsWithPercentage =
+    //     (totalBottomIntersectionsWith / entity.boundingBox.width) * 100;
+    //   let outOfWallVelocities: Vector2D[] = [];
+    //   let i = 0;
+    //   for (let intersection of intersections) {
+    //     i++;
+    //     let intersectionCenter = intersection.center;
+    //     let pushDirection = entity.boundingBox.center
+    //       .subtract(intersectionCenter)
+    //       .normalize()
+    //       .multiply(new Vector2D(intersection.width, 1))
+    //       .multiply(new Vector2D(1, intersection.height));
+    //     if (
+    //       pushDirection.y < 0 &&
+    //       totalBottomIntersectionsWithPercentage > 25
+    //     ) {
+    //       pushDirection = pushDirection.multiply(new Vector2D(0, 1));
+    //     }
+    //     outOfWallVelocities.push(pushDirection);
+    //   }
+    //   let outOfWallVelocity = new Vector2D(0, 0);
+    //   for (let velocity of outOfWallVelocities) {
+    //     if (Math.abs(velocity.x) > Math.abs(outOfWallVelocity.x)) {
+    //       outOfWallVelocity = new Vector2D(velocity.x, outOfWallVelocity.y);
+    //     }
+    //     if (Math.abs(velocity.y) > Math.abs(outOfWallVelocity.y)) {
+    //       outOfWallVelocity = new Vector2D(outOfWallVelocity.x, velocity.y);
+    //     }
+    //   }
+    //   entity.teleport(entity.location.add(outOfWallVelocity));
+    // }
   }
 
   public update(tickDelta: number) {

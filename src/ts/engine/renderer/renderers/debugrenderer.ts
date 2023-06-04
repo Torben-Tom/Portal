@@ -136,13 +136,27 @@ class DebugRenderer extends Renderer {
           let collisionArea = collision.entity1.boundingBox.intersect(
             collision.entity2.boundingBox
           );
-          glContext.strokeStyle = "red";
-          glContext.strokeRect(
-            collisionArea.location.x,
-            collisionArea.location.y,
-            collisionArea.width,
-            collisionArea.height
-          );
+
+          if (collisionArea.points.length >= 2) {
+            glContext.strokeStyle = "red";
+            glContext.beginPath();
+            glContext.moveTo(
+              collisionArea.points[0].x,
+              collisionArea.points[0].y
+            );
+            for (let i = 1; i < collisionArea.points.length; i++) {
+              let point = collisionArea.points[i];
+              glContext.lineTo(point.x, point.y);
+              glContext.moveTo(point.x, point.y);
+            }
+            glContext.lineTo(
+              collisionArea.points[0].x,
+              collisionArea.points[0].y
+            );
+            glContext.stroke();
+          } else {
+            console.error("?!?!?!"); //TODO: Remove this.
+          }
         }
       }
 

@@ -57,8 +57,6 @@ class NetworkEntity extends Entity {
       newX += 1 * delta * 0.33;
     }
 
-    newY += 1 * delta * 0.33;
-
     this._location = new Vector2D(newX, newY);
   }
 }
