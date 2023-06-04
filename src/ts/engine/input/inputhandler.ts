@@ -1,10 +1,10 @@
 import EngineEvent from "../event/engineevent.js";
 import EngineEventHandler from "../event/engineventhandler.js";
-import Point from "../math/point.js";
+import Vector2D from "../math/vector2d.js";
 
 class InputHandler {
   private _htmlCanvasElement: HTMLCanvasElement;
-  private _mouseLocation: Point;
+  private _mouseLocation: Vector2D;
   private _keystates: Map<string, boolean>;
   private _whiteListedKeys: string[];
 
@@ -28,12 +28,12 @@ class InputHandler {
     EngineEvent<KeyboardEvent>
   >;
 
-  get mouseAbsolute(): Point {
+  get mouseAbsolute(): Vector2D {
     return this._mouseLocation;
   }
 
-  get mouseRelative(): Point {
-    return new Point(
+  get mouseRelative(): Vector2D {
+    return new Vector2D(
       Math.floor(
         this._mouseLocation.x -
           this._htmlCanvasElement.getBoundingClientRect().left
@@ -83,7 +83,7 @@ class InputHandler {
 
   constructor(htmlCanvasElement: HTMLCanvasElement) {
     this._htmlCanvasElement = htmlCanvasElement;
-    this._mouseLocation = new Point(0, 0);
+    this._mouseLocation = new Vector2D(0, 0);
     this._keystates = new Map<string, boolean>();
     this._whiteListedKeys = [];
 
@@ -111,7 +111,7 @@ class InputHandler {
   }
 
   private onMouseMove(mouseEvent: MouseEvent): void {
-    this._mouseLocation = new Point(mouseEvent.clientX, mouseEvent.clientY);
+    this._mouseLocation = new Vector2D(mouseEvent.clientX, mouseEvent.clientY);
     this._engineMouseMoveEvent.dispatch(new EngineEvent(mouseEvent));
   }
 

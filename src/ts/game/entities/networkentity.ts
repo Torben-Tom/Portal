@@ -1,9 +1,8 @@
 import AssetManager from "../../engine/assets/assetmanager.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import Entity from "../../engine/entitiy/entity.js";
-import EntityManager from "../../engine/entitiy/entitymanager.js";
 import InputHandler from "../../engine/input/inputhandler.js";
-import Point from "../../engine/math/point.js";
+import Vector2D from "../../engine/math/vector2d.js";
 
 class NetworkEntity extends Entity {
   private _inputHandler: InputHandler;
@@ -57,7 +56,7 @@ class NetworkEntity extends Entity {
 
     newY += 1 * delta * 0.33;
 
-    this._location = new Point(newX, newY);
+    this._location = new Vector2D(newX, newY);
   }
 }
 

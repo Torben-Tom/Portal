@@ -1,16 +1,16 @@
 import Texture from "../assets/texture/texture.js";
-import Point from "../math/point.js";
+import Vector2D from "../math/vector2d.js";
 import BoundingBox from "./boundingbox.js";
 
 class Entity {
-  protected _location: Point;
+  protected _location: Vector2D;
   private _scalingX: number;
   private _scalingY: number;
   private _static: boolean;
   private _boundingBox: BoundingBox;
   private _texture: Texture;
 
-  get location(): Point {
+  get location(): Vector2D {
     return this._location;
   }
 
@@ -45,7 +45,7 @@ class Entity {
     passThrough: boolean,
     texture: Texture
   ) {
-    this._location = new Point(x, y);
+    this._location = new Vector2D(x, y);
     this._scalingX = scalingX;
     this._scalingY = scalingY;
     this._static = _static;
@@ -58,8 +58,8 @@ class Entity {
     this._texture = texture;
   }
 
-  public teleport(point: Point) {
-    this._location = point;
+  public teleport(location: Vector2D) {
+    this._location = location;
   }
 
   update(tickDelta: number) {}

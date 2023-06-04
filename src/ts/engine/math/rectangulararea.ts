@@ -1,10 +1,10 @@
-import Point from "./point.js";
+import Vector2D from "./vector2d";
 
 interface RectangularArea {
-  get location(): Point;
+  get location(): Vector2D;
   get width(): number;
   get height(): number;
-  get center(): Point;
+  get center(): Vector2D;
 }
 
 export default RectangularArea;

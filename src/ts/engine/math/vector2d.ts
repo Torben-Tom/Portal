@@ -1,5 +1,3 @@
-import Point from "./point.js";
-
 class Vector2D {
   private xCord: number;
   private yCord: number;
@@ -19,10 +17,6 @@ class Vector2D {
   constructor(x: number, y: number) {
     this.xCord = x;
     this.yCord = y;
-  }
-
-  public static fromPoints(point1: Point, point2: Point): Vector2D {
-    return new Vector2D(point2.x - point1.x, point2.y - point1.y);
   }
 
   public add(vector: Vector2D): Vector2D {
@@ -48,10 +42,6 @@ class Vector2D {
   public normalize(): Vector2D {
     const length = this.length;
     return new Vector2D(this.xCord / length, this.yCord / length);
-  }
-
-  public resolve(): Point {
-    return new Point(this.xCord, this.yCord);
   }
 }
 

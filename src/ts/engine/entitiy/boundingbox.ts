@@ -1,7 +1,7 @@
-import Point from "../math/point.js";
 import Entity from "./entity.js";
 import Rectangle from "../math/rectangle.js";
 import RectangularArea from "../math/rectangulararea.js";
+import Vector2D from "../math/vector2d.js";
 
 class BoundingBox implements RectangularArea {
   private _entity: Entity;
@@ -9,8 +9,8 @@ class BoundingBox implements RectangularArea {
   private _heightExpansion: number;
   private _passThrough: boolean;
 
-  get location(): Point {
-    return new Point(
+  get location(): Vector2D {
+    return new Vector2D(
       this._entity.location.x - this._widthExpansion / 2,
       this._entity.location.y - this._heightExpansion / 2
     );
@@ -29,8 +29,8 @@ class BoundingBox implements RectangularArea {
     );
   }
 
-  get center(): Point {
-    return new Point(
+  get center(): Vector2D {
+    return new Vector2D(
       this.location.x + this.width / 2,
       this.location.y + this.height / 2
     );
@@ -52,12 +52,12 @@ class BoundingBox implements RectangularArea {
     this._passThrough = passThrough;
   }
 
-  public isInside(point: Point): boolean {
+  public isInside(location: Vector2D): boolean {
     return (
-      point.x >= this.location.x &&
-      point.x <= this.location.x + this.width &&
-      point.y >= this.location.y &&
-      point.y <= this.location.y + this.height
+      location.x >= this.location.x &&
+      location.x <= this.location.x + this.width &&
+      location.y >= this.location.y &&
+      location.y <= this.location.y + this.height
     );
   }
 
