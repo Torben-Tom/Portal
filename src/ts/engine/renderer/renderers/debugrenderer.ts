@@ -137,8 +137,25 @@ class DebugRenderer extends Renderer {
             collision.entity2.boundingBox
           );
 
+          console.log("Collision Points: " + collisionArea.points.length);
           if (collisionArea.points.length >= 2) {
             glContext.strokeStyle = "red";
+
+            for (let point of collisionArea.points) {
+              for (let otherPoint of collisionArea.points) {
+                if (point === otherPoint) {
+                  continue;
+                }
+
+                glContext.beginPath();
+                glContext.moveTo(point.x, point.y);
+                glContext.lineTo(otherPoint.x, otherPoint.y);
+                glContext.closePath();
+                glContext.stroke();
+              }
+            }
+            //TODO: Remove
+            /*
             glContext.beginPath();
             glContext.moveTo(
               collisionArea.points[0].x,
@@ -154,6 +171,7 @@ class DebugRenderer extends Renderer {
               collisionArea.points[0].y
             );
             glContext.stroke();
+            */
           } else {
             console.error("?!?!?!"); //TODO: Remove this.
           }

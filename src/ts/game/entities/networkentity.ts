@@ -1,6 +1,9 @@
 import AssetManager from "../../engine/assets/assetmanager.js";
+import ConditionalTexture from "../../engine/assets/texture/conditionaltexture.js";
+import Texture from "../../engine/assets/texture/texture.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import Entity from "../../engine/entitiy/entity.js";
+import EntityManager from "../../engine/entitiy/entitymanager.js";
 import InputHandler from "../../engine/input/inputhandler.js";
 import Vector2D from "../../engine/math/vector2d.js";
 
@@ -24,6 +27,30 @@ class NetworkEntity extends Entity {
     );
 
     this._inputHandler = Services.resolve<InputHandler>("InputHandler");
+
+    let entityManager: EntityManager =
+      Services.resolve<EntityManager>("EntityManager");
+
+    entityManager.touchEvent.subscribe((event) => {
+      if (event.eventData.belongsToEntity(this)) {
+        console.log("NetworkEntity2 touched");
+      }
+    });
+    entityManager.untouchEvent.subscribe((event) => {
+      if (event.eventData.belongsToEntity(this)) {
+        console.log("NetworkEntity2 untouched");
+      }
+    });
+    entityManager.collideEvent.subscribe((event) => {
+      if (event.eventData.belongsToEntity(this)) {
+        console.log("NetworkEntity2 collided");
+      }
+    });
+    entityManager.uncollideEvent.subscribe((event) => {
+      if (event.eventData.belongsToEntity(this)) {
+        console.log("NetworkEntity2 uncollided");
+      }
+    });
   }
 
   update(delta: number): void {
