@@ -4,6 +4,9 @@ import Matrix2D from "../math/matrix2d.js";
 import Direction from "../math/direction.js";
 import PolygonBuilder from "../math/polygonbuilder.js";
 import Polygon from "../math/polygon.js";
+import Services from "../dependencyinjection/services.js";
+import Game from "../game.js";
+import InputHandler from "../input/inputhandler.js";
 
 class BoundingBox {
   private _entity: Entity;
@@ -143,23 +146,17 @@ class BoundingBox {
           otherLine[1].subtract(line[1])
         );
         if (!lambda) {
-          if (
-            (line[0].x - otherLine[1].x) / (otherLine[0].x - otherLine[1].x) ===
-            (line[0].y - otherLine[1].y) / (otherLine[0].y - otherLine[1].y)
-          ) {
-            polygonBuilder.addPoint(otherLine[0]);
-            polygonBuilder.addPoint(otherLine[1]);
-          }
           continue;
         }
 
-        if (0 <= lambda.x && lambda.x <= 1 && 0 <= lambda.y && lambda.y <= 1) {
+        if (0 < lambda.x && lambda.x < 1 && 0 < lambda.y && lambda.y < 1) {
           polygonBuilder.addPoint(
             line[0].subtract(line[1]).multiplyScalar(lambda.x).add(line[1])
           );
         }
       }
     }
+
     return polygonBuilder.build();
   }
 }

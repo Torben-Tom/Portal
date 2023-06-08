@@ -1,6 +1,7 @@
 import AssetManager from "../../engine/assets/assetmanager.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import Entity from "../../engine/entitiy/entity.js";
+import Vector2D from "../../engine/math/vector2d.js";
 
 class NetworkEntity2 extends Entity {
   constructor(
@@ -28,10 +29,6 @@ class NetworkEntity2 extends Entity {
       false,
       Services.resolve<AssetManager>("AssetManager").getTexture("network")
     );
-  }
-
-  update(tickDelta: number): void {
-    this._rotation += 0.1;
   }
 }
 

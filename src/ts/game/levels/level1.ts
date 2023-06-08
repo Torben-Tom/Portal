@@ -47,7 +47,7 @@ class Level1 implements Level {
     let player = new NetworkEntity();
 
     let ground = new NetworkEntity2(0, 150, 0, 50, 15, 50, 5, 0, 0);
-    let wall = new NetworkEntity2(500, 150, 0, 75, 15, 15, 50, 0, 0);
+    let wall = new NetworkEntity2(500, 150, 0, 75, 15, 5, 50, 0, 0);
 
     return [window, background, player, ground, wall];
   }

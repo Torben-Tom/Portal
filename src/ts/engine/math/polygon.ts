@@ -8,6 +8,61 @@ class Polygon {
     return this._points;
   }
 
+  get minX(): number {
+    if (this._points.length === 0) {
+      return 0;
+    }
+
+    return this._points
+      .map((point) => point.x)
+      .reduce((a, b) => Math.min(a, b));
+  }
+
+  get maxX(): number {
+    if (this._points.length === 0) {
+      return 0;
+    }
+
+    return this._points
+      .map((point) => point.x)
+      .reduce((a, b) => Math.max(a, b));
+  }
+
+  get minY(): number {
+    if (this._points.length === 0) {
+      return 0;
+    }
+
+    return this._points
+      .map((point) => point.y)
+      .reduce((a, b) => Math.min(a, b));
+  }
+
+  get maxY(): number {
+    if (this._points.length === 0) {
+      return 0;
+    }
+
+    return this._points
+      .map((point) => point.y)
+      .reduce((a, b) => Math.max(a, b));
+  }
+
+  get width(): number {
+    return this.maxX - this.minX;
+  }
+
+  get height(): number {
+    return this.maxY - this.minY;
+  }
+
+  get center(): Vector2D {
+    return new Vector2D(
+      this.minX + this.width / 2,
+      this.minY + this.height / 2
+    );
+  }
+
   constructor(polygonBuilder: PolygonBuilder) {
     this._points = polygonBuilder.points;
   }

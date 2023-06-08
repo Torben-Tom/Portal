@@ -10,6 +10,8 @@ import Vector2D from "../../engine/math/vector2d.js";
 class NetworkEntity extends Entity {
   private _inputHandler: InputHandler;
 
+  private _speed: number = 1;
+
   constructor() {
     super(
       10,
@@ -56,32 +58,39 @@ class NetworkEntity extends Entity {
   update(delta: number): void {
     let newX = this.location.x;
     let newY = this.location.y;
+
+    if (this._inputHandler.isKeyDown(" ")) {
+      this._speed = 1;
+    } else {
+      this._speed = 0.1;
+    }
+
     if (
       this._inputHandler.isKeyDown("ArrowUp") ||
       this._inputHandler.isKeyDown("w")
     ) {
-      newY -= 1 * delta * 0.33;
+      newY -= 1 * delta * this._speed;
     }
 
     if (
       this._inputHandler.isKeyDown("ArrowLeft") ||
       this._inputHandler.isKeyDown("a")
     ) {
-      newX -= 1 * delta * 0.33;
+      newX -= 1 * delta * this._speed;
     }
 
     if (
       this._inputHandler.isKeyDown("ArrowDown") ||
       this._inputHandler.isKeyDown("s")
     ) {
-      newY += 1 * delta * 0.33;
+      newY += 1 * delta * this._speed;
     }
 
     if (
       this._inputHandler.isKeyDown("ArrowRight") ||
       this._inputHandler.isKeyDown("d")
     ) {
-      newX += 1 * delta * 0.33;
+      newX += 1 * delta * this._speed;
     }
 
     this._location = new Vector2D(newX, newY);

@@ -139,8 +139,15 @@ class DebugRenderer extends Renderer {
           );
 
           glContext.strokeStyle = "red";
-          let amountOfPoints = collisionArea.points.length;
-          for (let index = 0; index < amountOfPoints / 2 + 1; index++) {
+          let loopGoal = collisionArea.points.length;
+          if (loopGoal === 0) {
+            continue;
+          }
+          if (loopGoal >= 2) {
+            loopGoal = loopGoal / 2 + 1;
+          }
+
+          for (let index = 0; index < loopGoal; index++) {
             let point = collisionArea.points[index];
             for (let otherPoint of collisionArea.points) {
               if (point === otherPoint) {
