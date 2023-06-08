@@ -3,9 +3,6 @@ import EntitiesCollideEvent from "../event/events/entitiescollideevent.js";
 import EntitiesTouchEvent from "../event/events/entitiestouchevent.js";
 import EntitiesUncollideEvent from "../event/events/entitiesuncollideevent.js";
 import EntitiesUntouchEvent from "../event/events/entitiesuntouchevent.js";
-import Polygon from "../math/polygon.js";
-import Rectangle from "../math/rectangle.js";
-import Vector2D from "../math/vector2d.js";
 import Entity from "./entity.js";
 import Touch from "./touch.js";
 class EntityManager {

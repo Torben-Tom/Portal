@@ -24,6 +24,10 @@ class Entity {
     return this._centerOfMass;
   }
 
+  get centerOfMassAbsolute(): Vector2D {
+    return this._location.add(this._centerOfMass);
+  }
+
   get scalingX(): number {
     return this._scalingX;
   }

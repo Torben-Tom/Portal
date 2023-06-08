@@ -29,16 +29,8 @@ class Vector2D {
     return new Vector2D(this.xCord - vector.xCord, this.yCord - vector.yCord);
   }
 
-  public multiply(vector: Vector2D): Vector2D {
-    return new Vector2D(this.xCord * vector.xCord, this.yCord * vector.yCord);
-  }
-
   public multiplyScalar(scalar: number): Vector2D {
     return new Vector2D(this.xCord * scalar, this.yCord * scalar);
-  }
-
-  public divide(vector: Vector2D): Vector2D {
-    return new Vector2D(this.xCord / vector.xCord, this.yCord / vector.yCord);
   }
 
   public concatenate(vector: Vector2D): Matrix2D {
