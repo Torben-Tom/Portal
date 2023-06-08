@@ -2,6 +2,7 @@ import Services from "../../dependencyinjection/services.js";
 import EntityManager from "../../entitiy/entitymanager.js";
 import Game from "../../game.js";
 import InputHandler from "../../input/inputhandler.js";
+import Vector2D from "../../math/vector2d.js";
 import Compositor from "../compositor.js";
 import Renderer from "../renderer.js";
 
@@ -137,43 +138,21 @@ class DebugRenderer extends Renderer {
             collision.entity2.boundingBox
           );
 
-          console.log("Collision Points: " + collisionArea.points.length);
-          if (collisionArea.points.length >= 2) {
-            glContext.strokeStyle = "red";
-
-            for (let point of collisionArea.points) {
-              for (let otherPoint of collisionArea.points) {
-                if (point === otherPoint) {
-                  continue;
-                }
-
-                glContext.beginPath();
-                glContext.moveTo(point.x, point.y);
-                glContext.lineTo(otherPoint.x, otherPoint.y);
-                glContext.closePath();
-                glContext.stroke();
+          glContext.strokeStyle = "red";
+          let amountOfPoints = collisionArea.points.length;
+          for (let index = 0; index < amountOfPoints / 2 + 1; index++) {
+            let point = collisionArea.points[index];
+            for (let otherPoint of collisionArea.points) {
+              if (point === otherPoint) {
+                continue;
               }
-            }
-            //TODO: Remove
-            /*
-            glContext.beginPath();
-            glContext.moveTo(
-              collisionArea.points[0].x,
-              collisionArea.points[0].y
-            );
-            for (let i = 1; i < collisionArea.points.length; i++) {
-              let point = collisionArea.points[i];
-              glContext.lineTo(point.x, point.y);
+
+              glContext.beginPath();
               glContext.moveTo(point.x, point.y);
+              glContext.lineTo(otherPoint.x, otherPoint.y);
+              glContext.closePath();
+              glContext.stroke();
             }
-            glContext.lineTo(
-              collisionArea.points[0].x,
-              collisionArea.points[0].y
-            );
-            glContext.stroke();
-            */
-          } else {
-            console.error("?!?!?!"); //TODO: Remove this.
           }
         }
       }

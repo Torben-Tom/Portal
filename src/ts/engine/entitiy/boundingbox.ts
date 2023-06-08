@@ -87,15 +87,6 @@ class BoundingBox implements RectangularArea {
     this._passThrough = passThrough;
   }
 
-  // public isInside(location: Vector2D): boolean {
-  //   return (
-  //     location.x >= this.location.x &&
-  //     location.x <= this.location.x + this.width &&
-  //     location.y >= this.location.y &&
-  //     location.y <= this.location.y + this.height
-  //   );
-  // }
-
   public isInside(location: Vector2D): boolean {
     let corners: Vector2D[] = this.corners;
 
@@ -116,6 +107,11 @@ class BoundingBox implements RectangularArea {
     let intersectionPoints: Vector2D[] = [];
     let corners1 = this.corners;
     let corners2 = boundingBox.corners;
+    for (let c of corners1) {
+      if (boundingBox.isInside(c)) {
+        intersectionPoints.push(c);
+      }
+    }
     for (let c of corners2) {
       if (this.isInside(c)) {
         intersectionPoints.push(c);
@@ -158,21 +154,6 @@ class BoundingBox implements RectangularArea {
     }
     return new PolygonBuilder().addPoints(intersectionPoints).build();
   }
-
-  // public intersect(rectangularArea: RectangularArea): Rectangle {
-  //   let x = Math.max(this.location.x, rectangularArea.location.x);
-  //   let y = Math.max(this.location.y, rectangularArea.location.y);
-  //   let width = Math.min(
-  //     this.location.x + this.width,
-  //     rectangularArea.location.x + rectangularArea.width
-  //   );
-  //   let height = Math.min(
-  //     this.location.y + this.height,
-  //     rectangularArea.location.y + rectangularArea.height
-  //   );
-
-  //   return new Rectangle(x, y, width - x, height - y);
-  // }
 }
 
 export default BoundingBox;
