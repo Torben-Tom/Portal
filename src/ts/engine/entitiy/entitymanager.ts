@@ -147,8 +147,7 @@ class EntityManager {
     if (
       !this.areColliding(entity1, entity2) &&
       !entity1.boundingBox.passThrough &&
-      !entity2.boundingBox.passThrough &&
-      entity1.boundingBox.intersect(entity2.boundingBox).points.length > 0
+      !entity2.boundingBox.passThrough
     ) {
       this._collisions.push(new Touch(entity1, entity2));
       this._collideEvent.dispatch(
@@ -261,8 +260,8 @@ class EntityManager {
           continue;
         }
 
-        this.checkTouch(entity, otherEntity);
-        this.checkCollision(entity, otherEntity);
+        //this.checkTouch(entity, otherEntity);
+        //this.checkCollision(entity, otherEntity);
       }
     }
     this.cleanupTouches();
