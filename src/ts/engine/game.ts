@@ -108,8 +108,8 @@ class Game {
     let now = Date.now();
     let renderDelta = now - this._lastRender;
 
+    //Sometimes, browser will call requestAnimationFrame multiple times in a row, causing a renderDelta of 1. This is a workaround.
     if (renderDelta > 1) {
-      //Sometimes, browser will call requestAnimationFrame multiple times in a row, causing a renderDelta of 1. This is a workaround.
       this._lastRender = now;
       this._currentFps = Math.round(1 / (renderDelta / 1000));
 

@@ -83,6 +83,11 @@ class BoundingBox {
   }
 
   public isInside(location: Vector2D): boolean {
+    return this.locationsInside([location]).includes(location);
+  }
+
+  public locationsInside(locations: Vector2D[]): Vector2D[] {
+    let ret: Vector2D[] = [];
     let corners: Vector2D[] = this.corners;
 
     let base1 = corners[Direction.TOP_RIGHT].subtract(
@@ -95,14 +100,17 @@ class BoundingBox {
     let baseMatrix = base1.concatenate(base2);
     let inverseBaseMatrix = baseMatrix.inverse;
     if (!inverseBaseMatrix) {
-      return false; //Mathematically, this should never happen as long as no entity has a BoundingBox of height or width 0
+      return ret; //Mathematically, this should never happen as long as no entity has a BoundingBox of height or width 0
     }
-
-    let lambda: Vector2D = baseMatrix.inverse!.multiplyVector(
-      location.subtract(corners[Direction.TOP_LEFT])
-    );
-
-    return 0 <= lambda.x && lambda.x <= 1 && 0 <= lambda.y && lambda.y <= 1;
+    for (let location of locations) {
+      let lambda: Vector2D = inverseBaseMatrix!.multiplyVector(
+        location.subtract(corners[Direction.TOP_LEFT])
+      );
+      if (0 <= lambda.x && lambda.x <= 1 && 0 <= lambda.y && lambda.y <= 1) {
+        ret.push(location);
+      }
+    }
+    return ret;
   }
 
   public intersect(boundingBox: BoundingBox): Polygon {
@@ -110,17 +118,8 @@ class BoundingBox {
     let corners1 = this.corners;
     let corners2 = boundingBox.corners;
 
-    for (let c of corners1) {
-      if (boundingBox.isInside(c)) {
-        polygonBuilder.addPoint(c);
-      }
-    }
-
-    for (let c of corners2) {
-      if (this.isInside(c)) {
-        polygonBuilder.addPoint(c);
-      }
-    }
+    polygonBuilder.addPoints(boundingBox.locationsInside(corners1));
+    polygonBuilder.addPoints(this.locationsInside(corners2));
 
     let lines1 = [
       [corners1[0], corners1[1]],
