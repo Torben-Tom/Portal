@@ -131,15 +131,30 @@ class EntityManager {
     return this.getCollisions(entity).length > 0;
   }
 
+  private applyGravity(entity: Entity, tickDelta: number) {
+    entity.teleport(entity.location.add(new Vector2D(0, 0.1 * tickDelta)));
+  }
+
   private checkTouch(entity1: Entity, entity2: Entity) {
-    if (
-      !this.areTouching(entity1, entity2) &&
-      entity1.boundingBox.intersect(entity2.boundingBox).points.length > 0
-    ) {
-      this._touches.push(new Touch(entity1, entity2));
-      this._touchEvent.dispatch(
-        new EntitiesTouchEvent(new Touch(entity1, entity2))
-      );
+    if (!this.areTouching(entity1, entity2)) {
+      let location1 = entity1.boundingBox.center;
+      let location2 = entity2.boundingBox.center;
+      let widthSum = entity1.boundingBox.width + entity2.boundingBox.width;
+      let heightSum = entity1.boundingBox.height + entity2.boundingBox.height;
+      let maxRadius = Math.max(widthSum, heightSum) / 2;
+      let xDiff = location1.x - location2.x;
+      let yDiff = location1.y - location2.y;
+      let distance = Math.hypot(xDiff, yDiff);
+
+      if (
+        distance <= maxRadius &&
+        entity1.boundingBox.intersect(entity2.boundingBox).points.length > 0
+      ) {
+        this._touches.push(new Touch(entity1, entity2));
+        this._touchEvent.dispatch(
+          new EntitiesTouchEvent(new Touch(entity1, entity2))
+        );
+      }
     }
   }
 
@@ -255,11 +270,14 @@ class EntityManager {
     for (let entity of this._entities) {
       entity.update(tickDelta);
 
+      if (!entity.static) {
+        this.applyGravity(entity, tickDelta);
+      }
+
       for (let otherEntity of this._entities) {
         if (otherEntity === entity) {
           continue;
         }
-
         this.checkTouch(entity, otherEntity);
         this.checkCollision(entity, otherEntity);
       }

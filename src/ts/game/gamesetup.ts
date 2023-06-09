@@ -365,19 +365,14 @@ class GameSetup extends EngineSetup {
     let buttonGroundSpriteSheet: SpriteSheet =
       assetManager.getSpriteSheet("buttonGround");
 
-    assetManager.registerAnimatedTexture(
-      "buttonGround",
-      [
-        assetManager.registerSliceTexture(
-          "buttonUnClicked",
-          buttonGroundSpriteSheet.createSlice("buttonUnClicked", 2, 0, 67, 77)
-        ),
-        assetManager.registerSliceTexture(
-          "buttonClicked",
-          buttonGroundSpriteSheet.createSlice("buttonClicked", 69, 0, 136, 77)
-        ),
-      ],
-      1000
+    assetManager.registerSliceTexture(
+      "buttonGroundUnclicked",
+      buttonGroundSpriteSheet.createSlice("buttonGroundUnclicked", 2, 0, 67, 77)
+    );
+
+    assetManager.registerSliceTexture(
+      "buttonGroundClicked",
+      buttonGroundSpriteSheet.createSlice("buttonGroundClicked", 69, 0, 67, 77)
     );
   }
 
@@ -607,19 +602,25 @@ class GameSetup extends EngineSetup {
     let buttonStandingSpriteSheet: SpriteSheet =
       assetManager.getSpriteSheet("buttonStanding");
 
-    assetManager.registerAnimatedTexture(
-      "buttonStanding",
-      [
-        assetManager.registerSliceTexture(
-          "buttonUnClicked",
-          buttonStandingSpriteSheet.createSlice("buttonUnClicked", 6, 0, 46, 82)
-        ),
-        assetManager.registerSliceTexture(
-          "buttonClicked",
-          buttonStandingSpriteSheet.createSlice("buttonClicked", 48, 0, 86, 82)
-        ),
-      ],
-      1000
+    assetManager.registerSliceTexture(
+      "buttonStandingUnclicked",
+      buttonStandingSpriteSheet.createSlice(
+        "buttonStandingUnclicked",
+        6,
+        0,
+        46,
+        82
+      )
+    );
+    assetManager.registerSliceTexture(
+      "buttonStandingClicked",
+      buttonStandingSpriteSheet.createSlice(
+        "buttonStandingClicked",
+        48,
+        0,
+        86,
+        82
+      )
     );
   }
 

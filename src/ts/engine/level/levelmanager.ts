@@ -40,8 +40,8 @@ class LevelManager {
     }
     this._entityManager.clear();
 
-    level.load();
     this._entityManager.registerAll(level.getEntities());
+    level.load();
   }
 
   public update(tickDelta: number): void {

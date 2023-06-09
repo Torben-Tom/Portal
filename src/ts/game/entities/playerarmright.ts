@@ -6,6 +6,9 @@ class PlayerArmRight extends Entity {
   constructor(
     x: number,
     y: number,
+    rotation: number,
+    centerOfMassX: number,
+    centerOfMassY: number,
     scalingX: number,
     scalingY: number,
     widthExpansion: number,
@@ -14,9 +17,9 @@ class PlayerArmRight extends Entity {
     super(
       x,
       y,
-      0,
-      0,
-      0,
+      rotation,
+      centerOfMassX,
+      centerOfMassY,
       scalingX,
       scalingY,
       true,
