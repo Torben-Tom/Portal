@@ -60,7 +60,7 @@ class NetworkEntity extends Entity {
     let newY = this.location.y;
 
     if (this._inputHandler.isKeyDown(" ")) {
-      this._speed = 1;
+      this._speed = 0.5;
     } else {
       this._speed = 0.1;
     }
@@ -69,28 +69,28 @@ class NetworkEntity extends Entity {
       this._inputHandler.isKeyDown("ArrowUp") ||
       this._inputHandler.isKeyDown("w")
     ) {
-      newY -= 1 * delta * this._speed;
+      newY -= delta * this._speed;
     }
 
     if (
       this._inputHandler.isKeyDown("ArrowLeft") ||
       this._inputHandler.isKeyDown("a")
     ) {
-      newX -= 1 * delta * this._speed;
+      newX -= delta * this._speed;
     }
 
     if (
       this._inputHandler.isKeyDown("ArrowDown") ||
       this._inputHandler.isKeyDown("s")
     ) {
-      newY += 1 * delta * this._speed;
+      newY += delta * this._speed;
     }
 
     if (
       this._inputHandler.isKeyDown("ArrowRight") ||
       this._inputHandler.isKeyDown("d")
     ) {
-      newX += 1 * delta * this._speed;
+      newX += delta * this._speed;
     }
 
     this._location = new Vector2D(newX, newY);

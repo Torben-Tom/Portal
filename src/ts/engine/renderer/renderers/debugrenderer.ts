@@ -161,6 +161,13 @@ class DebugRenderer extends Renderer {
               glContext.stroke();
             }
           }
+
+          let center = collisionArea.center;
+          glContext.fillStyle = "yellow";
+          glContext.beginPath();
+          glContext.arc(center.x, center.y, 5, 0, 2 * Math.PI, false);
+          glContext.closePath();
+          glContext.fill();
         }
       }
 

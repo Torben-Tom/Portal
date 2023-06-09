@@ -57,10 +57,9 @@ class Polygon {
   }
 
   get center(): Vector2D {
-    return new Vector2D(
-      this.minX + this.width / 2,
-      this.minY + this.height / 2
-    );
+    return this._points
+      .reduce((sum, point) => sum.add(point))
+      .multiplyScalar(1 / this._points.length);
   }
 
   constructor(polygonBuilder: PolygonBuilder) {

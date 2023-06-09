@@ -6,6 +6,7 @@ import EntitiesUntouchEvent from "../event/events/entitiesuntouchevent.js";
 import Matrix2D from "../math/matrix2d.js";
 import Polygon from "../math/polygon.js";
 import Vector2D from "../math/vector2d.js";
+import BoundingBox from "./boundingbox.js";
 import Entity from "./entity.js";
 import Touch from "./touch.js";
 class EntityManager {
@@ -186,126 +187,68 @@ class EntityManager {
     }
   }
 
-  // private applyCollisionResponse() {
-  //   for (let entity of this._entities) {
-  //     if (entity.static) {
-  //       continue;
-  //     }
-
-  //     let intersections: Polygon[] = [];
-  //     for (let otherEntity of this._entities) {
-  //       if (otherEntity === entity || otherEntity.boundingBox.passThrough) {
-  //         continue;
-  //       }
-
-  //       let intersection = entity.boundingBox.intersect(
-  //         otherEntity.boundingBox
-  //       );
-  //       if (intersection.points.length > 0) {
-  //         intersections.push(intersection);
-  //       }
-  //     }
-
-  //     let totalBottomIntersectionsWidth = 0;
-  //     for (let intersection of intersections) {
-  //       if (intersection.center.y > entity.boundingBox.center.y) {
-  //         totalBottomIntersectionsWidth += intersection.width;
-  //       }
-  //     }
-  //     let totalBottomIntersectionsWidthPercentage =
-  //       (totalBottomIntersectionsWidth / entity.boundingBox.width) * 100;
-  //     let outOfWallVelocities: Vector2D[] = [];
-  //     let i = 0;
-  //     for (let intersection of intersections) {
-  //       i++;
-  //       let intersectionCenter = intersection.center;
-  //       let pushDirection = entity.boundingBox.center
-  //         .subtract(intersectionCenter)
-  //         .normalize();
-  //       pushDirection = new Matrix2D(
-  //         intersection.width,
-  //         0,
-  //         0,
-  //         intersection.height
-  //       ).multiplyVector(pushDirection);
-
-  //       if (
-  //         pushDirection.y < 0 &&
-  //         totalBottomIntersectionsWidthPercentage > 25
-  //       ) {
-  //         pushDirection = new Matrix2D(
-  //           0,
-  //           0,
-  //           0,
-  //           intersection.height
-  //         ).multiplyVector(pushDirection);
-  //       }
-  //       outOfWallVelocities.push(pushDirection);
-  //     }
-
-  //     let outOfWallVelocity = new Vector2D(0, 0);
-  //     for (let velocity of outOfWallVelocities) {
-  //       if (Math.abs(velocity.x) > Math.abs(outOfWallVelocity.x)) {
-  //         outOfWallVelocity = new Vector2D(velocity.x, outOfWallVelocity.y);
-  //       }
-  //       if (Math.abs(velocity.y) > Math.abs(outOfWallVelocity.y)) {
-  //         outOfWallVelocity = new Vector2D(outOfWallVelocity.x, velocity.y);
-  //       }
-  //     }
-  //     entity.teleport(entity.location.add(outOfWallVelocity));
-  //   }
-  // }
-
   private applyCollisionResponse() {
     for (let entity of this._entities) {
       if (entity.static) {
         continue;
       }
 
+      let boundingBox = entity.boundingBox;
+      let intersections: Polygon[] = [];
       for (let otherEntity of this._entities) {
-        if (entity === otherEntity || otherEntity.boundingBox.passThrough) {
+        if (otherEntity === entity || otherEntity.boundingBox.passThrough) {
           continue;
         }
 
-        let intersection = entity.boundingBox.intersect(
-          otherEntity.boundingBox
-        );
-        if (intersection.points.length == 0) {
-          continue;
+        let intersection = boundingBox.intersect(otherEntity.boundingBox);
+        if (intersection.points.length > 0) {
+          intersections.push(intersection);
         }
-
-        let center = entity.boundingBox.center;
-        let iCenter = intersection.center;
-        let xDiff = (center.x - iCenter.x) / Math.abs(center.x - iCenter.x);
-        let yDiff = (center.y - iCenter.y) / Math.abs(center.y - iCenter.y);
-
-        if (Number.isNaN(xDiff)) {
-          xDiff = 1;
-        }
-        if (Number.isNaN(yDiff)) {
-          yDiff = 1;
-        }
-        if (intersection.width == entity.boundingBox.width) {
-          xDiff = 0;
-        }
-        if (intersection.height == entity.boundingBox.height) {
-          yDiff = 0;
-        }
-
-        let direction: Vector2D;
-        if (intersection.height !== 0 && intersection.width !== 0) {
-          direction = new Matrix2D(xDiff, 0, 0, yDiff).multiplyVector(
-            new Vector2D(intersection.width, intersection.height)
-          );
-        } else {
-          direction = new Vector2D(0, 0);
-        }
-
-        //console.log(`Center ${center.x} ${center.y}`);
-        //console.log(`iCenter ${iCenter.x} ${iCenter.y}`);
-        //console.log(direction);
-        entity.teleport(entity.location.add(direction));
       }
+
+      let totalBottomIntersectionsWidth = 0;
+      for (let intersection of intersections) {
+        if (intersection.center.y > boundingBox.center.y) {
+          totalBottomIntersectionsWidth += intersection.width;
+        }
+      }
+      let totalBottomIntersectionsWidthPercentage =
+        (totalBottomIntersectionsWidth / entity.boundingBox.width) * 100;
+
+      let outOfWallVelocities: Vector2D[] = [];
+      for (let index = 0; index < intersections.length; index++) {
+        let intersection = intersections[index];
+        let intersectionCenter = intersection.center;
+        let pushDirection = boundingBox.center
+          .subtract(intersectionCenter)
+          .normalize();
+
+        if (
+          pushDirection.y < 0 &&
+          totalBottomIntersectionsWidthPercentage > 33
+        ) {
+          pushDirection = new Matrix2D(0, 0, 0, 1).multiplyVector(
+            pushDirection
+          );
+        }
+
+        pushDirection = pushDirection.multiplyScalar(
+          (3 * intersection.width * intersection.height) / 100
+        );
+        outOfWallVelocities.push(pushDirection);
+      }
+
+      let outOfWallVelocity = new Vector2D(0, 0);
+      for (let velocity of outOfWallVelocities) {
+        if (Math.abs(velocity.x) > Math.abs(outOfWallVelocity.x)) {
+          outOfWallVelocity = new Vector2D(velocity.x, outOfWallVelocity.y);
+        }
+        if (Math.abs(velocity.y) > Math.abs(outOfWallVelocity.y)) {
+          outOfWallVelocity = new Vector2D(outOfWallVelocity.x, velocity.y);
+        }
+      }
+
+      entity.teleport(entity.location.add(outOfWallVelocity));
     }
   }
 
