@@ -1,12 +1,9 @@
 import Entity from "./entity.js";
 import Vector2D from "../math/vector2d.js";
 import Matrix2D from "../math/matrix2d.js";
-import Direction from "../math/direction.js";
+import Diagonal from "../math/diagonal.js";
 import PolygonBuilder from "../math/polygonbuilder.js";
 import Polygon from "../math/polygon.js";
-import Services from "../dependencyinjection/services.js";
-import Game from "../game.js";
-import InputHandler from "../input/inputhandler.js";
 
 class BoundingBox {
   private _entity: Entity;
@@ -90,11 +87,11 @@ class BoundingBox {
     let ret: Vector2D[] = [];
     let corners: Vector2D[] = this.corners;
 
-    let base1 = corners[Direction.TOP_RIGHT].subtract(
-      corners[Direction.TOP_LEFT]
+    let base1 = corners[Diagonal.TOP_RIGHT].subtract(
+      corners[Diagonal.TOP_LEFT]
     );
-    let base2 = corners[Direction.BOTTOM_LEFT].subtract(
-      corners[Direction.TOP_LEFT]
+    let base2 = corners[Diagonal.BOTTOM_LEFT].subtract(
+      corners[Diagonal.TOP_LEFT]
     );
 
     let baseMatrix = base1.concatenate(base2);
@@ -104,7 +101,7 @@ class BoundingBox {
     }
     for (let location of locations) {
       let lambda: Vector2D = inverseBaseMatrix!.multiplyVector(
-        location.subtract(corners[Direction.TOP_LEFT])
+        location.subtract(corners[Diagonal.TOP_LEFT])
       );
       if (0 <= lambda.x && lambda.x <= 1 && 0 <= lambda.y && lambda.y <= 1) {
         ret.push(location);

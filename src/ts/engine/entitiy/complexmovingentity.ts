@@ -1,16 +1,17 @@
 import Vector2D from "../math/vector2d.js";
-import ComplexEntityBuilder from "./complexentitybuilder.js";
+import ComplexMovingEntityBuilder from "./complexmovingentitybuilder.js";
 import Entity from "./entity.js";
 import IComplexEntity from "./icomplexentity.js";
+import MovingEntity from "./movingentity.js";
 
-class ComplexEntity extends Entity implements IComplexEntity {
+class ComplexMovingEntity extends MovingEntity implements IComplexEntity {
   private _parts: [Vector2D, Entity][];
 
   public get parts(): [Vector2D, Entity][] {
     return this._parts;
   }
 
-  constructor(complexEntityBuilder: ComplexEntityBuilder) {
+  constructor(complexEntityBuilder: ComplexMovingEntityBuilder) {
     super(
       complexEntityBuilder.x,
       complexEntityBuilder.y,
@@ -36,4 +37,4 @@ class ComplexEntity extends Entity implements IComplexEntity {
   }
 }
 
-export default ComplexEntity;
+export default ComplexMovingEntity;

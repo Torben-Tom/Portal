@@ -8,6 +8,7 @@ import Polygon from "../math/polygon.js";
 import Vector2D from "../math/vector2d.js";
 import BoundingBox from "./boundingbox.js";
 import Entity from "./entity.js";
+import MovingEntity from "./movingentity.js";
 import Touch from "./touch.js";
 class EntityManager {
   private _entities: Entity[];
@@ -131,10 +132,6 @@ class EntityManager {
     return this.getCollisions(entity).length > 0;
   }
 
-  private applyGravity(entity: Entity, tickDelta: number) {
-    entity.teleport(entity.location.add(new Vector2D(0, 0.1 * tickDelta)));
-  }
-
   private checkTouch(entity1: Entity, entity2: Entity) {
     if (!this.areTouching(entity1, entity2)) {
       let location1 = entity1.boundingBox.center;
@@ -160,6 +157,7 @@ class EntityManager {
 
   private checkCollision(entity1: Entity, entity2: Entity) {
     if (
+      this.areTouching(entity1, entity2) &&
       !this.areColliding(entity1, entity2) &&
       !entity1.boundingBox.passThrough &&
       !entity2.boundingBox.passThrough
@@ -174,8 +172,8 @@ class EntityManager {
   private cleanupTouches() {
     for (let touch of this._touches) {
       if (
-        this._entities.indexOf(touch.entity1) < 0 ||
-        this._entities.indexOf(touch.entity2) < 0 ||
+        !this._entities.includes(touch.entity1) ||
+        !this._entities.includes(touch.entity2) ||
         touch.entity1.boundingBox.intersect(touch.entity2.boundingBox).points
           .length == 0
       ) {
@@ -197,13 +195,26 @@ class EntityManager {
       ) {
         this._collisions.splice(this._collisions.indexOf(touch), 1);
         this._uncollideEvent.dispatch(new EntitiesUncollideEvent(touch));
+
+        if (
+          touch.entity1 instanceof MovingEntity &&
+          !this.isColliding(touch.entity1)
+        ) {
+          touch.entity1.onGround = false;
+        }
+        if (
+          touch.entity2 instanceof MovingEntity &&
+          !this.isColliding(touch.entity2)
+        ) {
+          touch.entity2.onGround = false;
+        }
       }
     }
   }
 
   private applyCollisionResponse() {
     for (let entity of this._entities) {
-      if (entity.static) {
+      if (!(entity instanceof MovingEntity)) {
         continue;
       }
 
@@ -237,10 +248,10 @@ class EntityManager {
           .subtract(intersectionCenter)
           .normalize();
 
-        if (
-          pushDirection.y < 0 &&
-          totalBottomIntersectionsWidthPercentage > 33
-        ) {
+        let onGround = totalBottomIntersectionsWidthPercentage > 33;
+        entity.onGround = onGround;
+
+        if (pushDirection.y < 0 && onGround) {
           pushDirection = new Matrix2D(0, 0, 0, 1).multiplyVector(
             pushDirection
           );
@@ -270,10 +281,6 @@ class EntityManager {
     for (let entity of this._entities) {
       entity.update(tickDelta);
 
-      if (!entity.static) {
-        this.applyGravity(entity, tickDelta);
-      }
-
       for (let otherEntity of this._entities) {
         if (otherEntity === entity) {
           continue;
@@ -284,7 +291,6 @@ class EntityManager {
     }
     this.cleanupTouches();
     this.cleanupCollisions();
-
     this.applyCollisionResponse();
   }
 }

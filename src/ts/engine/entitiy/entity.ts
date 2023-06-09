@@ -8,7 +8,6 @@ class Entity {
   private _centerOfMass: Vector2D;
   private _scalingX: number;
   private _scalingY: number;
-  private _static: boolean;
   private _boundingBox: BoundingBox;
   private _texture: Texture;
 
@@ -36,10 +35,6 @@ class Entity {
     return this._scalingY;
   }
 
-  get static(): boolean {
-    return this._static;
-  }
-
   get boundingBox(): BoundingBox {
     return this._boundingBox;
   }
@@ -56,7 +51,6 @@ class Entity {
     centerOfMassY: number,
     scalingX: number,
     scalingY: number,
-    _static: boolean,
     expansionX: number,
     expansionY: number,
     passThrough: boolean,
@@ -67,7 +61,6 @@ class Entity {
     this._centerOfMass = new Vector2D(centerOfMassX, centerOfMassY);
     this._scalingX = scalingX;
     this._scalingY = scalingY;
-    this._static = _static;
     this._boundingBox = new BoundingBox(
       this,
       expansionX,

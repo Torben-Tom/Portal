@@ -21,7 +21,6 @@ class NetworkEntity extends Entity {
       0,
       5,
       5,
-      false,
       0,
       0,
       false,

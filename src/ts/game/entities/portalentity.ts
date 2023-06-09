@@ -54,7 +54,6 @@ class PortalEntity extends Entity {
       0,
       scalingX,
       scalingY,
-      true,
       widthExpansion,
       heightExpansion,
       true,
