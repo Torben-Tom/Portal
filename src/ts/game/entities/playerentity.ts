@@ -51,17 +51,15 @@ class PlayerEntity extends ComplexEntity {
       }
     }
 
+    let armPart = this.parts[0][1];
     let mouseLocation = this._inputHandler.mouseRelative;
     let angle = Math.atan2(
-      mouseLocation.y - this._location.y,
-      mouseLocation.x - this._location.x
+      mouseLocation.y - armPart.centerOfMassAbsolute.y,
+      mouseLocation.x - armPart.centerOfMassAbsolute.x
     );
     angle = angle * (180 / Math.PI) - 30;
+    armPart.rotate(angle);
 
-    if (this.parts)
-      for (let part of this.parts) {
-        part[1].rotate(angle);
-      }
     super.update(delta);
   }
 }

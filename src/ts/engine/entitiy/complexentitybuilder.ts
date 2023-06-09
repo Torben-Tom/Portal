@@ -16,7 +16,7 @@ class ComplexEntityBuilder {
   private _expansionY: number;
   private _passThrough: boolean;
   private _texture: Texture;
-  private _parts: Map<Vector2D, Entity>;
+  private _parts: [Vector2D, Entity][];
 
   public get x(): number {
     return this._x;
@@ -66,7 +66,7 @@ class ComplexEntityBuilder {
     return this._texture;
   }
 
-  public get parts(): Map<Vector2D, Entity> {
+  public get parts(): [Vector2D, Entity][] {
     return this._parts;
   }
 
@@ -96,7 +96,7 @@ class ComplexEntityBuilder {
     this._expansionY = expansionY;
     this._passThrough = passThrough;
     this._texture = texture;
-    this._parts = new Map<Vector2D, Entity>();
+    this._parts = [];
   }
 
   public createPart(
@@ -105,7 +105,7 @@ class ComplexEntityBuilder {
     scalingY: number,
     texture: Texture
   ): ComplexEntityBuilder {
-    this._parts.set(
+    this._parts.push([
       offset,
       new Entity(
         this.x + offset.x,
@@ -120,13 +120,13 @@ class ComplexEntityBuilder {
         0,
         true,
         texture
-      )
-    );
+      ),
+    ]);
     return this;
   }
 
   public addPart(offset: Vector2D, entity: Entity): ComplexEntityBuilder {
-    this._parts.set(offset, entity);
+    this._parts.push([offset, entity]);
     return this;
   }
 

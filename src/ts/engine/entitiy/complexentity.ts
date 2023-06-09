@@ -4,9 +4,9 @@ import ComplexEntityBuilder from "./complexentitybuilder.js";
 import Entity from "./entity.js";
 
 class ComplexEntity extends Entity {
-  private _parts: Map<Vector2D, Entity>;
+  private _parts: [Vector2D, Entity][];
 
-  public get parts(): Map<Vector2D, Entity> {
+  public get parts(): [Vector2D, Entity][] {
     return this._parts;
   }
 
