@@ -29,6 +29,7 @@ import PlayerRunLeft from "../entities/playerrunleft.js";
 import PlayerRunRight from "../entities/playerrunright.js";
 import PlayerArmLeft from "../entities/playerarmleft.js";
 import PlayerArmRight from "../entities/playerarmright.js";
+import PlayerEntity from "../entities/playerentity.js";
 
 class Level1 implements Level {
   private _inputHandler: InputHandler;
@@ -101,7 +102,7 @@ class Level1 implements Level {
       this._assetManager.getTexture("level1-background")
     );
 
-    let player = new NetworkEntity();
+    let player = new PlayerEntity(350, 300);
     let cornerBrickLeft = new LeftCornerBrickEntity(0, 550, 1.5, 1.5, 0, 0);
     let cornerBrickRight = new RightCornerBrickEntity(750, 550, 1.5, 1.5, 0, 0);
 
@@ -121,27 +122,19 @@ class Level1 implements Level {
     let playerArmLeft = new PlayerArmLeft(100, 455, 1, 1, 0, 0);
     let playerArmRight = new PlayerArmRight(190, 455, 1, 1, 0, 0);
 
-    let returnArray: Entity[] = [];
-    returnArray.push(window);
-    returnArray.push(background);
-    // returnArray.push(player);
-    returnArray.push(cornerBrickLeft);
-    returnArray.push(cornerBrickRight);
-    returnArray.push(greenPortal);
-    // returnArray.push(greenPortalCreate);
-    // returnArray.push(greenPortalClose);
-    returnArray.push(purplePortal);
-    // returnArray.push(purplePortalCreate);
-    // returnArray.push(purplePortalClose);
-    returnArray.push(buttonGround);
-    returnArray.push(buttonStanding);
-    returnArray.push(companionCube);
-    returnArray.push(goal);
-    // returnArray.push(playerJump);
-    returnArray.push(playerRunLeft);
-    returnArray.push(playerRunRight);
-    returnArray.push(playerArmLeft);
-    returnArray.push(playerArmRight);
+    let returnArray: Entity[] = [
+      background,
+      window,
+      player,
+      cornerBrickLeft,
+      cornerBrickRight,
+      greenPortal,
+      purplePortal,
+      buttonGround,
+      buttonStanding,
+      companionCube,
+      goal,
+    ];
 
     for (let i = 0; i < 14; i++) {
       let bottomBrick = new BottomBrickEntity(50 + i * 50, 550, 1.5, 1.5, 0, 0);

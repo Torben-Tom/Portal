@@ -260,8 +260,8 @@ class EntityManager {
           continue;
         }
 
-        //this.checkTouch(entity, otherEntity);
-        //this.checkCollision(entity, otherEntity);
+        this.checkTouch(entity, otherEntity);
+        this.checkCollision(entity, otherEntity);
       }
     }
     this.cleanupTouches();

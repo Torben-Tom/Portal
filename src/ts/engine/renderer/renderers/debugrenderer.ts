@@ -1,9 +1,9 @@
 import Services from "../../dependencyinjection/services.js";
+import ComplexEntity from "../../entitiy/complexentity.js";
+import Entity from "../../entitiy/entity.js";
 import EntityManager from "../../entitiy/entitymanager.js";
 import Game from "../../game.js";
 import InputHandler from "../../input/inputhandler.js";
-import Vector2D from "../../math/vector2d.js";
-import Compositor from "../compositor.js";
 import Renderer from "../renderer.js";
 
 //TODO: Fix this mess of a class.
@@ -24,9 +24,8 @@ class DebugRenderer extends Renderer {
   private _game: Game | undefined;
   private _inputHandler: InputHandler | undefined;
   private _entityManager: EntityManager | undefined;
-  private _compositor: Compositor | undefined;
 
-  isApplicable(object: any): boolean {
+  public isApplicable(object: any): boolean {
     return object === "debug";
   }
 
@@ -36,148 +35,144 @@ class DebugRenderer extends Renderer {
       this._game = Services.resolve<Game>("Game");
       this._inputHandler = Services.resolve<InputHandler>("InputHandler");
       this._entityManager = Services.resolve<EntityManager>("EntityManager");
-      this._compositor = Services.resolve<Compositor>("Compositor");
     });
   }
 
-  render(
+  private drawInfoBox(glContext: CanvasRenderingContext2D) {
+    glContext.fillStyle = "rgba(0, 0, 0, 0.5)";
+    glContext.fillRect(600, 500, 200, 100);
+
+    glContext.fillStyle = "white";
+    glContext.font = "15px Arial";
+    glContext.fillText(`FPS: ${this._game!.fps}`, 600, 512);
+    glContext.fillText(`TPS: ${this._game!.tps}`, 600, 525);
+    glContext.fillText(
+      `Mouse relative: ${this._inputHandler!.mouseRelative.x}, ${
+        this._inputHandler!.mouseRelative.y
+      }`,
+      600,
+      538
+    );
+    glContext.fillText(
+      `Mouse absolute: ${this._inputHandler!.mouseAbsolute.x}, ${
+        this._inputHandler!.mouseAbsolute.y
+      }`,
+      600,
+      551
+    );
+    glContext.fillText(
+      `Keys pressed: ${Array.from(this._inputHandler!.keystates)
+        .filter((keystate) => keystate[1])
+        .map((keystate) => keystate[0])
+        .join(", ")}`,
+      600,
+      564
+    );
+  }
+
+  private drawBoundingBoxes(
+    glContext: CanvasRenderingContext2D,
+    entity: Entity
+  ) {
+    let centerOfMass = entity.location.add(entity.centerOfMass);
+    glContext.translate(centerOfMass.x, centerOfMass.y);
+    glContext.rotate((entity.rotation * Math.PI) / 180);
+    glContext.translate(-centerOfMass.x, -centerOfMass.y);
+
+    let center = entity.boundingBox.center;
+    glContext.fillStyle = "yellow";
+    glContext.beginPath();
+    glContext.arc(center.x, center.y, 5, 0, 2 * Math.PI, false);
+    glContext.closePath();
+    glContext.fill();
+
+    glContext.fillStyle = "blue";
+    glContext.beginPath();
+    glContext.arc(centerOfMass.x, centerOfMass.y, 5, 0, 2 * Math.PI, false);
+    glContext.closePath();
+    glContext.fill();
+
+    glContext.strokeStyle = "red";
+    glContext.beginPath();
+    glContext.moveTo(entity.location.x, entity.location.y);
+    glContext.lineTo(centerOfMass.x, centerOfMass.y);
+    glContext.closePath();
+    glContext.stroke();
+
+    let boundingBox = entity.boundingBox;
+    if (boundingBox.isInside(this._inputHandler!.mouseRelative)) {
+      glContext.strokeStyle = "green";
+    } else {
+      glContext.strokeStyle = "black";
+    }
+    glContext.strokeRect(
+      boundingBox.location.x,
+      boundingBox.location.y,
+      boundingBox.width,
+      boundingBox.height
+    );
+    glContext.setTransform(1, 0, 0, 1, 0, 0);
+
+    if (entity instanceof ComplexEntity) {
+      for (let part of entity.parts) this.drawBoundingBoxes(glContext, part[1]);
+    }
+  }
+
+  private drawCollisionBoxes(glContext: CanvasRenderingContext2D) {
+    for (let collision of this._entityManager!.collisions) {
+      if (!collision.entity1.boundingBox || !collision.entity2.boundingBox) {
+        continue;
+      }
+
+      let collisionArea = collision.entity1.boundingBox.intersect(
+        collision.entity2.boundingBox
+      );
+
+      glContext.strokeStyle = "red";
+      let loopGoal = collisionArea.points.length;
+      if (loopGoal === 0) {
+        continue;
+      }
+      if (loopGoal >= 2) {
+        loopGoal = loopGoal / 2 + 1;
+      }
+
+      for (let index = 0; index < loopGoal; index++) {
+        let point = collisionArea.points[index];
+        for (let otherPoint of collisionArea.points) {
+          if (point === otherPoint) {
+            continue;
+          }
+
+          glContext.beginPath();
+          glContext.moveTo(point.x, point.y);
+          glContext.lineTo(otherPoint.x, otherPoint.y);
+          glContext.closePath();
+          glContext.stroke();
+        }
+      }
+
+      let center = collisionArea.center;
+      glContext.fillStyle = "yellow";
+      glContext.beginPath();
+      glContext.arc(center.x, center.y, 5, 0, 2 * Math.PI, false);
+      glContext.closePath();
+      glContext.fill();
+    }
+  }
+
+  public render(
     glContext: CanvasRenderingContext2D,
     object: any,
     delta: number
   ): void {
-    if (
-      this._game &&
-      this._inputHandler &&
-      this._entityManager &&
-      this._compositor
-    ) {
-      glContext.fillStyle = "rgba(0, 0, 0, 0.5)";
-      glContext.fillRect(600, 500, 200, 100);
-
-      glContext.fillStyle = "white";
-      glContext.font = "15px Arial";
-      glContext.fillText(`FPS: ${this._game.fps}`, 600, 512);
-      glContext.fillText(`TPS: ${this._game.tps}`, 600, 525);
-      glContext.fillText(
-        `Mouse relative: ${this._inputHandler.mouseRelative.x}, ${this._inputHandler.mouseRelative.y}`,
-        600,
-        538
-      );
-      glContext.fillText(
-        `Mouse absolute: ${this._inputHandler.mouseAbsolute.x}, ${this._inputHandler.mouseAbsolute.y}`,
-        600,
-        551
-      );
-      glContext.fillText(
-        `Keys pressed: ${Array.from(this._inputHandler.keystates)
-          .filter((keystate) => keystate[1])
-          .map((keystate) => keystate[0])
-          .join(", ")}`,
-        600,
-        564
-      );
-
+    if (this._game && this._entityManager && this._inputHandler) {
+      this.drawInfoBox(glContext);
       if (this._inputHandler.isKeyDown("b")) {
-        this._entityManager.entities.forEach((entity) => {
-          let centerOfMass = entity.location.add(entity.centerOfMass);
-          glContext.translate(centerOfMass.x, centerOfMass.y);
-          glContext.rotate((entity.rotation * Math.PI) / 180);
-          glContext.translate(-centerOfMass.x, -centerOfMass.y);
-
-          let center = entity.boundingBox.center;
-          glContext.fillStyle = "yellow";
-          glContext.beginPath();
-          glContext.arc(center.x, center.y, 5, 0, 2 * Math.PI, false);
-          glContext.closePath();
-          glContext.fill();
-
-          glContext.fillStyle = "blue";
-          glContext.beginPath();
-          glContext.arc(
-            centerOfMass.x,
-            centerOfMass.y,
-            5,
-            0,
-            2 * Math.PI,
-            false
-          );
-          glContext.closePath();
-          glContext.fill();
-
-          glContext.strokeStyle = "red";
-          glContext.beginPath();
-          glContext.moveTo(entity.location.x, entity.location.y);
-          glContext.lineTo(centerOfMass.x, centerOfMass.y);
-          glContext.closePath();
-          glContext.stroke();
-
-          let boundingBox = entity.boundingBox;
-          if (boundingBox.isInside(this._inputHandler!.mouseRelative)) {
-            glContext.strokeStyle = "green";
-          } else {
-            glContext.strokeStyle = "black";
-          }
-          glContext.strokeRect(
-            boundingBox.location.x,
-            boundingBox.location.y,
-            boundingBox.width,
-            boundingBox.height
-          );
-          glContext.setTransform(1, 0, 0, 1, 0, 0);
-        });
-
-        for (let collision of this._entityManager.collisions) {
-          if (
-            !collision.entity1.boundingBox ||
-            !collision.entity2.boundingBox
-          ) {
-            continue;
-          }
-
-          let collisionArea = collision.entity1.boundingBox.intersect(
-            collision.entity2.boundingBox
-          );
-
-          glContext.strokeStyle = "red";
-          let loopGoal = collisionArea.points.length;
-          if (loopGoal === 0) {
-            continue;
-          }
-          if (loopGoal >= 2) {
-            loopGoal = loopGoal / 2 + 1;
-          }
-
-          for (let index = 0; index < loopGoal; index++) {
-            let point = collisionArea.points[index];
-            for (let otherPoint of collisionArea.points) {
-              if (point === otherPoint) {
-                continue;
-              }
-
-              glContext.beginPath();
-              glContext.moveTo(point.x, point.y);
-              glContext.lineTo(otherPoint.x, otherPoint.y);
-              glContext.closePath();
-              glContext.stroke();
-            }
-          }
-
-          let center = collisionArea.center;
-          glContext.fillStyle = "yellow";
-          glContext.beginPath();
-          glContext.arc(center.x, center.y, 5, 0, 2 * Math.PI, false);
-          glContext.closePath();
-          glContext.fill();
+        for (let entity of this._entityManager.entities) {
+          this.drawBoundingBoxes(glContext, entity);
         }
-      }
-
-      if (this._inputHandler.isKeyDown("o")) {
-        glContext.strokeRect(
-          0,
-          0,
-          this._compositor.canvasWidth,
-          this._compositor.canvasHeight
-        );
+        this.drawCollisionBoxes(glContext);
       }
     }
   }
