@@ -4,6 +4,8 @@ import BoundingBox from "./boundingbox.js";
 
 class Entity {
   protected _location: Vector2D;
+  protected _rotation: number;
+  private _centerOfMass: Vector2D;
   private _scalingX: number;
   private _scalingY: number;
   private _static: boolean;
@@ -12,6 +14,18 @@ class Entity {
 
   get location(): Vector2D {
     return this._location;
+  }
+
+  get rotation(): number {
+    return this._rotation;
+  }
+
+  get centerOfMass(): Vector2D {
+    return this._centerOfMass;
+  }
+
+  get centerOfMassAbsolute(): Vector2D {
+    return this._location.add(this._centerOfMass);
   }
 
   get scalingX(): number {
@@ -37,6 +51,9 @@ class Entity {
   constructor(
     x: number,
     y: number,
+    rotation: number,
+    centerOfMassX: number,
+    centerOfMassY: number,
     scalingX: number,
     scalingY: number,
     _static: boolean,
@@ -46,6 +63,8 @@ class Entity {
     texture: Texture
   ) {
     this._location = new Vector2D(x, y);
+    this._rotation = rotation;
+    this._centerOfMass = new Vector2D(centerOfMassX, centerOfMassY);
     this._scalingX = scalingX;
     this._scalingY = scalingY;
     this._static = _static;

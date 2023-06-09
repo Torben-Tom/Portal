@@ -3,8 +3,10 @@ import EntitiesCollideEvent from "../event/events/entitiescollideevent.js";
 import EntitiesTouchEvent from "../event/events/entitiestouchevent.js";
 import EntitiesUncollideEvent from "../event/events/entitiesuncollideevent.js";
 import EntitiesUntouchEvent from "../event/events/entitiesuntouchevent.js";
-import Rectangle from "../math/rectangle.js";
+import Matrix2D from "../math/matrix2d.js";
+import Polygon from "../math/polygon.js";
 import Vector2D from "../math/vector2d.js";
+import BoundingBox from "./boundingbox.js";
 import Entity from "./entity.js";
 import Touch from "./touch.js";
 class EntityManager {
@@ -132,7 +134,7 @@ class EntityManager {
   private checkTouch(entity1: Entity, entity2: Entity) {
     if (
       !this.areTouching(entity1, entity2) &&
-      entity1.boundingBox.touches(entity2.boundingBox)
+      entity1.boundingBox.intersect(entity2.boundingBox).points.length > 0
     ) {
       this._touches.push(new Touch(entity1, entity2));
       this._touchEvent.dispatch(
@@ -144,9 +146,9 @@ class EntityManager {
   private checkCollision(entity1: Entity, entity2: Entity) {
     if (
       !this.areColliding(entity1, entity2) &&
-      entity1.boundingBox.touches(entity2.boundingBox) &&
       !entity1.boundingBox.passThrough &&
-      !entity2.boundingBox.passThrough
+      !entity2.boundingBox.passThrough &&
+      entity1.boundingBox.intersect(entity2.boundingBox).points.length > 0
     ) {
       this._collisions.push(new Touch(entity1, entity2));
       this._collideEvent.dispatch(
@@ -160,7 +162,8 @@ class EntityManager {
       if (
         this._entities.indexOf(touch.entity1) < 0 ||
         this._entities.indexOf(touch.entity2) < 0 ||
-        !touch.entity1.boundingBox.touches(touch.entity2.boundingBox)
+        touch.entity1.boundingBox.intersect(touch.entity2.boundingBox).points
+          .length == 0
       ) {
         this._touches.splice(this._touches.indexOf(touch), 1);
         this._untouchEvent.dispatch(new EntitiesUntouchEvent(touch));
@@ -175,7 +178,8 @@ class EntityManager {
         this._entities.indexOf(touch.entity2) < 0 ||
         touch.entity1.boundingBox.passThrough ||
         touch.entity2.boundingBox.passThrough ||
-        !touch.entity1.boundingBox.touches(touch.entity2.boundingBox)
+        touch.entity1.boundingBox.intersect(touch.entity2.boundingBox).points
+          .length == 0
       ) {
         this._collisions.splice(this._collisions.indexOf(touch), 1);
         this._uncollideEvent.dispatch(new EntitiesUncollideEvent(touch));
@@ -189,48 +193,48 @@ class EntityManager {
         continue;
       }
 
-      let intersections: Rectangle[] = [];
-
+      let boundingBox = entity.boundingBox;
+      let intersections: Polygon[] = [];
       for (let otherEntity of this._entities) {
         if (otherEntity === entity || otherEntity.boundingBox.passThrough) {
           continue;
         }
 
-        if (entity.boundingBox.touches(otherEntity.boundingBox)) {
-          intersections.push(
-            entity.boundingBox.intersect(otherEntity.boundingBox)
-          );
+        let intersection = boundingBox.intersect(otherEntity.boundingBox);
+        if (intersection.points.length > 0) {
+          intersections.push(intersection);
         }
       }
 
-      let totalBottomIntersectionsWith = 0;
+      let totalBottomIntersectionsWidth = 0;
       for (let intersection of intersections) {
-        if (intersection.center.y > entity.boundingBox.center.y) {
-          totalBottomIntersectionsWith += intersection.width;
+        if (intersection.center.y > boundingBox.center.y) {
+          totalBottomIntersectionsWidth += intersection.width;
         }
       }
-
-      let totalBottomIntersectionsWithPercentage =
-        (totalBottomIntersectionsWith / entity.boundingBox.width) * 100;
+      let totalBottomIntersectionsWidthPercentage =
+        (totalBottomIntersectionsWidth / entity.boundingBox.width) * 100;
 
       let outOfWallVelocities: Vector2D[] = [];
-
-      let i = 0;
-      for (let intersection of intersections) {
-        i++;
+      for (let index = 0; index < intersections.length; index++) {
+        let intersection = intersections[index];
         let intersectionCenter = intersection.center;
-        let pushDirection = entity.boundingBox.center
+        let pushDirection = boundingBox.center
           .subtract(intersectionCenter)
-          .normalize()
-          .multiply(new Vector2D(intersection.width, 1))
-          .multiply(new Vector2D(1, intersection.height));
+          .normalize();
+
         if (
           pushDirection.y < 0 &&
-          totalBottomIntersectionsWithPercentage > 25
+          totalBottomIntersectionsWidthPercentage > 33
         ) {
-          pushDirection = pushDirection.multiply(new Vector2D(0, 1));
+          pushDirection = new Matrix2D(0, 0, 0, 1).multiplyVector(
+            pushDirection
+          );
         }
 
+        pushDirection = pushDirection.multiplyScalar(
+          (3 * intersection.width * intersection.height) / 100
+        );
         outOfWallVelocities.push(pushDirection);
       }
 
@@ -239,7 +243,6 @@ class EntityManager {
         if (Math.abs(velocity.x) > Math.abs(outOfWallVelocity.x)) {
           outOfWallVelocity = new Vector2D(velocity.x, outOfWallVelocity.y);
         }
-
         if (Math.abs(velocity.y) > Math.abs(outOfWallVelocity.y)) {
           outOfWallVelocity = new Vector2D(outOfWallVelocity.x, velocity.y);
         }

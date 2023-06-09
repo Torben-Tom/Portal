@@ -18,7 +18,12 @@ class EntityRenderer extends Renderer {
 
     let entity: Entity = object as Entity;
     let texture: Texture = entity.texture;
+    let radians = (entity.rotation / 180) * Math.PI;
+    let centerOfMass = entity.location.add(entity.centerOfMass);
 
+    glContext.translate(centerOfMass.x, centerOfMass.y);
+    glContext.rotate(radians);
+    glContext.translate(-centerOfMass.x, -centerOfMass.y);
     glContext.drawImage(
       texture.htmlImageElement,
       texture.x,
@@ -30,6 +35,7 @@ class EntityRenderer extends Renderer {
       texture.width * entity.scalingX,
       texture.height * entity.scalingY
     );
+    glContext.setTransform(1, 0, 0, 1, 0, 0);
   }
 }
 

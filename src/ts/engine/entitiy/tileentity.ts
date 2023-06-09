@@ -5,6 +5,9 @@ class TileEntity extends Entity {
   constructor(
     x: number,
     y: number,
+    rotation: number,
+    centerOfMassX: number,
+    centerOfMassY: number,
     scalingX: number,
     scalingY: number,
     _static: boolean,
@@ -16,6 +19,9 @@ class TileEntity extends Entity {
     super(
       x,
       y,
+      rotation,
+      centerOfMassX,
+      centerOfMassY,
       scalingX,
       scalingY,
       _static,

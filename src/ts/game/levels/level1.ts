@@ -25,12 +25,18 @@ class Level1 implements Level {
     let window = new BackgroundTileEntity(
       552,
       141,
+      0,
+      0,
+      0,
       1,
       1,
       this._assetManager.getTexture("window")
     );
 
     let background = new BackgroundTileEntity(
+      0,
+      0,
+      0,
       0,
       0,
       1,
@@ -40,8 +46,8 @@ class Level1 implements Level {
 
     let player = new NetworkEntity();
 
-    let ground = new NetworkEntity2(0, 150, 50, 5, 0, 0);
-    let wall = new NetworkEntity2(500, 150, 5, 50, 0, 0);
+    let ground = new NetworkEntity2(0, 150, 0, 50, 15, 50, 5, 0, 0);
+    let wall = new NetworkEntity2(500, 150, 0, 75, 15, 5, 50, 0, 0);
 
     return [window, background, player, ground, wall];
   }

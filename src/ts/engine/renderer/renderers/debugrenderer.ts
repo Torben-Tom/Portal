@@ -2,6 +2,7 @@ import Services from "../../dependencyinjection/services.js";
 import EntityManager from "../../entitiy/entitymanager.js";
 import Game from "../../game.js";
 import InputHandler from "../../input/inputhandler.js";
+import Vector2D from "../../math/vector2d.js";
 import Compositor from "../compositor.js";
 import Renderer from "../renderer.js";
 
@@ -78,9 +79,37 @@ class DebugRenderer extends Renderer {
 
       if (this._inputHandler.isKeyDown("b")) {
         this._entityManager.entities.forEach((entity) => {
-          if (!entity.boundingBox) {
-            return;
-          }
+          let centerOfMass = entity.location.add(entity.centerOfMass);
+          glContext.translate(centerOfMass.x, centerOfMass.y);
+          glContext.rotate((entity.rotation * Math.PI) / 180);
+          glContext.translate(-centerOfMass.x, -centerOfMass.y);
+
+          let center = entity.boundingBox.center;
+          glContext.fillStyle = "yellow";
+          glContext.beginPath();
+          glContext.arc(center.x, center.y, 5, 0, 2 * Math.PI, false);
+          glContext.closePath();
+          glContext.fill();
+
+          glContext.fillStyle = "blue";
+          glContext.beginPath();
+          glContext.arc(
+            centerOfMass.x,
+            centerOfMass.y,
+            5,
+            0,
+            2 * Math.PI,
+            false
+          );
+          glContext.closePath();
+          glContext.fill();
+
+          glContext.strokeStyle = "red";
+          glContext.beginPath();
+          glContext.moveTo(entity.location.x, entity.location.y);
+          glContext.lineTo(centerOfMass.x, centerOfMass.y);
+          glContext.closePath();
+          glContext.stroke();
 
           let boundingBox = entity.boundingBox;
           if (boundingBox.isInside(this._inputHandler!.mouseRelative)) {
@@ -94,6 +123,7 @@ class DebugRenderer extends Renderer {
             boundingBox.width,
             boundingBox.height
           );
+          glContext.setTransform(1, 0, 0, 1, 0, 0);
         });
 
         for (let collision of this._entityManager.collisions) {
@@ -107,13 +137,37 @@ class DebugRenderer extends Renderer {
           let collisionArea = collision.entity1.boundingBox.intersect(
             collision.entity2.boundingBox
           );
+
           glContext.strokeStyle = "red";
-          glContext.strokeRect(
-            collisionArea.location.x,
-            collisionArea.location.y,
-            collisionArea.width,
-            collisionArea.height
-          );
+          let loopGoal = collisionArea.points.length;
+          if (loopGoal === 0) {
+            continue;
+          }
+          if (loopGoal >= 2) {
+            loopGoal = loopGoal / 2 + 1;
+          }
+
+          for (let index = 0; index < loopGoal; index++) {
+            let point = collisionArea.points[index];
+            for (let otherPoint of collisionArea.points) {
+              if (point === otherPoint) {
+                continue;
+              }
+
+              glContext.beginPath();
+              glContext.moveTo(point.x, point.y);
+              glContext.lineTo(otherPoint.x, otherPoint.y);
+              glContext.closePath();
+              glContext.stroke();
+            }
+          }
+
+          let center = collisionArea.center;
+          glContext.fillStyle = "yellow";
+          glContext.beginPath();
+          glContext.arc(center.x, center.y, 5, 0, 2 * Math.PI, false);
+          glContext.closePath();
+          glContext.fill();
         }
       }
 

@@ -1,9 +1,14 @@
 import Entity from "./entity.js";
-import Rectangle from "../math/rectangle.js";
-import RectangularArea from "../math/rectangulararea.js";
 import Vector2D from "../math/vector2d.js";
+import Matrix2D from "../math/matrix2d.js";
+import Direction from "../math/direction.js";
+import PolygonBuilder from "../math/polygonbuilder.js";
+import Polygon from "../math/polygon.js";
+import Services from "../dependencyinjection/services.js";
+import Game from "../game.js";
+import InputHandler from "../input/inputhandler.js";
 
-class BoundingBox implements RectangularArea {
+class BoundingBox {
   private _entity: Entity;
   private _widthExpansion: number;
   private _heightExpansion: number;
@@ -40,6 +45,31 @@ class BoundingBox implements RectangularArea {
     return this._passThrough;
   }
 
+  get corners(): Vector2D[] {
+    let radians = (this._entity.rotation / 180) * Math.PI;
+    let relCenter = this._entity.centerOfMass;
+    let absCenter = this._entity.centerOfMassAbsolute;
+    let rotationMatrix = Matrix2D.rotationMatrix(radians);
+
+    let topLeft = rotationMatrix
+      .multiplyVector(new Vector2D(0, 0).subtract(relCenter))
+      .add(absCenter);
+
+    let topRight = rotationMatrix
+      .multiplyVector(new Vector2D(this.width, 0).subtract(relCenter))
+      .add(absCenter);
+
+    let bottomLeft = rotationMatrix
+      .multiplyVector(new Vector2D(0, this.height).subtract(relCenter))
+      .add(absCenter);
+
+    let bottomRight = rotationMatrix
+      .multiplyVector(new Vector2D(this.width, this.height).subtract(relCenter))
+      .add(absCenter);
+
+    return [topLeft, topRight, bottomLeft, bottomRight];
+  }
+
   constructor(
     entity: Entity,
     widthExpasion: number,
@@ -53,36 +83,81 @@ class BoundingBox implements RectangularArea {
   }
 
   public isInside(location: Vector2D): boolean {
-    return (
-      location.x >= this.location.x &&
-      location.x <= this.location.x + this.width &&
-      location.y >= this.location.y &&
-      location.y <= this.location.y + this.height
+    let corners: Vector2D[] = this.corners;
+
+    let base1 = corners[Direction.TOP_RIGHT].subtract(
+      corners[Direction.TOP_LEFT]
     );
+    let base2 = corners[Direction.BOTTOM_LEFT].subtract(
+      corners[Direction.TOP_LEFT]
+    );
+
+    let baseMatrix = base1.concatenate(base2);
+    let inverseBaseMatrix = baseMatrix.inverse;
+    if (!inverseBaseMatrix) {
+      return false; //Mathematically, this should never happen as long as no entity has a BoundingBox of height or width 0
+    }
+
+    let lambda: Vector2D = baseMatrix.inverse!.multiplyVector(
+      location.subtract(corners[Direction.TOP_LEFT])
+    );
+
+    return 0 <= lambda.x && lambda.x <= 1 && 0 <= lambda.y && lambda.y <= 1;
   }
 
-  public touches(boundingBox: BoundingBox): boolean {
-    return (
-      this.location.x < boundingBox.location.x + boundingBox.width &&
-      this.location.x + this.width > boundingBox.location.x &&
-      this.location.y < boundingBox.location.y + boundingBox.height &&
-      this.location.y + this.height > boundingBox.location.y
-    );
-  }
+  public intersect(boundingBox: BoundingBox): Polygon {
+    let polygonBuilder = new PolygonBuilder();
+    let corners1 = this.corners;
+    let corners2 = boundingBox.corners;
 
-  public intersect(rectangularArea: RectangularArea): Rectangle {
-    let x = Math.max(this.location.x, rectangularArea.location.x);
-    let y = Math.max(this.location.y, rectangularArea.location.y);
-    let width = Math.min(
-      this.location.x + this.width,
-      rectangularArea.location.x + rectangularArea.width
-    );
-    let height = Math.min(
-      this.location.y + this.height,
-      rectangularArea.location.y + rectangularArea.height
-    );
+    for (let c of corners1) {
+      if (boundingBox.isInside(c)) {
+        polygonBuilder.addPoint(c);
+      }
+    }
 
-    return new Rectangle(x, y, width - x, height - y);
+    for (let c of corners2) {
+      if (this.isInside(c)) {
+        polygonBuilder.addPoint(c);
+      }
+    }
+
+    let lines1 = [
+      [corners1[0], corners1[1]],
+      [corners1[0], corners1[2]],
+      [corners1[3], corners1[1]],
+      [corners1[3], corners1[2]],
+    ];
+
+    let lines2 = [
+      [corners2[0], corners2[1]],
+      [corners2[0], corners2[2]],
+      [corners2[3], corners2[1]],
+      [corners2[3], corners2[2]],
+    ];
+
+    for (let line of lines1) {
+      for (let otherLine of lines2) {
+        let matrix = line[0]
+          .subtract(line[1])
+          .concatenate(otherLine[1].subtract(otherLine[0]));
+
+        let lambda = matrix.inverse?.multiplyVector(
+          otherLine[1].subtract(line[1])
+        );
+        if (!lambda) {
+          continue;
+        }
+
+        if (0 < lambda.x && lambda.x < 1 && 0 < lambda.y && lambda.y < 1) {
+          polygonBuilder.addPoint(
+            line[0].subtract(line[1]).multiplyScalar(lambda.x).add(line[1])
+          );
+        }
+      }
+    }
+
+    return polygonBuilder.build();
   }
 }
 
