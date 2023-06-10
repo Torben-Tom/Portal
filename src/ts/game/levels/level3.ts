@@ -22,11 +22,14 @@ import Goal from "../entities/goal.js";
 import CompanionCube from "../entities/companioncube.js";
 import PlayerArmRight from "../entities/playerarmright.js";
 import MetalWallEntity from "../entities/metalwallentity.js";
+import PlayerEntity from "../entities/playerentity.js";
 
 class Level3 implements Level {
   private _inputHandler: InputHandler;
   private _entityManager: EntityManager;
   private _assetManager: AssetManager;
+  private _buttonGround1!: ButtonGround;
+  private _buttonGround2!: ButtonGround;
 
   constructor() {
     this._inputHandler = Services.resolve<InputHandler>("InputHandler");
@@ -35,65 +38,57 @@ class Level3 implements Level {
   }
 
   public load(): void {
-    this._inputHandler.keyUpEvent.subscribe(
-      (key: EngineEvent<KeyboardEvent>) => {
-        if (key.eventData.key == "f") {
-          if (
-            this._entityManager.entities.filter(
-              (entity) => entity instanceof BridgeEntity
-            ).length >= 5
-          ) {
-            return;
-          }
-          for (let i = 0; i < 2; i++) {
-            this._entityManager.register(
-              new BridgeEntity(200, 450 + i * 50, 1.5, 1.5, 0, 0)
-            );
-          }
+    this._buttonGround1.onUnpress.subscribe(
+      (engineEvent: EngineEvent<ButtonGround>) => {
+        if (
+          this._entityManager.entities.filter(
+            (entity) => entity instanceof BridgeEntity
+          ).length >= 5
+        ) {
+          return;
         }
-      }
-    );
-
-    this._inputHandler.keyUpEvent.subscribe(
-      (key: EngineEvent<KeyboardEvent>) => {
-        if (key.eventData.key == "g") {
-          if (
-            this._entityManager.entities.filter(
-              (entity) => entity instanceof BridgeEntity
-            ).length >= 5
-          ) {
-            return;
-          }
-          for (let i = 0; i < 2; i++) {
-            this._entityManager.register(
-              new MetalWallEntity(150, 450 + i * 50, 1.5, 1.5, 0, 0)
-            );
-          }
-        }
-      }
-    );
-
-    this._inputHandler.keyDownEvent.subscribe(
-      (key: EngineEvent<KeyboardEvent>) => {
-        if (key.eventData.key == "f") {
-          this._entityManager.unregisterAll(
-            this._entityManager.entities.filter(
-              (entity) => entity instanceof BridgeEntity
-            )
+        for (let i = 0; i < 2; i++) {
+          this._entityManager.register(
+            new BridgeEntity(200, 450 + i * 50, 1.5, 1.5, 0, 0)
           );
         }
       }
     );
 
-    this._inputHandler.keyDownEvent.subscribe(
-      (key: EngineEvent<KeyboardEvent>) => {
-        if (key.eventData.key == "g") {
-          this._entityManager.unregisterAll(
-            this._entityManager.entities.filter(
-              (entity) => entity instanceof MetalWallEntity
-            )
+    this._buttonGround2.onUnpress.subscribe(
+      (engineEvent: EngineEvent<ButtonGround>) => {
+        if (
+          this._entityManager.entities.filter(
+            (entity) => entity instanceof BridgeEntity
+          ).length >= 5
+        ) {
+          return;
+        }
+        for (let i = 0; i < 2; i++) {
+          this._entityManager.register(
+            new MetalWallEntity(150, 450 + i * 50, 1.5, 1.5, 0, 0)
           );
         }
+      }
+    );
+
+    this._buttonGround1.onPress.subscribe(
+      (engineEvent: EngineEvent<ButtonGround>) => {
+        this._entityManager.unregisterAll(
+          this._entityManager.entities.filter(
+            (entity) => entity instanceof BridgeEntity
+          )
+        );
+      }
+    );
+
+    this._buttonGround2.onPress.subscribe(
+      (engineEvent: EngineEvent<ButtonGround>) => {
+        this._entityManager.unregisterAll(
+          this._entityManager.entities.filter(
+            (entity) => entity instanceof MetalWallEntity
+          )
+        );
       }
     );
   }
@@ -125,15 +120,15 @@ class Level3 implements Level {
       this._assetManager.getTexture("level1-background")
     );
 
-    let player = new NetworkEntity();
+    let player = new PlayerEntity(270, 450);
     let cornerBrickLeft = new LeftCornerBrickEntity(0, 550, 1.5, 1.5, 0, 0);
     let cornerBrickRight = new RightCornerBrickEntity(750, 550, 1.5, 1.5, 0, 0);
 
     let greenPortal1 = new PortalGreen(0, 50, 2.5, 2.5, -110, 0);
     let greenPortal2 = new PortalGreen(640, 400, 2.5, 2.5, -110, 0);
     let purplePortal = new PortalPurple(640, -25, 2.5, 2.5, -110, 0);
-    let buttonGround1 = new ButtonGround(500, 490, 1.3, 1.3, 0, 0);
-    let buttonGround2 = new ButtonGround(400, 490, 1.3, 1.3, 0, 0);
+    this._buttonGround1 = new ButtonGround(520, 490, 1.3, 1.3, 0, 0);
+    this._buttonGround2 = new ButtonGround(370, 490, 1.3, 1.3, 0, 0);
     let companionCube1 = new CompanionCube(200, 150, 0.5, 0.5, 0, 0);
     let companionCube2 = new CompanionCube(600, 100, 0.5, 0.5, 0, 0);
     let goal = new Goal(70, 470, 1.6, 1.6, 0, 0);
@@ -146,8 +141,9 @@ class Level3 implements Level {
     returnArray.push(greenPortal1);
     returnArray.push(greenPortal2);
     returnArray.push(purplePortal);
-    returnArray.push(buttonGround1);
-    returnArray.push(buttonGround2);
+    returnArray.push(player);
+    returnArray.push(this._buttonGround1);
+    returnArray.push(this._buttonGround2);
     returnArray.push(companionCube1);
     returnArray.push(companionCube2);
     returnArray.push(goal);

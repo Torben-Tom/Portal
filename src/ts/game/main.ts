@@ -38,7 +38,7 @@ function start(): void {
 
   let levelManager: LevelManager =
     Services.resolve<LevelManager>("LevelManager");
-  levelManager.startLevel("level3");
+  levelManager.startLevel("level1");
 }
 
 window.addEventListener("DOMContentLoaded", start);

@@ -5,4 +5,27 @@
 #game-canvas {
   display: block;
   margin: 0 auto;
+  height: 100%;
+}
+
+.page {
+  color: white;
+  background-color: rgba(44,34,34,255);
+  height: 100%;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }

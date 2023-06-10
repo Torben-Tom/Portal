@@ -16,11 +16,14 @@ import EntityManager from "../../engine/entitiy/entitymanager.js";
 import PortalGreen from "../entities/portalgreen.js";
 import PortalPurple from "../entities/portalpurple.js";
 import Goal from "../entities/goal.js";
+import PlayerEntity from "../entities/playerentity.js";
+import LevelManager from "../../engine/level/levelmanager.js";
 
 class Level2 implements Level {
   private _inputHandler: InputHandler;
   private _entityManager: EntityManager;
   private _assetManager: AssetManager;
+  private _goal!: Goal;
 
   constructor() {
     this._inputHandler = Services.resolve<InputHandler>("InputHandler");
@@ -28,10 +31,16 @@ class Level2 implements Level {
     this._assetManager = Services.resolve<AssetManager>("AssetManager");
   }
 
-  public load(): void {}
+  public load(): void {
+    this._goal.onTouch.subscribe((engineEvent: EngineEvent<Goal>) => {
+      let levelManager: LevelManager =
+        Services.resolve<LevelManager>("LevelManager");
+      levelManager.startLevel("level3");
+    });
+  }
 
   public unload(): void {
-    console.log("Level1 unloaded");
+    console.log("Level2 unloaded");
   }
 
   public getEntities(): Entity[] {
@@ -57,25 +66,25 @@ class Level2 implements Level {
       this._assetManager.getTexture("level1-background")
     );
 
-    let player = new NetworkEntity();
+    let player = new PlayerEntity(100, 450);
     let cornerBrickLeft = new LeftCornerBrickEntity(0, 550, 1.5, 1.5, 0, 0);
     let cornerBrickRight = new RightCornerBrickEntity(750, 550, 1.5, 1.5, 0, 0);
 
     let greenPortal1 = new PortalGreen(5, 400, 2.5, 2.5, -110, 0);
     let greenPortal2 = new PortalGreen(200, -20, 2.5, 2.5, -110, 0);
     let purplePortal = new PortalPurple(640, 250, 2.5, 2.5, -110, 0);
-    let goal = new Goal(70, 170, 1.6, 1.6, 0, 0);
+    this._goal = new Goal(70, 170, 1.6, 1.6, 0, 0);
 
     let returnArray: Entity[] = [];
     returnArray.push(window);
     returnArray.push(background);
-    // returnArray.push(player);
+    returnArray.push(player);
     returnArray.push(cornerBrickLeft);
     returnArray.push(cornerBrickRight);
     returnArray.push(greenPortal1);
     returnArray.push(greenPortal2);
     returnArray.push(purplePortal);
-    returnArray.push(goal);
+    returnArray.push(this._goal);
 
     for (let i = 0; i < 14; i++) {
       let bottomBrick = new BottomBrickEntity(50 + i * 50, 550, 1.5, 1.5, 0, 0);
