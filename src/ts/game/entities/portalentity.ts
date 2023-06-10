@@ -4,6 +4,7 @@ import Texture from "../../engine/assets/texture/texture.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import Entity from "../../engine/entitiy/entity.js";
 import EntityManager from "../../engine/entitiy/entitymanager.js";
+import MovingEntity from "../../engine/entitiy/movingentity.js";
 import EntitiesCollideEvent from "../../engine/event/events/entitiescollideevent.js";
 import Vector2D from "../../engine/math/vector2d.js";
 import PlayerEntity from "./playerentity.js";
@@ -13,7 +14,7 @@ class PortalEntity extends Entity {
   private _portalType: PortalType;
   private _destinationOffset: Vector2D;
   private _destination: PortalEntity | null;
-  private _onCooldown: boolean;
+  private _entitiesOnCooldown: Entity[];
   private _entityManager: EntityManager;
 
   get portalType(): PortalType {
@@ -30,10 +31,6 @@ class PortalEntity extends Entity {
 
   set destination(value: PortalEntity | null) {
     this._destination = value;
-  }
-
-  get onCooldown(): boolean {
-    return this._onCooldown;
   }
 
   constructor(
@@ -69,40 +66,53 @@ class PortalEntity extends Entity {
     this._portalType = portalType;
     this._destinationOffset = destinationOffset || this.findDestinationOffset();
     this._destination = null;
-    this._onCooldown = false;
+    this._entitiesOnCooldown = [];
     this._entityManager = Services.resolve<EntityManager>("EntityManager");
     this._entityManager.touchEvent.subscribe((engineEvent) =>
       this.onTouch(engineEvent)
     );
   }
 
+  public onCooldown(entity: Entity): boolean {
+    return this._entitiesOnCooldown.includes(entity);
+  }
+
   private onTouch(entitiesCollideEvent: EntitiesCollideEvent): void {
     if (
       this._destination &&
-      !this._onCooldown &&
       entitiesCollideEvent.eventData.belongsToEntity(this) &&
-      entitiesCollideEvent.eventData.belongsToType(PlayerEntity)
+      entitiesCollideEvent.eventData.belongsToType(MovingEntity)
     ) {
-      let playerEntity =
-        entitiesCollideEvent.eventData.getEntityOfType(PlayerEntity)!;
+      let movingEntity =
+        entitiesCollideEvent.eventData.getEntityOfType(MovingEntity)!;
 
-      playerEntity.teleport(
-        this._destination.boundingBox.center.add(
-          this._destination.destinationOffset
-        )
-      );
-      this.applyCooldown(100);
+      if (!this.onCooldown(movingEntity)) {
+        movingEntity.teleport(
+          this._destination.boundingBox.centerAbsolute
+            .add(this._destination.destinationOffset)
+            .subtract(movingEntity.boundingBox.centerRelative)
+        );
+        this.applyCooldown(movingEntity, 1000);
+      }
     }
   }
 
   private applyCooldown(
+    entity: Entity,
     cooldown: number,
     synchronizeDestination: boolean = true
   ): void {
-    this._onCooldown = true;
-    setTimeout(() => (this._onCooldown = false), cooldown);
+    this._entitiesOnCooldown.push(entity);
+    setTimeout(
+      () =>
+        this._entitiesOnCooldown.splice(
+          this._entitiesOnCooldown.indexOf(entity),
+          1
+        ),
+      cooldown
+    );
     if (synchronizeDestination && this._destination) {
-      this._destination.applyCooldown(cooldown, false);
+      this._destination.applyCooldown(entity, cooldown, false);
     }
   }
 

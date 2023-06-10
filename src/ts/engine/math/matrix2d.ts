@@ -1,6 +1,9 @@
 import Vector2D from "./vector2d.js";
 
 class Matrix2D {
+  public static readonly ignoreXMatrix = new Matrix2D(0, 0, 0, 1);
+  public static readonly ignoreYMatrix = new Matrix2D(1, 0, 0, 0);
+
   private _a: number;
   private _b: number;
   private _c: number;

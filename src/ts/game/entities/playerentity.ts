@@ -2,10 +2,8 @@ import AssetManager from "../../engine/assets/assetmanager.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import ComplexMovingEntity from "../../engine/entitiy/complexmovingentity.js";
 import ComplexMovingEntityBuilder from "../../engine/entitiy/complexmovingentitybuilder.js";
-import EntityManager from "../../engine/entitiy/entitymanager.js";
-import EntitiesCollideEvent from "../../engine/event/events/entitiescollideevent.js";
-import EntitiesUncollideEvent from "../../engine/event/events/entitiesuncollideevent.js";
 import InputHandler from "../../engine/input/inputhandler.js";
+import Direction from "../../engine/math/direction.js";
 import Vector2D from "../../engine/math/vector2d.js";
 import PlayerArmRight from "./playerarmright.js";
 
@@ -35,45 +33,23 @@ class PlayerEntity extends ComplexMovingEntity {
     );
 
     this._inputHandler = Services.resolve<InputHandler>("InputHandler");
-
-    Services.resolve<EntityManager>("EntityManager").collideEvent.subscribe(
-      (engineEvent: EntitiesCollideEvent) => {
-        if (engineEvent.eventData.belongsToEntity(this)) {
-          console.log(Date.now() + " collide");
-        }
-      }
-    );
-
-    Services.resolve<EntityManager>("EntityManager").uncollideEvent.subscribe(
-      (engineEvent: EntitiesUncollideEvent) => {
-        if (engineEvent.eventData.belongsToEntity(this)) {
-          console.log(Date.now() + " uncollide");
-        }
-      }
-    );
   }
 
   public update(delta: number): void {
-    console.log(
-      this.onGround +
-        "/" +
-        Services.resolve<EntityManager>("EntityManager").isColliding(this)
-    );
-
     if (this._inputHandler) {
-      if (this.onGround) {
+      if (this.collisions[Direction.BOTTOM]) {
         if (
           this._inputHandler.isKeyDown("w") ||
           this._inputHandler.isKeyDown(" ")
         ) {
           this.addVelocity(new Vector2D(0, -50));
-          this.onGround = false;
+          this.setColliding(Direction.BOTTOM, false);
         }
         if (this._inputHandler.isKeyDown("a")) {
-          this.addVelocity(new Vector2D(-0.25 * delta, 0));
+          this.addVelocity(new Vector2D(-0.1 * delta, 0));
         }
         if (this._inputHandler.isKeyDown("d")) {
-          this.addVelocity(new Vector2D(0.25 * delta, 0));
+          this.addVelocity(new Vector2D(0.1 * delta, 0));
         }
       }
     }

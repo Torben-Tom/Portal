@@ -31,11 +31,12 @@ class BoundingBox {
     );
   }
 
-  get center(): Vector2D {
-    return new Vector2D(
-      this.location.x + this.width / 2,
-      this.location.y + this.height / 2
-    );
+  get centerRelative(): Vector2D {
+    return new Vector2D(this.width / 2, this.height / 2);
+  }
+
+  get centerAbsolute(): Vector2D {
+    return this.location.add(this.centerRelative);
   }
 
   get passThrough(): boolean {

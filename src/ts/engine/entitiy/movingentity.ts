@@ -8,14 +8,8 @@ class MovingEntity extends Entity {
   private _collisions: boolean[];
   private _velocity: Vector2D;
 
-  private p = false;
-
-  public get onGround(): boolean {
-    return this._collisions[Direction.BOTTOM];
-  }
-
-  public set onGround(value: boolean) {
-    this._collisions[Direction.BOTTOM] = value;
+  get collisions(): boolean[] {
+    return this._collisions;
   }
 
   public get velocity(): Vector2D {
@@ -61,40 +55,42 @@ class MovingEntity extends Entity {
     this._velocity = this._velocity.add(velocity);
   }
 
+  public setColliding(direction: Direction, value: boolean): void {
+    this._collisions[direction] = value;
+  }
+
+  public clearCollisions(): void {
+    this._collisions = [false, false, false, false];
+  }
+
   public update(tickDelta: number): void {
     super.update(tickDelta);
 
     if (this._collisions[Direction.TOP] && this._velocity.y < 0) {
-      this._velocity = new Matrix2D(1, 0, 0, 0).multiplyVector(this._velocity);
+      this._velocity = Matrix2D.ignoreYMatrix.multiplyVector(this._velocity);
     }
     if (this._collisions[Direction.RIGHT] && this._velocity.x > 0) {
-      this._velocity = new Matrix2D(0, 0, 0, 1).multiplyVector(this._velocity);
+      this._velocity = Matrix2D.ignoreXMatrix.multiplyVector(this._velocity);
     }
     if (this._collisions[Direction.BOTTOM]) {
       if (this._velocity.y > 0) {
-        this._velocity = new Matrix2D(1, 0, 0, 0).multiplyVector(
-          this._velocity
-        );
+        this._velocity = Matrix2D.ignoreYMatrix.multiplyVector(this._velocity);
       }
+      this._velocity = new Matrix2D(0.95, 0, 0, 1).multiplyVector(
+        this._velocity
+      );
     } else {
       this.addVelocity(new Vector2D(0, 0.1 * tickDelta));
+      this._velocity = new Matrix2D(0.99, 0, 0, 1).multiplyVector(
+        this._velocity
+      );
     }
     if (this._collisions[Direction.LEFT] && this._velocity.x < 0) {
-      this._velocity = new Matrix2D(0, 0, 0, 1).multiplyVector(this._velocity);
-    }
-
-    if (this.onGround) {
-      this._velocity = new Matrix2D(0.85, 0, 0, 1).multiplyVector(
-        this._velocity
-      );
-    } else {
-      this._velocity = new Matrix2D(0.98, 0, 0, 1).multiplyVector(
-        this._velocity
-      );
+      this._velocity = Matrix2D.ignoreXMatrix.multiplyVector(this._velocity);
     }
 
     let newLocation = this.location.add(
-      this._velocity.multiplyScalar(tickDelta).multiplyScalar(1 / 100)
+      this._velocity.multiplyScalar(tickDelta / 100)
     );
 
     this.teleport(newLocation);

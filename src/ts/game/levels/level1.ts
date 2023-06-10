@@ -140,13 +140,6 @@ class Level1 implements Level {
   public load(): void {
     this._buttonGround.onPress.subscribe(
       (engineEvent: EngineEvent<ButtonGround>) => {
-        if (
-          this._entityManager.entities.filter(
-            (entity) => entity instanceof BridgeEntity
-          ).length >= 5
-        ) {
-          return;
-        }
         for (let i = 0; i < 5; i++) {
           this._entityManager.register(
             new BridgeEntity(300 + i * 50, 300, 1.5, 1.5, 0, 0)

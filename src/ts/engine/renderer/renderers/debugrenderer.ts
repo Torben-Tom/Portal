@@ -81,7 +81,7 @@ class DebugRenderer extends Renderer {
     glContext.rotate((entity.rotation * Math.PI) / 180);
     glContext.translate(-centerOfMass.x, -centerOfMass.y);
 
-    let center = entity.boundingBox.center;
+    let center = entity.boundingBox.centerAbsolute;
     glContext.fillStyle = "yellow";
     glContext.beginPath();
     glContext.arc(center.x, center.y, 5, 0, 2 * Math.PI, false);
@@ -130,7 +130,6 @@ class DebugRenderer extends Renderer {
         collision.entity2.boundingBox
       );
 
-      glContext.strokeStyle = "red";
       let loopGoal = collisionArea.points.length;
       if (loopGoal === 0) {
         continue;
@@ -139,6 +138,7 @@ class DebugRenderer extends Renderer {
         loopGoal = loopGoal / 2 + 1;
       }
 
+      glContext.strokeStyle = "red";
       for (let index = 0; index < loopGoal; index++) {
         let point = collisionArea.points[index];
         for (let otherPoint of collisionArea.points) {
