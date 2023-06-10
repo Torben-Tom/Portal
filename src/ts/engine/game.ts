@@ -107,11 +107,15 @@ class Game {
   public renderLoop(): void {
     let now = Date.now();
     let renderDelta = now - this._lastRender;
-    this._lastRender = now;
-    this._currentFps = Math.round(1 / (renderDelta / 1000));
 
-    if (!document.hidden) {
-      this._compositor.render(renderDelta);
+    //Sometimes, browser will call requestAnimationFrame multiple times in a row, causing a renderDelta of 1. This is a workaround.
+    if (renderDelta > 1) {
+      this._lastRender = now;
+      this._currentFps = Math.round(1 / (renderDelta / 1000));
+
+      if (!document.hidden) {
+        this._compositor.render(renderDelta);
+      }
     }
 
     if (this._running) {

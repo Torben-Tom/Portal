@@ -27,6 +27,20 @@ class Touch {
       (this._entity1 === entity2 && this._entity2 === entity1)
     );
   }
+
+  public belongsToType(type: typeof Entity) {
+    return this._entity1 instanceof type || this._entity2 instanceof type;
+  }
+
+  public getEntityOfType(type: typeof Entity): Entity | null {
+    if (this._entity1 instanceof type) {
+      return this._entity1;
+    } else if (this._entity2 instanceof type) {
+      return this._entity2;
+    } else {
+      return null;
+    }
+  }
 }
 
 export default Touch;

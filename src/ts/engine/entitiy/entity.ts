@@ -81,6 +81,10 @@ class Entity {
     this._location = location;
   }
 
+  public rotate(rotation: number) {
+    this._rotation = rotation;
+  }
+
   update(tickDelta: number) {}
 }
 
