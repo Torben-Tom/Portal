@@ -23,7 +23,6 @@ class NetworkEntity2 extends Entity {
       centerOfMassY,
       scalingX,
       scalingY,
-      true,
       expansionX,
       expansionY,
       false,

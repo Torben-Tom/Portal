@@ -1,7 +1,9 @@
 import Services from "../../dependencyinjection/services.js";
 import ComplexEntity from "../../entitiy/complexentity.js";
+import ComplexMovingEntity from "../../entitiy/complexmovingentity.js";
 import Entity from "../../entitiy/entity.js";
 import EntityManager from "../../entitiy/entitymanager.js";
+import { isIComplexEntity } from "../../entitiy/icomplexentity.js";
 import Game from "../../game.js";
 import InputHandler from "../../input/inputhandler.js";
 import Renderer from "../renderer.js";
@@ -79,7 +81,7 @@ class DebugRenderer extends Renderer {
     glContext.rotate((entity.rotation * Math.PI) / 180);
     glContext.translate(-centerOfMass.x, -centerOfMass.y);
 
-    let center = entity.boundingBox.center;
+    let center = entity.boundingBox.centerAbsolute;
     glContext.fillStyle = "yellow";
     glContext.beginPath();
     glContext.arc(center.x, center.y, 5, 0, 2 * Math.PI, false);
@@ -113,7 +115,7 @@ class DebugRenderer extends Renderer {
     );
     glContext.setTransform(1, 0, 0, 1, 0, 0);
 
-    if (entity instanceof ComplexEntity) {
+    if (isIComplexEntity(entity)) {
       for (let part of entity.parts) this.drawBoundingBoxes(glContext, part[1]);
     }
   }
@@ -128,7 +130,6 @@ class DebugRenderer extends Renderer {
         collision.entity2.boundingBox
       );
 
-      glContext.strokeStyle = "red";
       let loopGoal = collisionArea.points.length;
       if (loopGoal === 0) {
         continue;
@@ -137,6 +138,7 @@ class DebugRenderer extends Renderer {
         loopGoal = loopGoal / 2 + 1;
       }
 
+      glContext.strokeStyle = "red";
       for (let index = 0; index < loopGoal; index++) {
         let point = collisionArea.points[index];
         for (let otherPoint of collisionArea.points) {

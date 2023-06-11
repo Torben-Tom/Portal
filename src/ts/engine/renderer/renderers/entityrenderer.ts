@@ -1,6 +1,10 @@
 import Texture from "../../assets/texture/texture.js";
 import ComplexEntity from "../../entitiy/complexentity.js";
+import ComplexMovingEntity from "../../entitiy/complexmovingentity.js";
 import Entity from "../../entitiy/entity.js";
+import IComplexEntity, {
+  isIComplexEntity,
+} from "../../entitiy/icomplexentity.js";
 import Renderer from "../renderer.js";
 
 class EntityRenderer extends Renderer {
@@ -29,7 +33,7 @@ class EntityRenderer extends Renderer {
     );
     glContext.setTransform(1, 0, 0, 1, 0, 0);
 
-    if (entity instanceof ComplexEntity) {
+    if (isIComplexEntity(entity)) {
       for (let part of entity.parts) {
         this.renderEntity(glContext, part[1]);
       }

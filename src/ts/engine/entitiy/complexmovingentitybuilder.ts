@@ -1,8 +1,8 @@
 import Texture from "../assets/texture/texture.js";
-import ComplexEntity from "./complexentity.js";
 import ComplexEntityBuilderBase from "./complexentitybuilderbase.js";
+import ComplexMovingEntity from "./complexmovingentity.js";
 
-class ComplexEntityBuilder extends ComplexEntityBuilderBase<ComplexEntity> {
+class ComplexMovingEntityBuilder extends ComplexEntityBuilderBase<ComplexMovingEntity> {
   constructor(
     x: number,
     y: number,
@@ -31,9 +31,9 @@ class ComplexEntityBuilder extends ComplexEntityBuilderBase<ComplexEntity> {
     );
   }
 
-  public build(): ComplexEntity {
-    return new ComplexEntity(this);
+  public build(): ComplexMovingEntity {
+    return new ComplexMovingEntity(this);
   }
 }
 
-export default ComplexEntityBuilder;
+export default ComplexMovingEntityBuilder;

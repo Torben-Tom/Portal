@@ -1,13 +1,16 @@
+import PlayerEntity from "../../game/entities/playerentity.js";
 import EngineEventHandler from "../event/engineventhandler.js";
 import EntitiesCollideEvent from "../event/events/entitiescollideevent.js";
 import EntitiesTouchEvent from "../event/events/entitiestouchevent.js";
 import EntitiesUncollideEvent from "../event/events/entitiesuncollideevent.js";
 import EntitiesUntouchEvent from "../event/events/entitiesuntouchevent.js";
+import Direction from "../math/direction.js";
 import Matrix2D from "../math/matrix2d.js";
 import Polygon from "../math/polygon.js";
 import Vector2D from "../math/vector2d.js";
 import BoundingBox from "./boundingbox.js";
 import Entity from "./entity.js";
+import MovingEntity from "./movingentity.js";
 import Touch from "./touch.js";
 class EntityManager {
   private _entities: Entity[];
@@ -137,11 +140,11 @@ class EntityManager {
 
   private checkTouch(entity1: Entity, entity2: Entity) {
     if (!this.areTouching(entity1, entity2)) {
-      let location1 = entity1.boundingBox.center;
-      let location2 = entity2.boundingBox.center;
+      let location1 = entity1.boundingBox.centerAbsolute;
+      let location2 = entity2.boundingBox.centerAbsolute;
       let widthSum = entity1.boundingBox.width + entity2.boundingBox.width;
       let heightSum = entity1.boundingBox.height + entity2.boundingBox.height;
-      let maxRadius = Math.max(widthSum, heightSum) / 2;
+      let maxRadius = Math.max(widthSum, heightSum);
       let xDiff = location1.x - location2.x;
       let yDiff = location1.y - location2.y;
       let distance = Math.hypot(xDiff, yDiff);
@@ -160,6 +163,7 @@ class EntityManager {
 
   private checkCollision(entity1: Entity, entity2: Entity) {
     if (
+      this.areTouching(entity1, entity2) &&
       !this.areColliding(entity1, entity2) &&
       !entity1.boundingBox.passThrough &&
       !entity2.boundingBox.passThrough
@@ -174,8 +178,8 @@ class EntityManager {
   private cleanupTouches() {
     for (let touch of this._touches) {
       if (
-        this._entities.indexOf(touch.entity1) < 0 ||
-        this._entities.indexOf(touch.entity2) < 0 ||
+        !this._entities.includes(touch.entity1) ||
+        !this._entities.includes(touch.entity2) ||
         touch.entity1.boundingBox.intersect(touch.entity2.boundingBox).points
           .length == 0
       ) {
@@ -188,81 +192,195 @@ class EntityManager {
   private cleanupCollisions() {
     for (let touch of this._collisions) {
       if (
-        this._entities.indexOf(touch.entity1) < 0 ||
-        this._entities.indexOf(touch.entity2) < 0 ||
+        !this._entities.includes(touch.entity1) ||
+        !this._entities.includes(touch.entity2) ||
         touch.entity1.boundingBox.passThrough ||
         touch.entity2.boundingBox.passThrough ||
-        touch.entity1.boundingBox.intersect(touch.entity2.boundingBox).points
-          .length == 0
+        !this.areTouching(touch.entity1, touch.entity2)
       ) {
         this._collisions.splice(this._collisions.indexOf(touch), 1);
         this._uncollideEvent.dispatch(new EntitiesUncollideEvent(touch));
+
+        if (
+          touch.entity1 instanceof MovingEntity &&
+          !this.isColliding(touch.entity1)
+        ) {
+          touch.entity1.clearCollisions();
+        }
+        if (
+          touch.entity2 instanceof MovingEntity &&
+          !this.isColliding(touch.entity2)
+        ) {
+          touch.entity2.clearCollisions();
+        }
       }
     }
   }
 
   private applyCollisionResponse() {
-    for (let entity of this._entities) {
-      if (entity.static) {
+    for (let collision of this._collisions) {
+      let entity = collision.entity1;
+      let otherEntity = collision.entity2;
+
+      let entityIsMovingEntity = entity instanceof MovingEntity;
+      let otherEntityIsMovingEntity = otherEntity instanceof MovingEntity;
+      if (!(entityIsMovingEntity || otherEntityIsMovingEntity)) {
         continue;
       }
 
-      let boundingBox = entity.boundingBox;
-      let intersections: Polygon[] = [];
-      for (let otherEntity of this._entities) {
-        if (otherEntity === entity || otherEntity.boundingBox.passThrough) {
-          continue;
-        }
+      let movingEntities: MovingEntity[] = [];
+      if (entityIsMovingEntity) {
+        movingEntities.push(entity as MovingEntity);
+      }
+      if (otherEntityIsMovingEntity) {
+        movingEntities.push(otherEntity as MovingEntity);
+      }
+      let bothEntitiesAreMovingEntities =
+        entityIsMovingEntity && otherEntityIsMovingEntity;
 
-        let intersection = boundingBox.intersect(otherEntity.boundingBox);
-        if (intersection.points.length > 0) {
-          intersections.push(intersection);
-        }
+      let intersection = entity.boundingBox.intersect(otherEntity.boundingBox);
+      if (intersection.points.length === 0) {
+        continue;
       }
 
-      let totalBottomIntersectionsWidth = 0;
-      for (let intersection of intersections) {
-        if (intersection.center.y > boundingBox.center.y) {
-          totalBottomIntersectionsWidth += intersection.width;
-        }
-      }
-      let totalBottomIntersectionsWidthPercentage =
-        (totalBottomIntersectionsWidth / entity.boundingBox.width) * 100;
+      // let topIntersections: [MovingEntity, Polygon[]][] = movingEntities.map(
+      //   (movingEntity) => [
+      //     movingEntity,
+      //     intersections.filter(
+      //       (intersection) =>
+      //         intersection.minY < movingEntity.boundingBox.centerAbsolute.y
+      //     ),
+      //   ]
+      // );
+      // let rightIntersections: [MovingEntity, Polygon[]][] = movingEntities.map(
+      //   (movingEntity) => [
+      //     movingEntity,
+      //     intersections.filter(
+      //       (intersection) =>
+      //         intersection.maxX > movingEntity.boundingBox.centerAbsolute.x
+      //     ),
+      //   ]
+      // );
+      // let bottomIntersections: [MovingEntity, Polygon[]][] = movingEntities.map(
+      //   (movingEntity) => [
+      //     movingEntity,
+      //     intersections.filter(
+      //       (intersection) =>
+      //         intersection.maxY > movingEntity.boundingBox.centerAbsolute.y
+      //     ),
+      //   ]
+      // );
+      // let leftIntersections: [MovingEntity, Polygon[]][] = movingEntities.map(
+      //   (movingEntity) => [
+      //     movingEntity,
+      //     intersections.filter(
+      //       (intersection) =>
+      //         intersection.minX < movingEntity.boundingBox.centerAbsolute.x
+      //     ),
+      //   ]
+      // );
 
-      let outOfWallVelocities: Vector2D[] = [];
-      for (let index = 0; index < intersections.length; index++) {
-        let intersection = intersections[index];
-        let intersectionCenter = intersection.center;
-        let pushDirection = boundingBox.center
-          .subtract(intersectionCenter)
+      // let totalTopIntersectionsWidth: [MovingEntity, number][] =
+      //   topIntersections.map(([movingEntity, intersections]) => [
+      //     movingEntity,
+      //     intersections.reduce(
+      //       (sum, intersection) => sum + intersection.width,
+      //       0
+      //     ),
+      //   ]);
+      // let totalRightIntersectionsHeight: [MovingEntity, number][] =
+      //   rightIntersections.map(([movingEntity, intersections]) => [
+      //     movingEntity,
+      //     intersections.reduce(
+      //       (sum, intersection) => sum + intersection.height,
+      //       0
+      //     ),
+      //   ]);
+      // let totalBottomIntersectionsWidth: [MovingEntity, number][] =
+      //   bottomIntersections.map(([movingEntity, intersections]) => [
+      //     movingEntity,
+      //     intersections.reduce(
+      //       (sum, intersection) => sum + intersection.width,
+      //       0
+      //     ),
+      //   ]);
+      // let totalLeftIntersectionsHeight: [MovingEntity, number][] =
+      //   leftIntersections.map(([movingEntity, intersections]) => [
+      //     movingEntity,
+      //     intersections.reduce(
+      //       (sum, intersection) => sum + intersection.height,
+      //       0
+      //     ),
+      //   ]);
+
+      for (let movingEntity of movingEntities) {
+        let boundingBox = movingEntity.boundingBox;
+
+        let hasTopIntersection =
+          intersection.minY < boundingBox.centerAbsolute.y;
+        let hasRightIntersection =
+          intersection.maxX > boundingBox.centerAbsolute.x;
+        let hasBottomIntersection =
+          intersection.maxY > boundingBox.centerAbsolute.y;
+        let hasLeftIntersection =
+          intersection.minX < boundingBox.centerAbsolute.x;
+
+        let intersectionWidthPercentage =
+          (intersection.width / movingEntity.boundingBox.width) * 100;
+        let intersectionHeightPercentage =
+          (intersection.height / movingEntity.boundingBox.height) * 100;
+
+        let movingEntityCollisions = new Map<Direction, boolean>();
+        if (hasTopIntersection && intersectionWidthPercentage > 25) {
+          movingEntityCollisions.set(Direction.TOP, true);
+        }
+        if (hasRightIntersection && intersectionHeightPercentage > 25) {
+          movingEntityCollisions.set(Direction.RIGHT, true);
+        }
+        if (hasBottomIntersection && intersectionWidthPercentage > 25) {
+          movingEntityCollisions.set(Direction.BOTTOM, true);
+        }
+        if (hasLeftIntersection && intersectionHeightPercentage > 25) {
+          movingEntityCollisions.set(Direction.LEFT, true);
+        }
+
+        let pushDirection = boundingBox.centerAbsolute
+          .subtract(intersection.center)
           .normalize();
 
         if (
-          pushDirection.y < 0 &&
-          totalBottomIntersectionsWidthPercentage > 33
+          movingEntityCollisions.get(Direction.TOP) ||
+          movingEntityCollisions.get(Direction.BOTTOM)
         ) {
-          pushDirection = new Matrix2D(0, 0, 0, 1).multiplyVector(
-            pushDirection
-          );
+          pushDirection = Matrix2D.ignoreXMatrix.multiplyVector(pushDirection);
+        }
+
+        if (
+          movingEntityCollisions.get(Direction.LEFT) ||
+          movingEntityCollisions.get(Direction.RIGHT)
+        ) {
+          pushDirection = Matrix2D.ignoreYMatrix.multiplyVector(pushDirection);
         }
 
         pushDirection = pushDirection.multiplyScalar(
           (3 * intersection.width * intersection.height) / 100
         );
-        outOfWallVelocities.push(pushDirection);
-      }
 
-      let outOfWallVelocity = new Vector2D(0, 0);
-      for (let velocity of outOfWallVelocities) {
-        if (Math.abs(velocity.x) > Math.abs(outOfWallVelocity.x)) {
-          outOfWallVelocity = new Vector2D(velocity.x, outOfWallVelocity.y);
-        }
-        if (Math.abs(velocity.y) > Math.abs(outOfWallVelocity.y)) {
-          outOfWallVelocity = new Vector2D(outOfWallVelocity.x, velocity.y);
+        movingEntity.addVelocity(pushDirection);
+
+        for (let collision of movingEntityCollisions) {
+          if (collision[1]) {
+            if (
+              bothEntitiesAreMovingEntities &&
+              (collision[0] === Direction.LEFT ||
+                collision[0] === Direction.RIGHT)
+            ) {
+              continue;
+            }
+            movingEntity.setColliding(collision[0], collision[1]);
+          }
         }
       }
-
-      entity.teleport(entity.location.add(outOfWallVelocity));
     }
   }
 
@@ -270,8 +388,8 @@ class EntityManager {
     for (let entity of this._entities) {
       entity.update(tickDelta);
 
-      if (!entity.static) {
-        this.applyGravity(entity, tickDelta);
+      if (entity instanceof MovingEntity) {
+        entity.clearCollisions();
       }
 
       for (let otherEntity of this._entities) {
@@ -284,7 +402,6 @@ class EntityManager {
     }
     this.cleanupTouches();
     this.cleanupCollisions();
-
     this.applyCollisionResponse();
   }
 }

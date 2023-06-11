@@ -20,7 +20,6 @@ class BackgroundTileEntity extends TileEntity {
       centerOfMassY,
       scalingX,
       scalingY,
-      true,
       0,
       0,
       true,

@@ -1,8 +1,8 @@
 import AssetManager from "../../engine/assets/assetmanager.js";
 import Services from "../../engine/dependencyinjection/services.js";
-import Entity from "../../engine/entitiy/entity.js";
+import MovingEntity from "../../engine/entitiy/movingentity.js";
 
-class CompanionCube extends Entity {
+class CompanionCube extends MovingEntity {
   constructor(
     x: number,
     y: number,
@@ -19,7 +19,6 @@ class CompanionCube extends Entity {
       0,
       scalingX,
       scalingY,
-      false,
       widthExpansion,
       heightExpansion,
       false,

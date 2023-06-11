@@ -42,6 +42,7 @@ class LevelManager {
 
     this._entityManager.registerAll(level.getEntities());
     level.load();
+    this._currentLevel = level;
   }
 
   public update(tickDelta: number): void {

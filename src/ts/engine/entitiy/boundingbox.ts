@@ -1,12 +1,9 @@
 import Entity from "./entity.js";
 import Vector2D from "../math/vector2d.js";
 import Matrix2D from "../math/matrix2d.js";
-import Direction from "../math/direction.js";
+import Diagonal from "../math/diagonal.js";
 import PolygonBuilder from "../math/polygonbuilder.js";
 import Polygon from "../math/polygon.js";
-import Services from "../dependencyinjection/services.js";
-import Game from "../game.js";
-import InputHandler from "../input/inputhandler.js";
 
 class BoundingBox {
   private _entity: Entity;
@@ -34,11 +31,12 @@ class BoundingBox {
     );
   }
 
-  get center(): Vector2D {
-    return new Vector2D(
-      this.location.x + this.width / 2,
-      this.location.y + this.height / 2
-    );
+  get centerRelative(): Vector2D {
+    return new Vector2D(this.width / 2, this.height / 2);
+  }
+
+  get centerAbsolute(): Vector2D {
+    return this.location.add(this.centerRelative);
   }
 
   get passThrough(): boolean {
@@ -90,21 +88,22 @@ class BoundingBox {
     let ret: Vector2D[] = [];
     let corners: Vector2D[] = this.corners;
 
-    let base1 = corners[Direction.TOP_RIGHT].subtract(
-      corners[Direction.TOP_LEFT]
+    let base1 = corners[Diagonal.TOP_RIGHT].subtract(
+      corners[Diagonal.TOP_LEFT]
     );
-    let base2 = corners[Direction.BOTTOM_LEFT].subtract(
-      corners[Direction.TOP_LEFT]
+    let base2 = corners[Diagonal.BOTTOM_LEFT].subtract(
+      corners[Diagonal.TOP_LEFT]
     );
 
     let baseMatrix = base1.concatenate(base2);
     let inverseBaseMatrix = baseMatrix.inverse;
     if (!inverseBaseMatrix) {
       return ret; //Mathematically, this should never happen as long as no entity has a BoundingBox of height or width 0
+      return ret; //Mathematically, this should never happen as long as no entity has a BoundingBox of height or width 0
     }
     for (let location of locations) {
       let lambda: Vector2D = inverseBaseMatrix!.multiplyVector(
-        location.subtract(corners[Direction.TOP_LEFT])
+        location.subtract(corners[Diagonal.TOP_LEFT])
       );
       if (0 <= lambda.x && lambda.x <= 1 && 0 <= lambda.y && lambda.y <= 1) {
         ret.push(location);
@@ -118,6 +117,8 @@ class BoundingBox {
     let corners1 = this.corners;
     let corners2 = boundingBox.corners;
 
+    polygonBuilder.addPoints(boundingBox.locationsInside(corners1));
+    polygonBuilder.addPoints(this.locationsInside(corners2));
     polygonBuilder.addPoints(boundingBox.locationsInside(corners1));
     polygonBuilder.addPoints(this.locationsInside(corners2));
 

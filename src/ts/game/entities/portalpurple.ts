@@ -19,7 +19,6 @@ class PortalPurple extends Entity {
       0,
       scalingX,
       scalingY,
-      true,
       widthExpansion,
       heightExpansion,
       true,

@@ -22,7 +22,6 @@ class PlayerArmRight extends Entity {
       centerOfMassY,
       scalingX,
       scalingY,
-      true,
       widthExpansion,
       heightExpansion,
       true,

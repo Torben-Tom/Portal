@@ -1,17 +1,18 @@
 import AssetManager from "../../engine/assets/assetmanager.js";
 import Services from "../../engine/dependencyinjection/services.js";
-import ComplexEntity from "../../engine/entitiy/complexentity.js";
-import ComplexEntityBuilder from "../../engine/entitiy/complexentitybuilder.js";
-import EntityManager from "../../engine/entitiy/entitymanager.js";
+import ComplexMovingEntity from "../../engine/entitiy/complexmovingentity.js";
+import ComplexMovingEntityBuilder from "../../engine/entitiy/complexmovingentitybuilder.js";
 import InputHandler from "../../engine/input/inputhandler.js";
+import Direction from "../../engine/math/direction.js";
 import Vector2D from "../../engine/math/vector2d.js";
 import PlayerArmRight from "./playerarmright.js";
 
-class PlayerEntity extends ComplexEntity {
+class PlayerEntity extends ComplexMovingEntity {
   private _inputHandler: InputHandler;
+
   constructor(x: number, y: number) {
     super(
-      new ComplexEntityBuilder(
+      new ComplexMovingEntityBuilder(
         x,
         y,
         0,
@@ -19,7 +20,6 @@ class PlayerEntity extends ComplexEntity {
         0,
         1,
         1,
-        false,
         0,
         0,
         false,
@@ -37,17 +37,20 @@ class PlayerEntity extends ComplexEntity {
 
   public update(delta: number): void {
     if (this._inputHandler) {
-      if (this._inputHandler.isKeyDown("w")) {
-        this._location = this._location.add(new Vector2D(0, -0.15 * delta));
-      }
-      if (this._inputHandler.isKeyDown("a")) {
-        this._location = this._location.add(new Vector2D(-0.15 * delta, 0));
-      }
-      if (this._inputHandler.isKeyDown("s")) {
-        this._location = this._location.add(new Vector2D(0, 0.15 * delta));
-      }
-      if (this._inputHandler.isKeyDown("d")) {
-        this._location = this._location.add(new Vector2D(0.15 * delta, 0));
+      if (this.collisions[Direction.BOTTOM]) {
+        if (
+          this._inputHandler.isKeyDown("w") ||
+          this._inputHandler.isKeyDown(" ")
+        ) {
+          this.addVelocity(new Vector2D(0, -50));
+          this.setColliding(Direction.BOTTOM, false);
+        }
+        if (this._inputHandler.isKeyDown("a")) {
+          this.addVelocity(new Vector2D(-0.1 * delta, 0));
+        }
+        if (this._inputHandler.isKeyDown("d")) {
+          this.addVelocity(new Vector2D(0.1 * delta, 0));
+        }
       }
     }
 
