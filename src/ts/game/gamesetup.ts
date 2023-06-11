@@ -5,6 +5,8 @@ import EngineSetup from "../engine/enginesetup.js";
 import EntityManager from "../engine/entitiy/entitymanager.js";
 import LevelManager from "../engine/level/levelmanager.js";
 import Level1 from "./levels/level1.js";
+import Level2 from "./levels/level2.js";
+import Level3 from "./levels/level3.js";
 
 class GameSetup extends EngineSetup {
   public loadAssets(
@@ -993,6 +995,8 @@ class GameSetup extends EngineSetup {
     _levelManager: LevelManager
   ): void {
     _levelManager.registerLevel("level1", new Level1());
+    _levelManager.registerLevel("level2", new Level2());
+    _levelManager.registerLevel("level3", new Level3());
   }
 }
 

@@ -22,6 +22,7 @@ import PlayerArmRight from "../entities/playerarmright.js";
 import PlayerEntity from "../entities/playerentity.js";
 import PortalEntity from "../entities/portalentity.js";
 import PortalType from "../entities/portaltype.js";
+import LevelManager from "../../engine/level/levelmanager.js";
 
 class Level1 implements Level {
   private _entityManager: EntityManager;
@@ -29,6 +30,7 @@ class Level1 implements Level {
 
   private _buttonGround!: ButtonGround;
   private _buttonStanding!: ButtonStanding;
+  private _goal!: Goal;
   private _purplePortal!: PortalEntity;
   private _greenPortal!: PortalEntity;
 
@@ -92,7 +94,7 @@ class Level1 implements Level {
     this._buttonGround = new ButtonGround(175, 490, 1.3, 1.3, 0, 0);
     this._buttonStanding = new ButtonStanding(550, 470, 1.1, 1.1, 0, 0, 0);
     let companionCube = new CompanionCube(200, 250, 0.5, 0.5, 0, 0);
-    let goal = new Goal(685, 275, 1.6, 1.6, 0, 0);
+    this._goal = new Goal(685, 275, 1.6, 1.6, 0, 0);
 
     let returnArray: Entity[] = [
       background,
@@ -102,7 +104,7 @@ class Level1 implements Level {
       this._buttonGround,
       this._buttonStanding,
       companionCube,
-      goal,
+      this._goal,
       player,
     ];
 
@@ -171,6 +173,12 @@ class Level1 implements Level {
         this._entityManager.register(this._greenPortal);
       }
     );
+
+    this._goal.onTouch.subscribe((engineEvent: EngineEvent<Goal>) => {
+      let levelManager: LevelManager =
+        Services.resolve<LevelManager>("LevelManager");
+      levelManager.startLevel("level2");
+    });
   }
 
   public unload(): void {
