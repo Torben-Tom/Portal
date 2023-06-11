@@ -1,11 +1,12 @@
-name: Build and deploy release
+name: GitHub & Docker Artifacts
 
 on:
   push:
     branches: ["main"]
 
 jobs:
-  deploy_artifact:
+  deploy_github_artifact:
+    name: Deploy GitHub Artifact
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
@@ -26,8 +27,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: COMMIT_HASH=$(git rev-parse --short "$GITHUB_SHA") && gh release create "$COMMIT_HASH" --repo="$GITHUB_REPOSITORY" --title="${GITHUB_REPOSITORY#*/} ${COMMIT_HASH}" \./portal.zip --generate-notes --latest
-  deploy_docker:
-    name: Build docker image and push to Docker Hub
+  deploy_dockerhub_artifact:
+    name: Deploy DockerHub Artifact
     runs-on: ubuntu-latest
     steps:
       - name: Set up Docker Buildx
