@@ -72,7 +72,7 @@ class Level1 implements Level {
       2.5,
       0,
       0,
-      PortalType.PURPLE,
+      PortalType.Purple,
       null
     );
 
@@ -83,7 +83,7 @@ class Level1 implements Level {
       2.5,
       0,
       0,
-      PortalType.GREEN,
+      PortalType.Green,
       null
     );
 

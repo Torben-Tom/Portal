@@ -54,7 +54,7 @@ class PortalEntity extends Entity {
       widthExpansion,
       heightExpansion,
       true,
-      portalType === PortalType.GREEN
+      portalType === PortalType.Green
         ? Services.resolve<AssetManager>("AssetManager").getTexture(
             "portalGreen"
           )

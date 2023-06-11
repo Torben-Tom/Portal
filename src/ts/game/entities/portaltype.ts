@@ -1,6 +1,6 @@
 enum PortalType {
-  PURPLE,
-  GREEN,
+  Purple,
+  Green,
 }
 
 export default PortalType;

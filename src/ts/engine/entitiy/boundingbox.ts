@@ -88,11 +88,9 @@ class BoundingBox {
     let ret: Vector2D[] = [];
     let corners: Vector2D[] = this.corners;
 
-    let base1 = corners[Diagonal.TOP_RIGHT].subtract(
-      corners[Diagonal.TOP_LEFT]
-    );
-    let base2 = corners[Diagonal.BOTTOM_LEFT].subtract(
-      corners[Diagonal.TOP_LEFT]
+    let base1 = corners[Diagonal.TopRight].subtract(corners[Diagonal.TopLeft]);
+    let base2 = corners[Diagonal.BottomLeft].subtract(
+      corners[Diagonal.TopLeft]
     );
 
     let baseMatrix = base1.concatenate(base2);
@@ -103,7 +101,7 @@ class BoundingBox {
     }
     for (let location of locations) {
       let lambda: Vector2D = inverseBaseMatrix!.multiplyVector(
-        location.subtract(corners[Diagonal.TOP_LEFT])
+        location.subtract(corners[Diagonal.TopLeft])
       );
       if (0 <= lambda.x && lambda.x <= 1 && 0 <= lambda.y && lambda.y <= 1) {
         ret.push(location);
