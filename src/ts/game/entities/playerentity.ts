@@ -26,6 +26,7 @@ class PlayerEntity extends ComplexMovingEntity {
   private _greenPortal: PortalEntity | null;
 
   private _onMouseClickThis: (mouseClickEvent: MouseClickEvent) => void;
+  private _lookLeft: boolean = false;
   private _runLeft: boolean = false;
 
   get portalGunEnabled(): boolean {
@@ -55,9 +56,21 @@ class PlayerEntity extends ComplexMovingEntity {
           ),
           new Map<Function, Texture>([
             [
-              () => this._runLeft,
+              () => this._lookLeft && this._runLeft,
               Services.resolve<AssetManager>("AssetManager").getTexture(
                 "playerRunLeft"
+              ),
+            ],
+            [
+              () => this._lookLeft && !this._runLeft,
+              Services.resolve<AssetManager>("AssetManager").getTexture(
+                "playerRunLeftBackwords"
+              ),
+            ],
+            [
+              () => !this._lookLeft && this._runLeft,
+              Services.resolve<AssetManager>("AssetManager").getTexture(
+                "playerRunRightBackwords"
               ),
             ],
           ]),
@@ -208,9 +221,9 @@ class PlayerEntity extends ComplexMovingEntity {
       }
 
       if (degrees < -180) {
-        this._runLeft = true;
+        this._lookLeft = true;
       } else {
-        this._runLeft = false;
+        this._lookLeft = false;
       }
 
       for (let part of this.parts) {

@@ -145,6 +145,18 @@ class GameSetup extends EngineSetup {
       entityManager,
       levelManager
     );
+    this.registerPlayerRunLeftBackwordsTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
+    this.registerPlayerRunRightBackwordsTexture(
+      assetLoader,
+      assetManager,
+      entityManager,
+      levelManager
+    );
     this.registerPlayerArmRightTexture(
       assetLoader,
       assetManager,
@@ -382,6 +394,63 @@ class GameSetup extends EngineSetup {
     );
   }
 
+  private registerPlayerRunRightBackwordsTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let playerRunRightSpriteSheet: SpriteSheet =
+      assetManager.getSpriteSheet("playerRunRight");
+
+    assetManager.registerAnimatedTexture(
+      "playerRunRightBackwords",
+      [
+        assetManager.registerSliceTexture(
+          "playerRunRight4",
+          playerRunRightSpriteSheet.createSlice(
+            "playerRunRight4",
+            167,
+            10,
+            48,
+            78
+          )
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunRight3",
+          playerRunRightSpriteSheet.createSlice(
+            "playerRunRight3",
+            118,
+            10,
+            48,
+            78
+          )
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunRight2",
+          playerRunRightSpriteSheet.createSlice(
+            "playerRunRight2",
+            64,
+            10,
+            48,
+            78
+          )
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunRight1",
+          playerRunRightSpriteSheet.createSlice(
+            "playerRunRight1",
+            14,
+            10,
+            48,
+            78
+          )
+        ),
+      ],
+      100
+    );
+  }
+
   private registerPlayerRunLeftTexture(
     assetLoader: AssetLoader,
     assetManager: AssetManager,
@@ -421,6 +490,51 @@ class GameSetup extends EngineSetup {
         assetManager.registerSliceTexture(
           "playerRunLeft4",
           playerRunLeftSpriteSheet.createSlice("playerRunLeft4", 7, 10, 48, 78)
+        ),
+      ],
+      100
+    );
+  }
+
+  private registerPlayerRunLeftBackwordsTexture(
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entitymanager: EntityManager,
+    levelManager: LevelManager
+  ): void {
+    let playerRunLeftSpriteSheet: SpriteSheet =
+      assetManager.getSpriteSheet("playerRunLeft");
+
+    assetManager.registerAnimatedTexture(
+      "playerRunLeftBackwords",
+      [
+        assetManager.registerSliceTexture(
+          "playerRunLeft4",
+          playerRunLeftSpriteSheet.createSlice("playerRunLeft4", 7, 10, 48, 78)
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunLeft3",
+          playerRunLeftSpriteSheet.createSlice("playerRunLeft3", 57, 10, 48, 78)
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunLeft2",
+          playerRunLeftSpriteSheet.createSlice(
+            "playerRunLeft2",
+            111,
+            10,
+            48,
+            78
+          )
+        ),
+        assetManager.registerSliceTexture(
+          "playerRunLeft1",
+          playerRunLeftSpriteSheet.createSlice(
+            "playerRunLeft1",
+            160,
+            10,
+            48,
+            78
+          )
         ),
       ],
       100
