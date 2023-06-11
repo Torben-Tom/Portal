@@ -61,7 +61,7 @@ class Level1 implements Level {
       this._assetManager.getTexture("level1-background")
     );
 
-    let player = new PlayerEntity(100, 450);
+    let player = new PlayerEntity(100, 150);
     let cornerBrickLeft = new LeftCornerBrickEntity(0, 550, 1.5, 1.5, 0, 0);
     let cornerBrickRight = new RightCornerBrickEntity(750, 550, 1.5, 1.5, 0, 0);
 

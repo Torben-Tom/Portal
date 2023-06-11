@@ -31,12 +31,6 @@ class GameSetup extends EngineSetup {
       entityManager,
       levelManager
     );
-    this.registerNetworkTexture(
-      assetLoader,
-      assetManager,
-      entityManager,
-      levelManager
-    );
     this.registerPortalGreenTexture(
       assetLoader,
       assetManager,
@@ -139,12 +133,6 @@ class GameSetup extends EngineSetup {
       entityManager,
       levelManager
     );
-    this.registerPlayerJumpTexture(
-      assetLoader,
-      assetManager,
-      entityManager,
-      levelManager
-    );
     this.registerPlayerRunLeftTexture(
       assetLoader,
       assetManager,
@@ -183,7 +171,6 @@ class GameSetup extends EngineSetup {
     entityManager: EntityManager,
     levelManager: LevelManager
   ): void {
-    assetManager.registerSpriteSheet("icons", assetLoader.getImage("icons"));
     assetManager.registerSpriteSheet(
       "greenPortal",
       assetLoader.getImage("greenPortal")
@@ -201,10 +188,6 @@ class GameSetup extends EngineSetup {
       assetLoader.getImage("buttonStanding")
     );
     assetManager.registerSpriteSheet("goal", assetLoader.getImage("goal"));
-    assetManager.registerSpriteSheet(
-      "playerJump",
-      assetLoader.getImage("playerJump")
-    );
     assetManager.registerSpriteSheet(
       "playerRunLeft",
       assetLoader.getImage("characterLeft")
@@ -319,42 +302,6 @@ class GameSetup extends EngineSetup {
     assetManager.registerStaticTexture(
       "companionCube",
       assetLoader.getImage("companionCube")
-    );
-  }
-
-  private registerNetworkTexture(
-    assetLoader: AssetLoader,
-    assetManager: AssetManager,
-    entitymanager: EntityManager,
-    levelManager: LevelManager
-  ): void {
-    let iconsSpriteSheet: SpriteSheet = assetManager.getSpriteSheet("icons");
-
-    assetManager.registerAnimatedTexture(
-      "network",
-      [
-        assetManager.registerSliceTexture(
-          "network1",
-          iconsSpriteSheet.createSlice("network1", 0, 209, 10, 7)
-        ),
-        assetManager.registerSliceTexture(
-          "network2",
-          iconsSpriteSheet.createSlice("network2", 0, 201, 10, 7)
-        ),
-        assetManager.registerSliceTexture(
-          "network3",
-          iconsSpriteSheet.createSlice("network3", 0, 193, 10, 7)
-        ),
-        assetManager.registerSliceTexture(
-          "network4",
-          iconsSpriteSheet.createSlice("network4", 0, 185, 10, 7)
-        ),
-        assetManager.registerSliceTexture(
-          "network5",
-          iconsSpriteSheet.createSlice("network5", 0, 177, 10, 7)
-        ),
-      ],
-      1000
     );
   }
 
@@ -541,40 +488,6 @@ class GameSetup extends EngineSetup {
       250
     );
   }
-
-  private registerPlayerJumpTexture(
-    assetLoader: AssetLoader,
-    assetManager: AssetManager,
-    entitymanager: EntityManager,
-    levelManager: LevelManager
-  ): void {
-    let playerJumpSpriteSheet: SpriteSheet =
-      assetManager.getSpriteSheet("playerJump");
-
-    assetManager.registerAnimatedTexture(
-      "playerJump",
-      [
-        assetManager.registerSliceTexture(
-          "playerJump1",
-          playerJumpSpriteSheet.createSlice("playerJump1", 0, 0, 48, 48)
-        ),
-        assetManager.registerSliceTexture(
-          "playerJump2",
-          playerJumpSpriteSheet.createSlice("playerJump2", 48, 0, 48, 48)
-        ),
-        assetManager.registerSliceTexture(
-          "playerJump3",
-          playerJumpSpriteSheet.createSlice("playerJump3", 96, 0, 48, 48)
-        ),
-        assetManager.registerSliceTexture(
-          "playerJump4",
-          playerJumpSpriteSheet.createSlice("playerJump4", 144, 0, 48, 48)
-        ),
-      ],
-      100
-    );
-  }
-
   private registerGoalTexture(
     assetLoader: AssetLoader,
     assetManager: AssetManager,

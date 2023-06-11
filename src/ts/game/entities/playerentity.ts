@@ -12,10 +12,10 @@ import MouseButton from "../../engine/input/mousebutton.js";
 import Direction from "../../engine/math/direction.js";
 import Matrix2D from "../../engine/math/matrix2d.js";
 import Vector2D from "../../engine/math/vector2d.js";
-import PlayerArmLeft from "./playerarmleft.js";
-import PlayerArmRight from "./playerarmright.js";
+
 import PortalEntity from "./portalentity.js";
 import PortalType from "./portaltype.js";
+import PlayerArm from "./playerarm.js";
 
 class PlayerEntity extends ComplexMovingEntity {
   private _inputHandler: InputHandler;
@@ -49,14 +49,21 @@ class PlayerEntity extends ComplexMovingEntity {
         0,
         0,
         false,
-
-        Services.resolve<AssetManager>("AssetManager").getTexture(
-          "playerRunRight"
+        new ConditionalTexture(
+          Services.resolve<AssetManager>("AssetManager").getTexture(
+            "playerRunRight"
+          ),
+          new Map<Function, Texture>([
+            [
+              () => this._runLeft,
+              Services.resolve<AssetManager>("AssetManager").getTexture(
+                "playerRunLeft"
+              ),
+            ],
+          ]),
+          100
         )
-      ).addPart(
-        new Vector2D(-2, 1),
-        new PlayerArmRight(0, 0, 0, 20, 30, 1, 1, 0, 0)
-      )
+      ).addPart(new Vector2D(-2, 1), new PlayerArm(0, 0, 0, 20, 30, 1, 1, 0, 0))
     );
 
     this._inputHandler = Services.resolve<InputHandler>("InputHandler");
@@ -198,6 +205,24 @@ class PlayerEntity extends ComplexMovingEntity {
         leftDiff < bottomDiff
       ) {
         degrees = 180;
+      }
+
+      if (degrees < -180) {
+        this._runLeft = true;
+      } else {
+        this._runLeft = false;
+      }
+
+      for (let part of this.parts) {
+        if (part[1] instanceof PlayerArm) {
+          if (degrees < -180) {
+            part[1].centerOfMass = new Vector2D(32, 30);
+            armPart.rotate(degrees - 180);
+          } else {
+            part[1].centerOfMass = new Vector2D(20, 30);
+            armPart.rotate(degrees);
+          }
+        }
       }
 
       let portalCenterOffset = new Vector2D(37.5, 81.25);

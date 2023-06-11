@@ -4,7 +4,6 @@ import Entity from "../../engine/entitiy/entity.js";
 import Level from "../../engine/level/level.js";
 import BottomBrickEntity from "../entities/bottombrickentity.js";
 import LeftBrickEntity from "../entities/leftbrickentity.js";
-import NetworkEntity from "../entities/networkentity.js";
 import RightBrickEntity from "../entities/rightbrickentity.js";
 import LeftCornerBrickEntity from "../entities/leftcornerbrickentity.js";
 import RightCornerBrickEntity from "../entities/rightcornerbrickentity.js";
@@ -13,8 +12,6 @@ import InputHandler from "../../engine/input/inputhandler.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import EngineEvent from "../../engine/event/engineevent.js";
 import EntityManager from "../../engine/entitiy/entitymanager.js";
-import PortalGreen from "../entities/portalgreen.js";
-import PortalPurple from "../entities/portalpurple.js";
 import Goal from "../entities/goal.js";
 import PlayerEntity from "../entities/playerentity.js";
 import LevelManager from "../../engine/level/levelmanager.js";
@@ -70,9 +67,6 @@ class Level2 implements Level {
     let cornerBrickLeft = new LeftCornerBrickEntity(0, 550, 1.5, 1.5, 0, 0);
     let cornerBrickRight = new RightCornerBrickEntity(750, 550, 1.5, 1.5, 0, 0);
 
-    let greenPortal1 = new PortalGreen(5, 400, 2.5, 2.5, -110, 0);
-    let greenPortal2 = new PortalGreen(200, -20, 2.5, 2.5, -110, 0);
-    let purplePortal = new PortalPurple(640, 250, 2.5, 2.5, -110, 0);
     this._goal = new Goal(70, 170, 1.6, 1.6, 0, 0);
 
     let returnArray: Entity[] = [];
@@ -81,9 +75,6 @@ class Level2 implements Level {
     returnArray.push(player);
     returnArray.push(cornerBrickLeft);
     returnArray.push(cornerBrickRight);
-    returnArray.push(greenPortal1);
-    returnArray.push(greenPortal2);
-    returnArray.push(purplePortal);
     returnArray.push(this._goal);
 
     for (let i = 0; i < 14; i++) {
