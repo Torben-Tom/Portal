@@ -22,6 +22,7 @@ import PlayerArmRight from "../entities/playerarmright.js";
 import PlayerEntity from "../entities/playerentity.js";
 import PortalEntity from "../entities/portalentity.js";
 import PortalType from "../entities/portaltype.js";
+import Vector2D from "../../engine/math/vector2d.js";
 
 class Level1 implements Level {
   private _entityManager: EntityManager;
@@ -31,6 +32,7 @@ class Level1 implements Level {
   private _buttonStanding!: ButtonStanding;
   private _purplePortal!: PortalEntity;
   private _greenPortal!: PortalEntity;
+  private _companionCube!: CompanionCube;
 
   constructor() {
     this._entityManager = Services.resolve<EntityManager>("EntityManager");
@@ -91,7 +93,7 @@ class Level1 implements Level {
 
     this._buttonGround = new ButtonGround(175, 490, 1.3, 1.3, 0, 0);
     this._buttonStanding = new ButtonStanding(550, 470, 1.1, 1.1, 0, 0, 0);
-    let companionCube = new CompanionCube(200, 250, 0.5, 0.5, 0, 0);
+    this._companionCube = new CompanionCube(200, 250, 0.5, 0.5, 0, 0);
     let goal = new Goal(685, 275, 1.6, 1.6, 0, 0);
 
     let returnArray: Entity[] = [
@@ -101,7 +103,7 @@ class Level1 implements Level {
       cornerBrickRight,
       this._buttonGround,
       this._buttonStanding,
-      companionCube,
+      this._companionCube,
       goal,
       player,
     ];
@@ -170,7 +172,14 @@ class Level1 implements Level {
     console.log("Level1 unloaded");
   }
 
-  public update(tickDelta: number): void {}
+  public update(tickDelta: number): void {
+    if (this._companionCube) {
+      let location = this._companionCube.location;
+      if (location.x <= 55 && location.y >= 500) {
+        this._companionCube.addVelocity(new Vector2D(25, 0));
+      }
+    }
+  }
 }
 
 export default Level1;
