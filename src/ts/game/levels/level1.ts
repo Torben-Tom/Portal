@@ -12,17 +12,15 @@ import BridgeEntity from "../entities/bridgeentity.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import EngineEvent from "../../engine/event/engineevent.js";
 import EntityManager from "../../engine/entitiy/entitymanager.js";
-import PortalGreen from "../entities/portalgreen.js";
-import PortalPurple from "../entities/portalpurple.js";
 import ButtonGround from "../entities/buttonground.js";
 import ButtonStanding from "../entities/buttonstanding.js";
 import Goal from "../entities/goal.js";
 import CompanionCube from "../entities/companioncube.js";
-import PlayerArmRight from "../entities/playerarmright.js";
 import PlayerEntity from "../entities/playerentity.js";
 import PortalEntity from "../entities/portalentity.js";
 import PortalType from "../entities/portaltype.js";
 import Vector2D from "../../engine/math/vector2d.js";
+import LevelManager from "../../engine/level/levelmanager.js";
 
 class Level1 implements Level {
   private _entityManager: EntityManager;
@@ -33,6 +31,7 @@ class Level1 implements Level {
   private _purplePortal!: PortalEntity;
   private _greenPortal!: PortalEntity;
   private _companionCube!: CompanionCube;
+  private _goal!: Goal;
 
   constructor() {
     this._entityManager = Services.resolve<EntityManager>("EntityManager");
@@ -94,7 +93,7 @@ class Level1 implements Level {
     this._buttonGround = new ButtonGround(175, 490, 1.3, 1.3, 0, 0);
     this._buttonStanding = new ButtonStanding(550, 470, 1.1, 1.1, 0, 0, 0);
     this._companionCube = new CompanionCube(200, 250, 0.5, 0.5, 0, 0);
-    let goal = new Goal(685, 275, 1.6, 1.6, 0, 0);
+    this._goal = new Goal(685, 275, 1.6, 1.6, 0, 0);
 
     let returnArray: Entity[] = [
       background,
@@ -104,7 +103,7 @@ class Level1 implements Level {
       this._buttonGround,
       this._buttonStanding,
       this._companionCube,
-      goal,
+      this._goal,
       player,
     ];
 
@@ -112,6 +111,7 @@ class Level1 implements Level {
       let bottomBrick = new BottomBrickEntity(50 + i * 50, 550, 1.5, 1.5, 0, 0);
       returnArray.push(bottomBrick);
     }
+
     for (let i = 0; i < 11; i++) {
       let leftWallBrick = new LeftBrickEntity(0, i * 50, 1.5, 1.5, 0, 0);
       let rightWallBrick = new RightBrickEntity(750, i * 50, 1.5, 1.5, 0, 0);
@@ -166,11 +166,15 @@ class Level1 implements Level {
         this._entityManager.register(this._greenPortal);
       }
     );
+
+    this._goal.onTouch.subscribe((engineEvent: EngineEvent<Goal>) => {
+      let levelManager: LevelManager =
+        Services.resolve<LevelManager>("LevelManager");
+      levelManager.startLevel("level2");
+    });
   }
 
-  public unload(): void {
-    console.log("Level1 unloaded");
-  }
+  public unload(): void {}
 
   public update(tickDelta: number): void {
     if (this._companionCube) {

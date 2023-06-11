@@ -134,6 +134,10 @@ class EntityManager {
     return this.getCollisions(entity).length > 0;
   }
 
+  private applyGravity(entity: Entity, tickDelta: number) {
+    entity.teleport(entity.location.add(new Vector2D(0, 0.1 * tickDelta)));
+  }
+
   private checkTouch(entity1: Entity, entity2: Entity) {
     if (!this.areTouching(entity1, entity2)) {
       let location1 = entity1.boundingBox.centerAbsolute;

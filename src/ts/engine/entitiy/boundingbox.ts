@@ -99,6 +99,7 @@ class BoundingBox {
     let inverseBaseMatrix = baseMatrix.inverse;
     if (!inverseBaseMatrix) {
       return ret; //Mathematically, this should never happen as long as no entity has a BoundingBox of height or width 0
+      return ret; //Mathematically, this should never happen as long as no entity has a BoundingBox of height or width 0
     }
     for (let location of locations) {
       let lambda: Vector2D = inverseBaseMatrix!.multiplyVector(
@@ -116,6 +117,8 @@ class BoundingBox {
     let corners1 = this.corners;
     let corners2 = boundingBox.corners;
 
+    polygonBuilder.addPoints(boundingBox.locationsInside(corners1));
+    polygonBuilder.addPoints(this.locationsInside(corners2));
     polygonBuilder.addPoints(boundingBox.locationsInside(corners1));
     polygonBuilder.addPoints(this.locationsInside(corners2));
 
