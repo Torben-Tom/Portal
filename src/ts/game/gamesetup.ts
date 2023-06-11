@@ -395,9 +395,9 @@ class GameSetup extends EngineSetup {
           playerRunRightSpriteSheet.createSlice(
             "playerRunRight1",
             14,
-            0,
+            10,
             48,
-            98
+            78
           )
         ),
         assetManager.registerSliceTexture(
@@ -405,9 +405,9 @@ class GameSetup extends EngineSetup {
           playerRunRightSpriteSheet.createSlice(
             "playerRunRight2",
             64,
-            0,
+            10,
             48,
-            98
+            78
           )
         ),
         assetManager.registerSliceTexture(
@@ -415,9 +415,9 @@ class GameSetup extends EngineSetup {
           playerRunRightSpriteSheet.createSlice(
             "playerRunRight3",
             118,
-            0,
+            10,
             48,
-            98
+            78
           )
         ),
         assetManager.registerSliceTexture(
@@ -425,9 +425,9 @@ class GameSetup extends EngineSetup {
           playerRunRightSpriteSheet.createSlice(
             "playerRunRight4",
             167,
-            0,
+            10,
             48,
-            98
+            78
           )
         ),
       ],
@@ -449,19 +449,31 @@ class GameSetup extends EngineSetup {
       [
         assetManager.registerSliceTexture(
           "playerRunLeft1",
-          playerRunLeftSpriteSheet.createSlice("playerRunLeft1", 160, 0, 48, 98)
+          playerRunLeftSpriteSheet.createSlice(
+            "playerRunLeft1",
+            160,
+            10,
+            48,
+            78
+          )
         ),
         assetManager.registerSliceTexture(
           "playerRunLeft2",
-          playerRunLeftSpriteSheet.createSlice("playerRunLeft2", 111, 0, 48, 98)
+          playerRunLeftSpriteSheet.createSlice(
+            "playerRunLeft2",
+            111,
+            10,
+            48,
+            78
+          )
         ),
         assetManager.registerSliceTexture(
           "playerRunLeft3",
-          playerRunLeftSpriteSheet.createSlice("playerRunLeft3", 57, 0, 48, 98)
+          playerRunLeftSpriteSheet.createSlice("playerRunLeft3", 57, 10, 48, 78)
         ),
         assetManager.registerSliceTexture(
           "playerRunLeft4",
-          playerRunLeftSpriteSheet.createSlice("playerRunLeft4", 7, 0, 48, 98)
+          playerRunLeftSpriteSheet.createSlice("playerRunLeft4", 7, 10, 48, 78)
         ),
       ],
       100
@@ -482,11 +494,11 @@ class GameSetup extends EngineSetup {
       [
         assetManager.registerSliceTexture(
           "playerArmLeft1",
-          playerArmLeftSpriteSheet.createSlice("playerArmLeft1", 34, 1, 51, 98)
+          playerArmLeftSpriteSheet.createSlice("playerArmLeft1", 34, 11, 51, 78)
         ),
         assetManager.registerSliceTexture(
           "playerArmLeft2",
-          playerArmLeftSpriteSheet.createSlice("playerArmLeft2", 93, 0, 51, 98)
+          playerArmLeftSpriteSheet.createSlice("playerArmLeft2", 93, 10, 51, 78)
         ),
       ],
       250
@@ -510,9 +522,9 @@ class GameSetup extends EngineSetup {
           registerPlayerArmRightTexture.createSlice(
             "playerArmRight1",
             34,
-            0,
+            10,
             51,
-            98
+            78
           )
         ),
         assetManager.registerSliceTexture(
@@ -520,9 +532,9 @@ class GameSetup extends EngineSetup {
           registerPlayerArmRightTexture.createSlice(
             "playerArmRight2",
             93,
-            1,
+            11,
             51,
-            98
+            78
           )
         ),
       ],
@@ -729,35 +741,35 @@ class GameSetup extends EngineSetup {
       [
         assetManager.registerSliceTexture(
           "portalGreen1",
-          portalGreenSpriteSheet.createSlice("portalGreen1", 0, 0, 65, 65)
+          portalGreenSpriteSheet.createSlice("portalGreen1", 10, 0, 30, 65)
         ),
         assetManager.registerSliceTexture(
           "portalGreen2",
-          portalGreenSpriteSheet.createSlice("portalGreen2", 64, 0, 65, 65)
+          portalGreenSpriteSheet.createSlice("portalGreen2", 74, 0, 30, 65)
         ),
         assetManager.registerSliceTexture(
           "portalGreen3",
-          portalGreenSpriteSheet.createSlice("portalGreen3", 128, 0, 65, 65)
+          portalGreenSpriteSheet.createSlice("portalGreen3", 138, 0, 30, 65)
         ),
         assetManager.registerSliceTexture(
           "portalGreen4",
-          portalGreenSpriteSheet.createSlice("portalGreen4", 192, 0, 65, 65)
+          portalGreenSpriteSheet.createSlice("portalGreen4", 202, 0, 30, 65)
         ),
         assetManager.registerSliceTexture(
           "portalGreen5",
-          portalGreenSpriteSheet.createSlice("portalGreen5", 256, 0, 65, 65)
+          portalGreenSpriteSheet.createSlice("portalGreen5", 266, 0, 30, 65)
         ),
         assetManager.registerSliceTexture(
           "portalGreen6",
-          portalGreenSpriteSheet.createSlice("portalGreen6", 320, 0, 65, 65)
+          portalGreenSpriteSheet.createSlice("portalGreen6", 330, 0, 30, 65)
         ),
         assetManager.registerSliceTexture(
           "portalGreen7",
-          portalGreenSpriteSheet.createSlice("portalGreen7", 384, 0, 65, 65)
+          portalGreenSpriteSheet.createSlice("portalGreen7", 394, 0, 30, 65)
         ),
         assetManager.registerSliceTexture(
           "portalGreen8",
-          portalGreenSpriteSheet.createSlice("portalGreen8", 448, 0, 65, 65)
+          portalGreenSpriteSheet.createSlice("portalGreen8", 458, 0, 30, 65)
         ),
       ],
       100
@@ -891,35 +903,35 @@ class GameSetup extends EngineSetup {
       [
         assetManager.registerSliceTexture(
           "portalPurple1",
-          portalPurpleSpriteSheet.createSlice("portalPurple1", 0, 0, 65, 65)
+          portalPurpleSpriteSheet.createSlice("portalPurple1", 10, 0, 30, 65)
         ),
         assetManager.registerSliceTexture(
           "portalPurple2",
-          portalPurpleSpriteSheet.createSlice("portalPurple2", 64, 0, 65, 65)
+          portalPurpleSpriteSheet.createSlice("portalPurple2", 74, 0, 30, 65)
         ),
         assetManager.registerSliceTexture(
           "portalPurple3",
-          portalPurpleSpriteSheet.createSlice("portalPurple3", 128, 0, 65, 65)
+          portalPurpleSpriteSheet.createSlice("portalPurple3", 138, 0, 30, 65)
         ),
         assetManager.registerSliceTexture(
           "portalPurple4",
-          portalPurpleSpriteSheet.createSlice("portalPurple4", 192, 0, 65, 65)
+          portalPurpleSpriteSheet.createSlice("portalPurple4", 202, 0, 30, 65)
         ),
         assetManager.registerSliceTexture(
           "portalPurple5",
-          portalPurpleSpriteSheet.createSlice("portalPurple5", 256, 0, 65, 65)
+          portalPurpleSpriteSheet.createSlice("portalPurple5", 266, 0, 30, 65)
         ),
         assetManager.registerSliceTexture(
           "portalPurple6",
-          portalPurpleSpriteSheet.createSlice("portalPurple6", 320, 0, 65, 65)
+          portalPurpleSpriteSheet.createSlice("portalPurple6", 330, 0, 30, 65)
         ),
         assetManager.registerSliceTexture(
           "portalPurple7",
-          portalPurpleSpriteSheet.createSlice("portalPurple7", 384, 0, 65, 65)
+          portalPurpleSpriteSheet.createSlice("portalPurple7", 394, 0, 30, 65)
         ),
         assetManager.registerSliceTexture(
           "portalPurple8",
-          portalPurpleSpriteSheet.createSlice("portalPurple8", 448, 0, 65, 65)
+          portalPurpleSpriteSheet.createSlice("portalPurple8", 458, 0, 30, 65)
         ),
       ],
       100

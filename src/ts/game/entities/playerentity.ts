@@ -1,4 +1,6 @@
 import AssetManager from "../../engine/assets/assetmanager.js";
+import ConditionalTexture from "../../engine/assets/texture/conditionaltexture.js";
+import Texture from "../../engine/assets/texture/texture.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import ComplexMovingEntity from "../../engine/entitiy/complexmovingentity.js";
 import ComplexMovingEntityBuilder from "../../engine/entitiy/complexmovingentitybuilder.js";
@@ -10,6 +12,7 @@ import MouseButton from "../../engine/input/mousebutton.js";
 import Direction from "../../engine/math/direction.js";
 import Matrix2D from "../../engine/math/matrix2d.js";
 import Vector2D from "../../engine/math/vector2d.js";
+import PlayerArmLeft from "./playerarmleft.js";
 import PlayerArmRight from "./playerarmright.js";
 import PortalEntity from "./portalentity.js";
 import PortalType from "./portaltype.js";
@@ -23,6 +26,7 @@ class PlayerEntity extends ComplexMovingEntity {
   private _greenPortal: PortalEntity | null;
 
   private _onMouseClickThis: (mouseClickEvent: MouseClickEvent) => void;
+  private _runLeft: boolean = false;
 
   get portalGunEnabled(): boolean {
     return this._portalGunEnabled;
@@ -45,12 +49,13 @@ class PlayerEntity extends ComplexMovingEntity {
         0,
         0,
         false,
+
         Services.resolve<AssetManager>("AssetManager").getTexture(
           "playerRunRight"
         )
       ).addPart(
-        new Vector2D(0, 0),
-        new PlayerArmRight(0, 0, 0, 20, 40, 1, 1, 0, 0)
+        new Vector2D(-2, 1),
+        new PlayerArmRight(0, 0, 0, 20, 30, 1, 1, 0, 0)
       )
     );
 
@@ -89,9 +94,11 @@ class PlayerEntity extends ComplexMovingEntity {
         this.setColliding(Direction.Bottom, false);
       }
       if (this._inputHandler.isKeyDown("a")) {
+        this._runLeft = true;
         this.addVelocity(new Vector2D(-0.1 * tickDelta, 0));
       }
       if (this._inputHandler.isKeyDown("d")) {
+        this._runLeft = false;
         this.addVelocity(new Vector2D(0.1 * tickDelta, 0));
       }
     }

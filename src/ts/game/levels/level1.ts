@@ -66,7 +66,7 @@ class Level1 implements Level {
     let cornerBrickRight = new RightCornerBrickEntity(750, 550, 1.5, 1.5, 0, 0);
 
     this._purplePortal = new PortalEntity(
-      0,
+      20,
       150,
       0,
       37.5,
@@ -80,7 +80,7 @@ class Level1 implements Level {
     );
 
     this._greenPortal = new PortalEntity(
-      650,
+      705,
       400,
       180,
       37.5,
