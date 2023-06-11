@@ -64,6 +64,7 @@ class EntityManager {
 
   public register(entity: Entity) {
     this._entities.push(entity);
+    entity.load();
   }
 
   public registerAll(entities: Entity[]) {
@@ -78,8 +79,11 @@ class EntityManager {
       this._entities.splice(index, 1);
     }
 
+    //TODO: Potential for performance improvement here, especially when using unregisterAll()
     this.cleanupTouches();
     this.cleanupCollisions();
+
+    entity.unload();
   }
 
   public unregisterAll(entities: Entity[]) {
@@ -89,9 +93,14 @@ class EntityManager {
   }
 
   public clear() {
+    let previousEntities = Array.from(this._entities);
     this._entities = [];
     this.cleanupTouches();
     this.cleanupCollisions();
+
+    for (let entity of previousEntities) {
+      entity.unload();
+    }
   }
 
   public getTouches(entity: Entity): Touch[] {
@@ -242,76 +251,6 @@ class EntityManager {
       if (intersection.points.length === 0) {
         continue;
       }
-
-      // let topIntersections: [MovingEntity, Polygon[]][] = movingEntities.map(
-      //   (movingEntity) => [
-      //     movingEntity,
-      //     intersections.filter(
-      //       (intersection) =>
-      //         intersection.minY < movingEntity.boundingBox.centerAbsolute.y
-      //     ),
-      //   ]
-      // );
-      // let rightIntersections: [MovingEntity, Polygon[]][] = movingEntities.map(
-      //   (movingEntity) => [
-      //     movingEntity,
-      //     intersections.filter(
-      //       (intersection) =>
-      //         intersection.maxX > movingEntity.boundingBox.centerAbsolute.x
-      //     ),
-      //   ]
-      // );
-      // let bottomIntersections: [MovingEntity, Polygon[]][] = movingEntities.map(
-      //   (movingEntity) => [
-      //     movingEntity,
-      //     intersections.filter(
-      //       (intersection) =>
-      //         intersection.maxY > movingEntity.boundingBox.centerAbsolute.y
-      //     ),
-      //   ]
-      // );
-      // let leftIntersections: [MovingEntity, Polygon[]][] = movingEntities.map(
-      //   (movingEntity) => [
-      //     movingEntity,
-      //     intersections.filter(
-      //       (intersection) =>
-      //         intersection.minX < movingEntity.boundingBox.centerAbsolute.x
-      //     ),
-      //   ]
-      // );
-
-      // let totalTopIntersectionsWidth: [MovingEntity, number][] =
-      //   topIntersections.map(([movingEntity, intersections]) => [
-      //     movingEntity,
-      //     intersections.reduce(
-      //       (sum, intersection) => sum + intersection.width,
-      //       0
-      //     ),
-      //   ]);
-      // let totalRightIntersectionsHeight: [MovingEntity, number][] =
-      //   rightIntersections.map(([movingEntity, intersections]) => [
-      //     movingEntity,
-      //     intersections.reduce(
-      //       (sum, intersection) => sum + intersection.height,
-      //       0
-      //     ),
-      //   ]);
-      // let totalBottomIntersectionsWidth: [MovingEntity, number][] =
-      //   bottomIntersections.map(([movingEntity, intersections]) => [
-      //     movingEntity,
-      //     intersections.reduce(
-      //       (sum, intersection) => sum + intersection.width,
-      //       0
-      //     ),
-      //   ]);
-      // let totalLeftIntersectionsHeight: [MovingEntity, number][] =
-      //   leftIntersections.map(([movingEntity, intersections]) => [
-      //     movingEntity,
-      //     intersections.reduce(
-      //       (sum, intersection) => sum + intersection.height,
-      //       0
-      //     ),
-      //   ]);
 
       for (let movingEntity of movingEntities) {
         let boundingBox = movingEntity.boundingBox;

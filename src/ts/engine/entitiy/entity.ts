@@ -78,7 +78,9 @@ class Entity {
     this._rotation = rotation;
   }
 
-  update(tickDelta: number) {}
+  public load() {}
+  public unload() {}
+  public update(tickDelta: number) {}
 }
 
 export default Entity;

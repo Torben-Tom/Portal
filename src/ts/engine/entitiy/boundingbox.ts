@@ -47,7 +47,7 @@ class BoundingBox {
     let radians = (this._entity.rotation / 180) * Math.PI;
     let relCenter = this._entity.centerOfMass;
     let absCenter = this._entity.centerOfMassAbsolute;
-    let rotationMatrix = Matrix2D.rotationMatrix(radians);
+    let rotationMatrix = Matrix2D.rotationMatrixRadians(radians);
 
     let topLeft = rotationMatrix
       .multiplyVector(new Vector2D(0, 0).subtract(relCenter))

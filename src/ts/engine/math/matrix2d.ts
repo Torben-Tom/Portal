@@ -88,10 +88,14 @@ class Matrix2D {
     );
   }
 
-  public static rotationMatrix(angle: number): Matrix2D {
-    let cos = Math.cos(angle);
-    let sin = Math.sin(angle);
+  public static rotationMatrixRadians(radians: number): Matrix2D {
+    let cos = Math.cos(radians);
+    let sin = Math.sin(radians);
     return new Matrix2D(cos, -sin, sin, cos);
+  }
+
+  public static rotationMatrixDegrees(degrees: number): Matrix2D {
+    return Matrix2D.rotationMatrixRadians((degrees * Math.PI) / 180);
   }
 }
 
