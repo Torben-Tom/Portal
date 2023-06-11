@@ -37,13 +37,13 @@ class PlayerEntity extends ComplexMovingEntity {
 
   public update(delta: number): void {
     if (this._inputHandler) {
-      if (this.collisions[Direction.BOTTOM]) {
+      if (this.collisions[Direction.Bottom]) {
         if (
           this._inputHandler.isKeyDown("w") ||
           this._inputHandler.isKeyDown(" ")
         ) {
           this.addVelocity(new Vector2D(0, -50));
-          this.setColliding(Direction.BOTTOM, false);
+          this.setColliding(Direction.Bottom, false);
         }
         if (this._inputHandler.isKeyDown("a")) {
           this.addVelocity(new Vector2D(-0.1 * delta, 0));

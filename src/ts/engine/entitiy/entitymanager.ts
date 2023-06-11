@@ -332,16 +332,16 @@ class EntityManager {
 
         let movingEntityCollisions = new Map<Direction, boolean>();
         if (hasTopIntersection && intersectionWidthPercentage > 25) {
-          movingEntityCollisions.set(Direction.TOP, true);
+          movingEntityCollisions.set(Direction.Top, true);
         }
         if (hasRightIntersection && intersectionHeightPercentage > 25) {
-          movingEntityCollisions.set(Direction.RIGHT, true);
+          movingEntityCollisions.set(Direction.Right, true);
         }
         if (hasBottomIntersection && intersectionWidthPercentage > 25) {
-          movingEntityCollisions.set(Direction.BOTTOM, true);
+          movingEntityCollisions.set(Direction.Bottom, true);
         }
         if (hasLeftIntersection && intersectionHeightPercentage > 25) {
-          movingEntityCollisions.set(Direction.LEFT, true);
+          movingEntityCollisions.set(Direction.Left, true);
         }
 
         let pushDirection = boundingBox.centerAbsolute
@@ -349,15 +349,15 @@ class EntityManager {
           .normalize();
 
         if (
-          movingEntityCollisions.get(Direction.TOP) ||
-          movingEntityCollisions.get(Direction.BOTTOM)
+          movingEntityCollisions.get(Direction.Top) ||
+          movingEntityCollisions.get(Direction.Bottom)
         ) {
           pushDirection = Matrix2D.ignoreXMatrix.multiplyVector(pushDirection);
         }
 
         if (
-          movingEntityCollisions.get(Direction.LEFT) ||
-          movingEntityCollisions.get(Direction.RIGHT)
+          movingEntityCollisions.get(Direction.Left) ||
+          movingEntityCollisions.get(Direction.Right)
         ) {
           pushDirection = Matrix2D.ignoreYMatrix.multiplyVector(pushDirection);
         }
@@ -372,8 +372,8 @@ class EntityManager {
           if (collision[1]) {
             if (
               bothEntitiesAreMovingEntities &&
-              (collision[0] === Direction.LEFT ||
-                collision[0] === Direction.RIGHT)
+              (collision[0] === Direction.Left ||
+                collision[0] === Direction.Right)
             ) {
               continue;
             }

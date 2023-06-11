@@ -66,13 +66,13 @@ class MovingEntity extends Entity {
   public update(tickDelta: number): void {
     super.update(tickDelta);
 
-    if (this._collisions[Direction.TOP] && this._velocity.y < 0) {
+    if (this._collisions[Direction.Top] && this._velocity.y < 0) {
       this._velocity = Matrix2D.ignoreYMatrix.multiplyVector(this._velocity);
     }
-    if (this._collisions[Direction.RIGHT] && this._velocity.x > 0) {
+    if (this._collisions[Direction.Right] && this._velocity.x > 0) {
       this._velocity = Matrix2D.ignoreXMatrix.multiplyVector(this._velocity);
     }
-    if (this._collisions[Direction.BOTTOM]) {
+    if (this._collisions[Direction.Bottom]) {
       if (this._velocity.y > 0) {
         this._velocity = Matrix2D.ignoreYMatrix.multiplyVector(this._velocity);
       }
@@ -85,7 +85,7 @@ class MovingEntity extends Entity {
         this._velocity
       );
     }
-    if (this._collisions[Direction.LEFT] && this._velocity.x < 0) {
+    if (this._collisions[Direction.Left] && this._velocity.x < 0) {
       this._velocity = Matrix2D.ignoreXMatrix.multiplyVector(this._velocity);
     }
 

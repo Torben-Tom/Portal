@@ -1,5 +1,7 @@
 import EngineEvent from "../event/engineevent.js";
 import EngineEventHandler from "../event/engineventhandler.js";
+import MouseClickEvent from "../event/events/mouseclickevent/mouseclickevent.js";
+import MouseClickEventData from "../event/events/mouseclickevent/mouseclickeventdata.js";
 import Vector2D from "../math/vector2d.js";
 
 class InputHandler {
@@ -14,8 +16,8 @@ class InputHandler {
   >;
 
   private _engineMouseClickEvent: EngineEventHandler<
-    MouseEvent,
-    EngineEvent<MouseEvent>
+    MouseClickEventData,
+    MouseClickEvent
   >;
 
   private _engineKeyDownEvent: EngineEventHandler<
@@ -61,8 +63,8 @@ class InputHandler {
   }
 
   get mouseClickEvent(): EngineEventHandler<
-    MouseEvent,
-    EngineEvent<MouseEvent>
+    MouseClickEventData,
+    MouseClickEvent
   > {
     return this._engineMouseClickEvent;
   }
@@ -92,8 +94,8 @@ class InputHandler {
       EngineEvent<MouseEvent>
     >();
     this._engineMouseClickEvent = new EngineEventHandler<
-      MouseEvent,
-      EngineEvent<MouseEvent>
+      MouseClickEventData,
+      MouseClickEvent
     >();
     this._engineKeyDownEvent = new EngineEventHandler<
       KeyboardEvent,
@@ -106,6 +108,7 @@ class InputHandler {
 
     window.addEventListener("mousemove", this.onMouseMove.bind(this));
     window.addEventListener("click", this.onMouseClick.bind(this));
+    window.addEventListener("contextmenu", this.onMouseClick.bind(this));
     window.addEventListener("keydown", this.onKeyDown.bind(this));
     window.addEventListener("keyup", this.onKeyUp.bind(this));
   }
@@ -117,7 +120,13 @@ class InputHandler {
 
   private onMouseClick(mouseEvent: MouseEvent): void {
     mouseEvent.preventDefault();
-    this._engineMouseClickEvent.dispatch(new EngineEvent(mouseEvent));
+    this._engineMouseClickEvent.dispatch(
+      new MouseClickEvent(
+        this._mouseLocation,
+        this.mouseAbsolute,
+        mouseEvent.button
+      )
+    );
   }
 
   private onKeyDown(keyboardEvent: KeyboardEvent): void {
