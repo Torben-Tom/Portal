@@ -35,16 +35,18 @@ class InputHandler {
   }
 
   get mouseRelative(): Vector2D {
-    return new Vector2D(
-      Math.floor(
-        this._mouseLocation.x -
-          this._htmlCanvasElement.getBoundingClientRect().left
-      ),
-      Math.floor(
-        this._mouseLocation.y -
-          this._htmlCanvasElement.getBoundingClientRect().top
-      )
-    );
+    let boundingClientRect = this._htmlCanvasElement.getBoundingClientRect();
+    let canvasLeft = boundingClientRect.left;
+    let canvasTop = boundingClientRect.top;
+    let canvasWidth = this._htmlCanvasElement.scrollWidth;
+    let canvasHeight = this._htmlCanvasElement.scrollHeight;
+    let canvasScaleX = this._htmlCanvasElement.width / canvasWidth;
+    let canvasScaleY = this._htmlCanvasElement.height / canvasHeight;
+
+    let relativeX = (this._mouseLocation.x - canvasLeft) / (1 / canvasScaleX);
+    let relativeY = (this._mouseLocation.y - canvasTop) / (1 / canvasScaleY);
+
+    return new Vector2D(relativeX, relativeY);
   }
 
   get keystates(): Map<string, boolean> {
@@ -122,7 +124,7 @@ class InputHandler {
     mouseEvent.preventDefault();
     this._engineMouseClickEvent.dispatch(
       new MouseClickEvent(
-        this._mouseLocation,
+        this.mouseRelative,
         this.mouseAbsolute,
         mouseEvent.button
       )

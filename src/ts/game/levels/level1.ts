@@ -68,6 +68,9 @@ class Level1 implements Level {
     this._purplePortal = new PortalEntity(
       0,
       150,
+      0,
+      37.5,
+      81.25,
       2.5,
       2.5,
       0,
@@ -79,6 +82,9 @@ class Level1 implements Level {
     this._greenPortal = new PortalEntity(
       650,
       400,
+      180,
+      37.5,
+      81.25,
       2.5,
       2.5,
       0,

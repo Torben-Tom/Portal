@@ -16,6 +16,8 @@ class EngineEventHandler<E, T extends EngineEvent<E>> {
     let index = this._subscribers.indexOf(subscriber);
     if (index >= 0) {
       this._subscribers.splice(index, 1);
+    } else {
+      console.log("OOF");
     }
   }
 
@@ -30,7 +32,7 @@ class EngineEventHandler<E, T extends EngineEvent<E>> {
         subscriber(event);
       } catch (error) {
         console.error(
-          `Error while dispatching event ${event.constructor.name} to subscriber ${subscriber.name}`
+          `Error while dispatching event ${event.constructor.name} to subscriber ${subscriber.name} of ${subscriber.constructor.name}: ${error}`
         );
       }
     }
