@@ -61,7 +61,7 @@ class Level1 implements Level {
       this._assetManager.getTexture("level1-background")
     );
 
-    let player = new PlayerEntity(100, 150);
+    let player = new PlayerEntity(100, 450);
     let cornerBrickLeft = new LeftCornerBrickEntity(0, 550, 1.5, 1.5, 0, 0);
     let cornerBrickRight = new RightCornerBrickEntity(750, 550, 1.5, 1.5, 0, 0);
 
@@ -185,8 +185,10 @@ class Level1 implements Level {
   public update(tickDelta: number): void {
     if (this._companionCube) {
       let location = this._companionCube.location;
-      if (location.x <= 55 && location.y >= 500) {
+      if (location.x <= 55) {
         this._companionCube.addVelocity(new Vector2D(25, 0));
+      } else if (location.x >= 695) {
+        this._companionCube.addVelocity(new Vector2D(-25, 0));
       }
     }
   }
