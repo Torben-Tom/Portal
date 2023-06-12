@@ -129,7 +129,6 @@ class PortalEntity extends Entity {
   public teleportHere(entity: Entity): void {
     if (!this.onCooldown(entity)) {
       this.applyCooldown(entity, 1000);
-      console.log("teleporting entity to portal destination");
 
       let degrees = this._rotation;
       let portalCenter = this.centerOfMassAbsolute.add(

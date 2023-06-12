@@ -1,4 +1,6 @@
 import AssetManager from "../../engine/assets/assetmanager.js";
+import ConditionalTexture from "../../engine/assets/texture/conditionaltexture.js";
+import Texture from "../../engine/assets/texture/texture.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import ComplexMovingEntity from "../../engine/entitiy/complexmovingentity.js";
 import ComplexMovingEntityBuilder from "../../engine/entitiy/complexmovingentitybuilder.js";
@@ -8,17 +10,19 @@ import MouseClickEvent from "../../engine/event/events/mouseclickevent/mouseclic
 import InputHandler from "../../engine/input/inputhandler.js";
 import MouseButton from "../../engine/input/mousebutton.js";
 import Direction from "../../engine/math/direction.js";
-import Matrix2D from "../../engine/math/matrix2d.js";
 import Vector2D from "../../engine/math/vector2d.js";
-import PlayerArmRight from "./playerarmright.js";
+
 import PortalEntity from "./portalentity.js";
 import PortalType from "./portaltype.js";
+import PlayerArm from "./playerarm.js";
 
 class PlayerEntity extends ComplexMovingEntity {
   private _inputHandler: InputHandler;
   private _entityManager: EntityManager;
 
+  private _direction: Direction;
   private _portalGunEnabled: boolean;
+
   private _purplePortal: PortalEntity | null;
   private _greenPortal: PortalEntity | null;
 
@@ -30,6 +34,10 @@ class PlayerEntity extends ComplexMovingEntity {
 
   set portalGunEnabled(value: boolean) {
     this._portalGunEnabled = value;
+  }
+
+  get direction(): Direction {
+    return this._direction;
   }
 
   constructor(x: number, y: number) {
@@ -45,20 +53,44 @@ class PlayerEntity extends ComplexMovingEntity {
         0,
         0,
         false,
-        Services.resolve<AssetManager>("AssetManager").getTexture(
-          "playerRunRight"
+        new ConditionalTexture(
+          Services.resolve<AssetManager>("AssetManager").getTexture(
+            "playerRunRight"
+          ),
+          new Map<Function, Texture>([
+            [
+              () => this._direction === Direction.Left && this.velocity.x > 0,
+              Services.resolve<AssetManager>("AssetManager").getTexture(
+                "playerRunLeftBackwords"
+              ),
+            ],
+            [
+              () => this._direction === Direction.Left,
+              Services.resolve<AssetManager>("AssetManager").getTexture(
+                "playerRunLeft"
+              ),
+            ],
+            [
+              () => this._direction === Direction.Right && this.velocity.x < 0,
+              Services.resolve<AssetManager>("AssetManager").getTexture(
+                "playerRunRightBackwords"
+              ),
+            ],
+          ]),
+          100
         )
-      ).addPart(
-        new Vector2D(0, 0),
-        new PlayerArmRight(0, 0, 0, 20, 40, 1, 1, 0, 0)
-      )
+      ).addPart(new Vector2D(-2, 1), new PlayerArm(0, 0, 0, 20, 30, 1, 1, 0, 0))
     );
 
     this._inputHandler = Services.resolve<InputHandler>("InputHandler");
     this._entityManager = Services.resolve<EntityManager>("EntityManager");
+
+    this._direction = Direction.Right;
     this._portalGunEnabled = true;
+
     this._purplePortal = null;
     this._greenPortal = null;
+
     this._onMouseClickThis = this.onMouseClick.bind(this);
   }
 
@@ -99,9 +131,20 @@ class PlayerEntity extends ComplexMovingEntity {
 
   private handleArmRotation() {
     let mouseLocation = this._inputHandler.mouseRelative;
-    let armPart = this.parts[0][1];
+    let armPart = this.parts[0][1] as PlayerArm;
     let degrees = armPart.centerOfMassAbsolute.degreesTo(mouseLocation) - 20;
-    armPart.rotate(degrees);
+    let previousDirection = this._direction;
+    this._direction =
+      degrees > 70 || degrees < -110 ? Direction.Left : Direction.Right;
+
+    let isRight = this._direction === Direction.Right;
+    armPart.rotate(isRight ? degrees : degrees + 200);
+    if (previousDirection !== this._direction) {
+      armPart.direction = this._direction;
+      armPart.centerOfMass = isRight
+        ? new Vector2D(20, 30)
+        : new Vector2D(32, 30);
+    }
   }
 
   private raycast(
