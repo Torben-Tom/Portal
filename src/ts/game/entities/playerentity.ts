@@ -127,8 +127,27 @@ class PlayerEntity extends ComplexMovingEntity {
   private handleArmRotation() {
     let mouseLocation = this._inputHandler.mouseRelative;
     let armPart = this.parts[0][1];
-    let degrees = armPart.centerOfMassAbsolute.degreesTo(mouseLocation) - 20;
-    armPart.rotate(degrees);
+    let degrees = armPart.centerOfMassAbsolute.degreesTo(mouseLocation);
+    armPart.rotate(degrees - 20);
+
+    console.log(degrees);
+    if (degrees < -90 && degrees > -180) {
+      this._lookLeft = true;
+    } else {
+      this._lookLeft = false;
+    }
+
+    for (let part of this.parts) {
+      if (part[1] instanceof PlayerArm) {
+        if (degrees < -90 && degrees > -180) {
+          part[1].centerOfMass = new Vector2D(32, 30);
+          armPart.rotate(degrees - 180);
+        } else {
+          part[1].centerOfMass = new Vector2D(20, 30);
+          armPart.rotate(degrees);
+        }
+      }
+    }
   }
 
   private raycast(
@@ -218,24 +237,6 @@ class PlayerEntity extends ComplexMovingEntity {
         leftDiff < bottomDiff
       ) {
         degrees = 180;
-      }
-
-      if (degrees < -180) {
-        this._lookLeft = true;
-      } else {
-        this._lookLeft = false;
-      }
-
-      for (let part of this.parts) {
-        if (part[1] instanceof PlayerArm) {
-          if (degrees < -180) {
-            part[1].centerOfMass = new Vector2D(32, 30);
-            armPart.rotate(degrees - 180);
-          } else {
-            part[1].centerOfMass = new Vector2D(20, 30);
-            armPart.rotate(degrees);
-          }
-        }
       }
 
       let portalCenterOffset = new Vector2D(37.5, 81.25);
