@@ -10,7 +10,6 @@ import MouseClickEvent from "../../engine/event/events/mouseclickevent/mouseclic
 import InputHandler from "../../engine/input/inputhandler.js";
 import MouseButton from "../../engine/input/mousebutton.js";
 import Direction from "../../engine/math/direction.js";
-import Matrix2D from "../../engine/math/matrix2d.js";
 import Vector2D from "../../engine/math/vector2d.js";
 
 import PortalEntity from "./portalentity.js";
@@ -21,13 +20,13 @@ class PlayerEntity extends ComplexMovingEntity {
   private _inputHandler: InputHandler;
   private _entityManager: EntityManager;
 
+  private _direction: Direction;
   private _portalGunEnabled: boolean;
+
   private _purplePortal: PortalEntity | null;
   private _greenPortal: PortalEntity | null;
 
   private _onMouseClickThis: (mouseClickEvent: MouseClickEvent) => void;
-  private _lookLeft: boolean = false;
-  private _runLeft: boolean = false;
 
   get portalGunEnabled(): boolean {
     return this._portalGunEnabled;
@@ -35,6 +34,10 @@ class PlayerEntity extends ComplexMovingEntity {
 
   set portalGunEnabled(value: boolean) {
     this._portalGunEnabled = value;
+  }
+
+  get direction(): Direction {
+    return this._direction;
   }
 
   constructor(x: number, y: number) {
@@ -56,19 +59,19 @@ class PlayerEntity extends ComplexMovingEntity {
           ),
           new Map<Function, Texture>([
             [
-              () => this._lookLeft && this._runLeft,
-              Services.resolve<AssetManager>("AssetManager").getTexture(
-                "playerRunLeft"
-              ),
-            ],
-            [
-              () => this._lookLeft && !this._runLeft,
+              () => this._direction === Direction.Left && this.velocity.x > 0,
               Services.resolve<AssetManager>("AssetManager").getTexture(
                 "playerRunLeftBackwords"
               ),
             ],
             [
-              () => !this._lookLeft && this._runLeft,
+              () => this._direction === Direction.Left,
+              Services.resolve<AssetManager>("AssetManager").getTexture(
+                "playerRunLeft"
+              ),
+            ],
+            [
+              () => this._direction === Direction.Right && this.velocity.x < 0,
               Services.resolve<AssetManager>("AssetManager").getTexture(
                 "playerRunRightBackwords"
               ),
@@ -81,9 +84,13 @@ class PlayerEntity extends ComplexMovingEntity {
 
     this._inputHandler = Services.resolve<InputHandler>("InputHandler");
     this._entityManager = Services.resolve<EntityManager>("EntityManager");
+
+    this._direction = Direction.Right;
     this._portalGunEnabled = true;
+
     this._purplePortal = null;
     this._greenPortal = null;
+
     this._onMouseClickThis = this.onMouseClick.bind(this);
   }
 
@@ -114,11 +121,9 @@ class PlayerEntity extends ComplexMovingEntity {
         this.setColliding(Direction.Bottom, false);
       }
       if (this._inputHandler.isKeyDown("a")) {
-        this._runLeft = true;
         this.addVelocity(new Vector2D(-0.1 * tickDelta, 0));
       }
       if (this._inputHandler.isKeyDown("d")) {
-        this._runLeft = false;
         this.addVelocity(new Vector2D(0.1 * tickDelta, 0));
       }
     }
@@ -126,27 +131,19 @@ class PlayerEntity extends ComplexMovingEntity {
 
   private handleArmRotation() {
     let mouseLocation = this._inputHandler.mouseRelative;
-    let armPart = this.parts[0][1];
-    let degrees = armPart.centerOfMassAbsolute.degreesTo(mouseLocation);
-    armPart.rotate(degrees - 20);
+    let armPart = this.parts[0][1] as PlayerArm;
+    let degrees = armPart.centerOfMassAbsolute.degreesTo(mouseLocation) - 20;
+    let previousDirection = this._direction;
+    this._direction =
+      degrees > 70 || degrees < -110 ? Direction.Left : Direction.Right;
 
-    console.log(degrees);
-    if (degrees < -90 && degrees > -180) {
-      this._lookLeft = true;
-    } else {
-      this._lookLeft = false;
-    }
-
-    for (let part of this.parts) {
-      if (part[1] instanceof PlayerArm) {
-        if (degrees < -90 && degrees > -180) {
-          part[1].centerOfMass = new Vector2D(32, 30);
-          armPart.rotate(degrees - 180);
-        } else {
-          part[1].centerOfMass = new Vector2D(20, 30);
-          armPart.rotate(degrees);
-        }
-      }
+    let isRight = this._direction === Direction.Right;
+    armPart.rotate(isRight ? degrees : degrees + 200);
+    if (previousDirection !== this._direction) {
+      armPart.direction = this._direction;
+      armPart.centerOfMass = isRight
+        ? new Vector2D(20, 30)
+        : new Vector2D(32, 30);
     }
   }
 

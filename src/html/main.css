@@ -2,24 +2,30 @@
   text-align: center;
 }
 
-#game-canvas {
-  display: block;
-  margin: 0 auto;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  max-width: 100vw;
-  max-height: 100vh;
+@media (orientation: portrait) {
+  #game-canvas {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (orientation: landscape) {
+  #game-canvas {
+    display: block;
+    margin: 0 auto;
+    height: 100%;
+  }
 }
 
 .page {
   color: white;
-  background-color: rgba(44,34,34,255);
+  background-color: rgba(44, 34, 34, 255);
   height: 100%;
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 16px;
   margin: 0;
   padding: 0;
