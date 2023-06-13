@@ -1,4 +1,5 @@
 import EntityManager from "../entitiy/entitymanager.js";
+import LevelManager from "../level/levelmanager.js";
 import SceneManager from "../scene/scenemanager.js";
 import DebugRenderer from "./renderers/debugrenderer.js";
 import ElementRenderer from "./renderers/elementrenderer.js";
@@ -14,6 +15,7 @@ class Compositor {
   private _glContext!: CanvasRenderingContext2D;
   private _renderPipeline!: RenderPipeline;
   private _sceneManager: SceneManager;
+  private _levelManager: LevelManager;
   private _entityManager: EntityManager;
 
   get canvasWidth(): number {
@@ -37,6 +39,7 @@ class Compositor {
   constructor(
     htmlCanvasElement: HTMLCanvasElement,
     sceneManager: SceneManager,
+    levelManager: LevelManager,
     entityManager: EntityManager
   ) {
     this._htmlCanvasElement = htmlCanvasElement;
@@ -45,6 +48,7 @@ class Compositor {
     this.initializeRenderPipeline();
 
     this._sceneManager = sceneManager;
+    this._levelManager = levelManager;
     this._entityManager = entityManager;
   }
 
@@ -77,13 +81,16 @@ class Compositor {
     this._glContext.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 
     let currentScene = this._sceneManager.currentScene;
+    let currentLevel = this._levelManager.currentLevel;
 
     if (currentScene) {
       this._renderPipeline.render(currentScene, delta);
     }
 
-    for (let entity of this._entityManager.entities) {
-      this._renderPipeline.render(entity, delta);
+    if (currentLevel) {
+      for (let entity of this._entityManager.entities) {
+        this._renderPipeline.render(entity, delta);
+      }
     }
 
     if (currentScene) {

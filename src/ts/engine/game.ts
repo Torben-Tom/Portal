@@ -49,6 +49,7 @@ class Game {
     this._compositor = new Compositor(
       htmlCanvasElement,
       this._sceneManager,
+      this._levelManager,
       this._entityManager
     );
 

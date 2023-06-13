@@ -1,6 +1,7 @@
 import AssetManager from "../../engine/assets/assetmanager.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import MouseClickEvent from "../../engine/event/events/mouseclickevent/mouseclickevent.js";
+import LevelManager from "../../engine/level/levelmanager.js";
 import Button from "../../engine/scene/elements/button.js";
 import Text from "../../engine/scene/elements/text.js";
 import Scene from "../../engine/scene/scene.js";
@@ -46,7 +47,8 @@ class MainMenu extends Scene {
     );
 
     this._buttonStart.onClick = (mouseClickEvent: MouseClickEvent) => {
-      Services.resolve<SceneManager>("SceneManager").switchScene("level1");
+      Services.resolve<SceneManager>("SceneManager").switchScene("ingame");
+      Services.resolve<LevelManager>("LevelManager").start("level1");
     };
 
     this._buttonSettings = new Button(

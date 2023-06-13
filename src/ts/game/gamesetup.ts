@@ -4,11 +4,11 @@ import SpriteSheet from "../engine/assets/texture/spritesheet.js";
 import EngineSetup from "../engine/enginesetup.js";
 import EntityManager from "../engine/entitiy/entitymanager.js";
 import LevelManager from "../engine/level/levelmanager.js";
-import LevelScene from "../engine/scene/levelscene.js";
 import SceneManager from "../engine/scene/scenemanager.js";
 import Level1 from "./levels/level1.js";
 import Level2 from "./levels/level2.js";
 import Level3 from "./levels/level3.js";
+import InGame from "./scenes/ingame.js";
 import MainMenu from "./scenes/mainmenu.js";
 
 class GameSetup extends EngineSetup {
@@ -983,7 +983,7 @@ class GameSetup extends EngineSetup {
 
   registerScenes(sceneManager: SceneManager): void {
     sceneManager.register("mainmenu", new MainMenu());
-    sceneManager.register("level1", new LevelScene("level1"));
+    sceneManager.register("ingame", new InGame());
   }
 }
 
