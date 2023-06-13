@@ -20,6 +20,7 @@ class Game {
   private _lastRender: number;
 
   private _tpsGoal: number;
+  private _tickDeltaTolerance: number;
 
   private _currentTps: number;
   private _currentFps: number;
@@ -49,6 +50,7 @@ class Game {
     this._lastRender = Date.now();
 
     this._tpsGoal = 100;
+    this._tickDeltaTolerance = 50;
 
     this._currentTps = 0;
     this._currentFps = 0;
@@ -93,6 +95,10 @@ class Game {
       let tickDelta = now - this._lastTick;
       this._lastTick = now;
       this._currentTps = Math.round(1 / (tickDelta / 1000));
+
+      if (tickDelta > this._tickDeltaTolerance) {
+        tickDelta = this._tickDeltaTolerance;
+      }
 
       this._levelManager.update(tickDelta);
       this._entityManager.update(tickDelta);
