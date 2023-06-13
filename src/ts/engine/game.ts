@@ -6,11 +6,13 @@ import EntityManager from "./entitiy/entitymanager.js";
 import InputHandler from "./input/inputhandler.js";
 import LevelManager from "./level/levelmanager.js";
 import Compositor from "./renderer/compositor.js";
+import SceneManager from "./scene/scenemanager.js";
 
 class Game {
   private _assetLoader: AssetLoader;
   private _assetManager: AssetManager;
   private _inputHandler: InputHandler;
+  private _sceneManager: SceneManager;
   private _entityManager: EntityManager;
   private _levelManager: LevelManager;
   private _compositor: Compositor;
@@ -41,9 +43,14 @@ class Game {
     this._assetLoader = new AssetLoader();
     this._assetManager = new AssetManager();
     this._inputHandler = new InputHandler(htmlCanvasElement);
+    this._sceneManager = new SceneManager(this._inputHandler);
     this._entityManager = new EntityManager();
     this._levelManager = new LevelManager(this._entityManager);
-    this._compositor = new Compositor(htmlCanvasElement, this._entityManager);
+    this._compositor = new Compositor(
+      htmlCanvasElement,
+      this._sceneManager,
+      this._entityManager
+    );
 
     this._running = false;
     this._lastTick = Date.now();
@@ -58,6 +65,7 @@ class Game {
     Services.register(this._assetLoader);
     Services.register(this._assetManager);
     Services.register(this._inputHandler);
+    Services.register(this._sceneManager);
     Services.register(this._entityManager);
     Services.register(this._levelManager);
     Services.register(this._compositor);
@@ -87,6 +95,8 @@ class Game {
       this._entityManager,
       this._levelManager
     );
+
+    engineSetup.registerScenes(this._sceneManager);
   }
 
   public startUpdateLoop(): void {
@@ -100,8 +110,9 @@ class Game {
         tickDelta = this._tickDeltaTolerance;
       }
 
-      this._levelManager.update(tickDelta);
+      this._sceneManager.update(tickDelta);
       this._entityManager.update(tickDelta);
+      this._levelManager.update(tickDelta);
 
       if (!this._running) {
         clearInterval(updateLoopId);

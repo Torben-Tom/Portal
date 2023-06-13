@@ -4,9 +4,12 @@ import SpriteSheet from "../engine/assets/texture/spritesheet.js";
 import EngineSetup from "../engine/enginesetup.js";
 import EntityManager from "../engine/entitiy/entitymanager.js";
 import LevelManager from "../engine/level/levelmanager.js";
+import LevelScene from "../engine/scene/levelscene.js";
+import SceneManager from "../engine/scene/scenemanager.js";
 import Level1 from "./levels/level1.js";
 import Level2 from "./levels/level2.js";
 import Level3 from "./levels/level3.js";
+import MainMenu from "./scenes/mainmenu.js";
 
 class GameSetup extends EngineSetup {
   public loadAssets(
@@ -968,14 +971,19 @@ class GameSetup extends EngineSetup {
   }
 
   registerLevels(
-    _assetLoader: AssetLoader,
-    _assetManager: AssetManager,
-    _entityManager: EntityManager,
-    _levelManager: LevelManager
+    assetLoader: AssetLoader,
+    assetManager: AssetManager,
+    entityManager: EntityManager,
+    levelManager: LevelManager
   ): void {
-    _levelManager.registerLevel("level1", new Level1());
-    _levelManager.registerLevel("level2", new Level2());
-    _levelManager.registerLevel("level3", new Level3());
+    levelManager.register("level1", new Level1());
+    levelManager.register("level2", new Level2());
+    levelManager.register("level3", new Level3());
+  }
+
+  registerScenes(sceneManager: SceneManager): void {
+    sceneManager.register("mainmenu", new MainMenu());
+    sceneManager.register("level1", new LevelScene("level1"));
   }
 }
 
