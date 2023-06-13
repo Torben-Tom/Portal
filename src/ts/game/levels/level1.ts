@@ -62,6 +62,7 @@ class Level1 implements Level {
     );
 
     let player = new PlayerEntity(100, 450);
+    player.portalGunEnabled = false;
     let cornerBrickLeft = new LeftCornerBrickEntity(0, 550, 1.5, 1.5, 0, 0);
     let cornerBrickRight = new RightCornerBrickEntity(750, 550, 1.5, 1.5, 0, 0);
 
