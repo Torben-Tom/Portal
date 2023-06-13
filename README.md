@@ -31,3 +31,4 @@ A web-based 2D clone of Valve's famous puzzle game Portal
 - https://www.patreon.com/posts/27430241
 - https://craftpix.net/file-licenses/
 - https://www.pixilart.com/terms
+- https://www.favicon.cc/?action=icon&file_id=359150
