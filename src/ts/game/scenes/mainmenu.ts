@@ -9,7 +9,7 @@ import SceneManager from "../../engine/scene/scenemanager.js";
 
 class MainMenu extends Scene {
   private _buttonStart: Button;
-  private _buttonSettings: Button;
+  private _buttonLevels: Button;
 
   public constructor() {
     super(
@@ -21,12 +21,12 @@ class MainMenu extends Scene {
     let title = new Text(
       400,
       50,
-      true,
       "white",
+      "bold 30px Arial",
       "center",
       "middle",
-      "bold 30px Arial",
-      "Portal"
+      "Portal",
+      true
     );
 
     this._buttonStart = new Button(
@@ -34,16 +34,18 @@ class MainMenu extends Scene {
       200,
       300,
       50,
-      "gray",
-      "black",
-      1,
-      true,
+      "rgba(0, 0, 0, 0.5)",
       "white",
+      "white",
+      "black",
+      "white",
+      "green",
+      1,
+      "bold 20px Arial",
       "center",
       "middle",
-      "bold 20px Arial",
       "Start",
-      "purple"
+      true
     );
 
     this._buttonStart.onClick = (mouseClickEvent: MouseClickEvent) => {
@@ -51,26 +53,28 @@ class MainMenu extends Scene {
       Services.resolve<LevelManager>("LevelManager").start("level1");
     };
 
-    this._buttonSettings = new Button(
+    this._buttonLevels = new Button(
       250,
       300,
       300,
       50,
-      "gray",
-      "black",
-      1,
-      true,
+      "rgba(1, 1, 1, 0.5)",
       "white",
+      "white",
+      "black",
+      "white",
+      "green",
+      1,
+      "bold 20px Arial",
       "center",
       "middle",
-      "bold 20px Arial",
-      "Settings",
-      "purple"
+      "Select level",
+      true
     );
 
     this.addElement(title);
     this.addElement(this._buttonStart);
-    this.addElement(this._buttonSettings);
+    this.addElement(this._buttonLevels);
   }
 }
 

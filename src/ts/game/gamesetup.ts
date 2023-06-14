@@ -9,6 +9,7 @@ import Level1 from "./levels/level1.js";
 import Level2 from "./levels/level2.js";
 import Level3 from "./levels/level3.js";
 import InGame from "./scenes/ingame.js";
+import Scene1 from "./scenes/ingame.js";
 import MainMenu from "./scenes/mainmenu.js";
 
 class GameSetup extends EngineSetup {

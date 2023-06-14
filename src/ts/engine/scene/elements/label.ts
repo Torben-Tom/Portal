@@ -53,21 +53,21 @@ class Label extends Element {
     width: number,
     height: number,
     background: string | CanvasGradient | CanvasPattern,
+    foreground: string | CanvasGradient | CanvasPattern,
     border: string,
     borderSize: number,
-    visible: boolean,
-    foreground: string | CanvasGradient | CanvasPattern,
-    textAlign: CanvasTextAlign,
-    textBaseline: CanvasTextBaseline | undefined | null,
     font: string,
-    text: string
+    textAlign: CanvasTextAlign,
+    textBaseline: CanvasTextBaseline,
+    text: string,
+    visible: boolean
   ) {
     super(x, y, width, height, background, border, borderSize, visible);
 
     this._foreground = foreground;
-    this._textAlign = textAlign;
-    this._textBaseline = textBaseline ? textBaseline : "alphabetic";
     this._font = font;
+    this._textAlign = textAlign;
+    this._textBaseline = textBaseline;
     this._text = text;
   }
 }

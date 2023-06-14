@@ -1,20 +1,75 @@
-import EngineEventHandler from "../../event/engineventhandler.js";
 import MouseClickEvent from "../../event/events/mouseclickevent/mouseclickevent.js";
-import MouseClickEventData from "../../event/events/mouseclickevent/mouseclickeventdata.js";
 import Label from "./label.js";
 
 class Button extends Label {
-  private _borderHover: string;
+  private _backgroundUnhovered: string | CanvasGradient | CanvasPattern;
+  private _backgroundHover: string | CanvasGradient | CanvasPattern;
+
+  private _foregroundHover: string | CanvasGradient | CanvasPattern;
+  private _foregroundUnhovered: string | CanvasGradient | CanvasPattern;
+
+  private _borderUnhovered: string | CanvasGradient | CanvasPattern;
+  private _borderHover: string | CanvasGradient | CanvasPattern;
+
+  private _borderSizeUnhovered: number;
+
   private _onClick: ((mouseClickEvent: MouseClickEvent) => void) | null;
 
-  private _originalBorder: string;
-  private _originalBorderSize: number;
+  public get backgroundUnhovered(): string | CanvasGradient | CanvasPattern {
+    return this._backgroundUnhovered;
+  }
 
-  public get borderHover(): string {
+  protected set backgroundUnhovered(
+    value: string | CanvasGradient | CanvasPattern
+  ) {
+    this._backgroundUnhovered = value;
+  }
+
+  public get backgroundHover(): string | CanvasGradient | CanvasPattern {
+    return this._backgroundHover;
+  }
+
+  protected set backgroundHover(
+    value: string | CanvasGradient | CanvasPattern
+  ) {
+    this._backgroundHover = value;
+  }
+
+  public get foregroundUnhovered(): string | CanvasGradient | CanvasPattern {
+    return this._foregroundUnhovered;
+  }
+
+  protected set foregroundUnhovered(
+    value: string | CanvasGradient | CanvasPattern
+  ) {
+    this._foregroundUnhovered = value;
+  }
+
+  public get foregroundHover(): string | CanvasGradient | CanvasPattern {
+    return this._foregroundHover;
+  }
+
+  protected set foregroundHover(
+    value: string | CanvasGradient | CanvasPattern
+  ) {
+    this._foregroundHover = value;
+  }
+
+  public get borderUnhovered(): string | CanvasGradient | CanvasPattern {
+    return this._borderUnhovered;
+  }
+
+  protected set borderUnhovered(
+    value: string | CanvasGradient | CanvasPattern
+  ) {
+    this._borderUnhovered = value;
+  }
+
+  public get borderHover(): string | CanvasGradient | CanvasPattern {
     return this._borderHover;
   }
 
-  protected set borderHover(value: string) {
+  protected set borderHover(value: string | CanvasGradient | CanvasPattern) {
     this._borderHover = value;
   }
 
@@ -33,46 +88,61 @@ class Button extends Label {
     y: number,
     width: number,
     height: number,
-    background: string | CanvasGradient | CanvasPattern,
-    border: string,
+    backgroundUnhovered: string | CanvasGradient | CanvasPattern,
+    backgroundHover: string | CanvasGradient | CanvasPattern,
+    foregroundUnhovered: string | CanvasGradient | CanvasPattern,
+    foregroundHover: string | CanvasGradient | CanvasPattern,
+    borderUnhovered: string,
+    borderHover: string,
     borderSize: number,
-    visible: boolean,
-    foreground: string | CanvasGradient | CanvasPattern,
-    textAlign: CanvasTextAlign,
-    textBaseline: CanvasTextBaseline | undefined | null,
     font: string,
+    textAlign: CanvasTextAlign,
+    textBaseline: CanvasTextBaseline,
     text: string,
-    borderHover: string
+    visible: boolean
   ) {
     super(
       x,
       y,
       width,
       height,
-      background,
-      border,
+      backgroundUnhovered,
+      foregroundUnhovered,
+      borderUnhovered,
       borderSize,
-      visible,
-      foreground,
+      font,
       textAlign,
       textBaseline,
-      font,
-      text
+      text,
+      visible
     );
 
-    this._borderHover = borderHover;
-    this._onClick = null;
+    this._backgroundUnhovered = backgroundUnhovered;
+    this._backgroundHover = backgroundHover;
 
-    this._originalBorder = border;
-    this._originalBorderSize = borderSize;
+    this._foregroundUnhovered = foregroundUnhovered;
+    this._foregroundHover = foregroundHover;
+
+    this._borderUnhovered = borderUnhovered;
+    this._borderHover = borderHover;
+
+    this._borderSizeUnhovered = borderSize;
+
+    this._onClick = null;
   }
 
   public update(): void {
-    this.borderSize = this.hovered
-      ? this._originalBorderSize + 3
-      : this._originalBorderSize;
-
-    this.border = this.hovered ? this._borderHover : this._originalBorder;
+    if (this.hovered) {
+      this.background = this._backgroundHover;
+      this.foreground = this._foregroundHover;
+      this.border = this._borderHover;
+      this.borderSize = this._borderSizeUnhovered + 3;
+    } else {
+      this.background = this._backgroundUnhovered;
+      this.foreground = this._foregroundUnhovered;
+      this.border = this._borderUnhovered;
+      this.borderSize = this._borderSizeUnhovered;
+    }
   }
 
   public click(mouseClickEvent: MouseClickEvent): void {

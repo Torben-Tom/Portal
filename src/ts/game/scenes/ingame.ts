@@ -1,35 +1,43 @@
-import Services from "../../engine/dependencyinjection/services.js";
-import MouseClickEvent from "../../engine/event/events/mouseclickevent/mouseclickevent.js";
-import Button from "../../engine/scene/elements/button.js";
+import CheckBox from "../../engine/scene/elements/checkbox.js";
 import Scene from "../../engine/scene/scene.js";
-import SceneManager from "../../engine/scene/scenemanager.js";
 
 class InGame extends Scene {
   public constructor() {
     super("rgba(0, 0, 0, 0)");
 
-    let buttonHelp = new Button(
-      600,
-      400,
+    let testCheckBox = new CheckBox(
+      375,
+      0,
       50,
       50,
       "rgba(0, 0, 0, 0)",
+      "rgba(0, 255, 0, 0.5)",
+      "rgba(255, 255, 255, 0.25)",
+      "rgba(0, 255, 0, 0.25)",
       "white",
+      "white",
+      "white",
+      "white",
+      "black",
+      "black",
+      "black",
+      "black",
       1,
-      true,
-      "white",
+      "bold 20px Arial",
       "center",
       "middle",
-      "bold 20px Arial",
-      "?",
-      "purple"
+      "⛔",
+      "🎵",
+      true,
+      true
     );
 
-    buttonHelp.onClick = (mouseClickEvent: MouseClickEvent) => {
-      alert("No");
+    testCheckBox.onClick = () => {
+      testCheckBox.toggle();
+      console.log("Music: " + testCheckBox.checked);
     };
 
-    this.addElement(buttonHelp);
+    this.addElement(testCheckBox);
   }
 }
 

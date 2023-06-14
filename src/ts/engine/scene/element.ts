@@ -3,7 +3,7 @@ import Rectangle from "../math/rectangle.js";
 
 class Element extends Rectangle {
   private _background: string | CanvasGradient | CanvasPattern;
-  private _border: string;
+  private _border: string | CanvasGradient | CanvasPattern;
   private _borderSize: number;
   private _visible: boolean;
   private _hovered: boolean;
@@ -16,11 +16,11 @@ class Element extends Rectangle {
     this._background = value;
   }
 
-  public get border(): string {
+  public get border(): string | CanvasGradient | CanvasPattern {
     return this._border;
   }
 
-  protected set border(value: string) {
+  protected set border(value: string | CanvasGradient | CanvasPattern) {
     this._border = value;
   }
 
