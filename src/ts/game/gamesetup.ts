@@ -406,46 +406,10 @@ class GameSetup extends EngineSetup {
     assetManager.registerAnimatedTexture(
       "playerRunRightBackwords",
       [
-        assetManager.registerSliceTexture(
-          "playerRunRight4",
-          playerRunRightSpriteSheet.createSlice(
-            "playerRunRight4",
-            167,
-            10,
-            48,
-            78
-          )
-        ),
-        assetManager.registerSliceTexture(
-          "playerRunRight3",
-          playerRunRightSpriteSheet.createSlice(
-            "playerRunRight3",
-            118,
-            10,
-            48,
-            78
-          )
-        ),
-        assetManager.registerSliceTexture(
-          "playerRunRight2",
-          playerRunRightSpriteSheet.createSlice(
-            "playerRunRight2",
-            64,
-            10,
-            48,
-            78
-          )
-        ),
-        assetManager.registerSliceTexture(
-          "playerRunRight1",
-          playerRunRightSpriteSheet.createSlice(
-            "playerRunRight1",
-            14,
-            10,
-            48,
-            78
-          )
-        ),
+        assetManager.getTexture("playerRunRight4"),
+        assetManager.getTexture("playerRunRight3"),
+        assetManager.getTexture("playerRunRight2"),
+        assetManager.getTexture("playerRunRight1"),
       ],
       100
     );
@@ -508,34 +472,10 @@ class GameSetup extends EngineSetup {
     assetManager.registerAnimatedTexture(
       "playerRunLeftBackwords",
       [
-        assetManager.registerSliceTexture(
-          "playerRunLeft4",
-          playerRunLeftSpriteSheet.createSlice("playerRunLeft4", 7, 10, 48, 78)
-        ),
-        assetManager.registerSliceTexture(
-          "playerRunLeft3",
-          playerRunLeftSpriteSheet.createSlice("playerRunLeft3", 57, 10, 48, 78)
-        ),
-        assetManager.registerSliceTexture(
-          "playerRunLeft2",
-          playerRunLeftSpriteSheet.createSlice(
-            "playerRunLeft2",
-            111,
-            10,
-            48,
-            78
-          )
-        ),
-        assetManager.registerSliceTexture(
-          "playerRunLeft1",
-          playerRunLeftSpriteSheet.createSlice(
-            "playerRunLeft1",
-            160,
-            10,
-            48,
-            78
-          )
-        ),
+        assetManager.getTexture("playerRunLeft4"),
+        assetManager.getTexture("playerRunLeft3"),
+        assetManager.getTexture("playerRunLeft2"),
+        assetManager.getTexture("playerRunLeft1"),
       ],
       100
     );
