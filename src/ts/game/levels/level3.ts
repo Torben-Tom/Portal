@@ -21,6 +21,8 @@ import PlayerArmRight from "../entities/playerarm.js";
 import MetalWallEntity from "../entities/metalwallentity.js";
 import PlayerEntity from "../entities/playerentity.js";
 import Vector2D from "../../engine/math/vector2d.js";
+import LevelManager from "../../engine/level/levelmanager.js";
+import SceneManager from "../../engine/scene/scenemanager.js";
 
 class Level3 implements Level {
   private _inputHandler: InputHandler;
@@ -29,6 +31,7 @@ class Level3 implements Level {
   private _buttonGround1!: ButtonGround;
   private _buttonGround2!: ButtonGround;
   private _companionCubes!: CompanionCube[];
+  private _goal!: Goal;
 
   constructor() {
     this._inputHandler = Services.resolve<InputHandler>("InputHandler");
@@ -69,7 +72,7 @@ class Level3 implements Level {
     let companionCube2 = new CompanionCube(600, 0, 0.5, 0.5, 0, 0);
     this._companionCubes = [companionCube1, companionCube2];
 
-    let goal = new Goal(70, 470, 1.6, 1.6, 0, 0);
+    this._goal = new Goal(70, 470, 1.6, 1.6, 0, 0);
 
     let entities: Entity[] = [
       window,
@@ -80,7 +83,7 @@ class Level3 implements Level {
       this._buttonGround2,
       companionCube1,
       companionCube2,
-      goal,
+      this._goal,
       player,
     ];
 
@@ -137,6 +140,10 @@ class Level3 implements Level {
   }
 
   public load(): void {
+    this._goal.onTouch.subscribe((engineEvent: EngineEvent<Goal>) => {
+      Services.resolve<LevelManager>("LevelManager").unload();
+      Services.resolve<SceneManager>("SceneManager").switchScene("gameover");
+    });
     this._buttonGround1.onUnpress.subscribe(
       (engineEvent: EngineEvent<ButtonGround>) => {
         if (

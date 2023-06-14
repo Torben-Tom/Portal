@@ -173,8 +173,8 @@ class DebugRenderer extends Renderer {
     delta: number
   ): void {
     if (this._game && this._entityManager && this._inputHandler) {
-      this.drawInfoBox(glContext);
       if (this._inputHandler.isKeyDown("b")) {
+        this.drawInfoBox(glContext);
         for (let entity of this._entityManager.entities) {
           this.drawBoundingBoxes(glContext, entity);
         }

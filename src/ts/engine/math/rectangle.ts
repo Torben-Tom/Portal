@@ -9,6 +9,10 @@ class Rectangle {
     return this._location;
   }
 
+  set location(value: Vector2D) {
+    this._location = value;
+  }
+
   get width(): number {
     return this._width;
   }
