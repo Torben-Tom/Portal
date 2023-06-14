@@ -3,12 +3,14 @@ import Services from "../../engine/dependencyinjection/services.js";
 import MouseClickEvent from "../../engine/event/events/mouseclickevent/mouseclickevent.js";
 import Game from "../../engine/game.js";
 import LevelManager from "../../engine/level/levelmanager.js";
+import Vector2D from "../../engine/math/vector2d.js";
 import Button from "../../engine/scene/elements/button.js";
 import Text from "../../engine/scene/elements/text.js";
 import Scene from "../../engine/scene/scene.js";
 import SceneManager from "../../engine/scene/scenemanager.js";
+import Base from "./base.js";
 
-class GameOver extends Scene {
+class GameOver extends Base {
   private _buttonLevelOverview: any;
   private _backToMainMenu: Button;
   private _runAgain: Button;
@@ -19,6 +21,9 @@ class GameOver extends Scene {
         "level1-background"
       )
     );
+
+    this.musicCheckBox.location = new Vector2D(450, 500);
+    this.soundCheckBox.location = new Vector2D(300, 500);
 
     let title = new Text(
       400,

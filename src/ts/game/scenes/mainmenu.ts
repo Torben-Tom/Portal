@@ -2,12 +2,14 @@ import AssetManager from "../../engine/assets/assetmanager.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import MouseClickEvent from "../../engine/event/events/mouseclickevent/mouseclickevent.js";
 import LevelManager from "../../engine/level/levelmanager.js";
+import Vector2D from "../../engine/math/vector2d.js";
 import Button from "../../engine/scene/elements/button.js";
 import Text from "../../engine/scene/elements/text.js";
 import Scene from "../../engine/scene/scene.js";
 import SceneManager from "../../engine/scene/scenemanager.js";
+import Base from "./base.js";
 
-class MainMenu extends Scene {
+class MainMenu extends Base {
   private _buttonStart: Button;
   private _buttonLevelOverview: Button;
 
@@ -17,6 +19,9 @@ class MainMenu extends Scene {
         "level1-background"
       )
     );
+
+    this.musicCheckBox.location = new Vector2D(450, 400);
+    this.soundCheckBox.location = new Vector2D(300, 400);
 
     let title = new Text(
       400,
