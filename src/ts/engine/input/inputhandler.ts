@@ -1,5 +1,7 @@
 import EngineEvent from "../event/engineevent.js";
 import EngineEventHandler from "../event/engineventhandler.js";
+import KeyBoardEvent from "../event/events/keyboardevent/keyboardevent.js";
+import KeyBoardEventData from "../event/events/keyboardevent/keyboardeventdata.js";
 import MouseClickEvent from "../event/events/mouseclickevent/mouseclickevent.js";
 import MouseClickEventData from "../event/events/mouseclickevent/mouseclickeventdata.js";
 import Vector2D from "../math/vector2d.js";
@@ -21,13 +23,13 @@ class InputHandler {
   >;
 
   private _engineKeyDownEvent: EngineEventHandler<
-    KeyboardEvent,
-    EngineEvent<KeyboardEvent>
+    KeyBoardEventData,
+    KeyBoardEvent
   >;
 
   private _engineKeyUpEvent: EngineEventHandler<
-    KeyboardEvent,
-    EngineEvent<KeyboardEvent>
+    KeyBoardEventData,
+    KeyBoardEvent
   >;
 
   get mouseAbsolute(): Vector2D {
@@ -71,17 +73,11 @@ class InputHandler {
     return this._engineMouseClickEvent;
   }
 
-  get keyDownEvent(): EngineEventHandler<
-    KeyboardEvent,
-    EngineEvent<KeyboardEvent>
-  > {
+  get keyDownEvent(): EngineEventHandler<KeyBoardEventData, KeyBoardEvent> {
     return this._engineKeyDownEvent;
   }
 
-  get keyUpEvent(): EngineEventHandler<
-    KeyboardEvent,
-    EngineEvent<KeyboardEvent>
-  > {
+  get keyUpEvent(): EngineEventHandler<KeyBoardEventData, KeyBoardEvent> {
     return this._engineKeyUpEvent;
   }
 
@@ -100,12 +96,12 @@ class InputHandler {
       MouseClickEvent
     >();
     this._engineKeyDownEvent = new EngineEventHandler<
-      KeyboardEvent,
-      EngineEvent<KeyboardEvent>
+      KeyBoardEventData,
+      KeyBoardEvent
     >();
     this._engineKeyUpEvent = new EngineEventHandler<
-      KeyboardEvent,
-      EngineEvent<KeyboardEvent>
+      KeyBoardEventData,
+      KeyBoardEvent
     >();
 
     window.addEventListener("mousemove", this.onMouseMove.bind(this));
@@ -132,24 +128,25 @@ class InputHandler {
   }
 
   private onKeyDown(keyboardEvent: KeyboardEvent): void {
-    if (!this._whiteListedKeys.includes(keyboardEvent.key)) {
-      if (!this.isKeyDown(keyboardEvent.key)) {
-        this._keystates.set(keyboardEvent.key, true);
+    let key = keyboardEvent.key.toLowerCase();
+    if (!this._whiteListedKeys.includes(key)) {
+      if (!this.isKeyDown(key)) {
+        this._keystates.set(key, true);
       }
-
       keyboardEvent.preventDefault();
-      this._engineKeyDownEvent.dispatch(new EngineEvent(keyboardEvent));
+      this._engineKeyDownEvent.dispatch(new KeyBoardEvent(key));
     }
   }
 
   private onKeyUp(keyboardEvent: KeyboardEvent): void {
-    if (!this._whiteListedKeys.includes(keyboardEvent.key)) {
-      if (this.isKeyDown(keyboardEvent.key)) {
-        this._keystates.set(keyboardEvent.key, false);
+    let key = keyboardEvent.key.toLowerCase();
+    if (!this._whiteListedKeys.includes(key)) {
+      if (this.isKeyDown(key)) {
+        this._keystates.set(key, false);
       }
 
       keyboardEvent.preventDefault();
-      this._engineKeyUpEvent.dispatch(new EngineEvent(keyboardEvent));
+      this._engineKeyUpEvent.dispatch(new KeyBoardEvent(key));
     }
   }
 

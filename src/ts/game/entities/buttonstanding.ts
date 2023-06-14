@@ -6,6 +6,7 @@ import Entity from "../../engine/entitiy/entity.js";
 import EntityManager from "../../engine/entitiy/entitymanager.js";
 import EngineEvent from "../../engine/event/engineevent.js";
 import EngineEventHandler from "../../engine/event/engineventhandler.js";
+import KeyBoardEvent from "../../engine/event/events/keyboardevent/keyboardevent.js";
 import InputHandler from "../../engine/input/inputhandler.js";
 import PlayerEntity from "./playerentity.js";
 
@@ -89,12 +90,12 @@ class ButtonStanding extends Entity {
     >();
     this._entityManager = Services.resolve<EntityManager>("EntityManager");
     this._inputHandler = Services.resolve<InputHandler>("InputHandler");
-    this._inputHandler.keyDownEvent.subscribe(
-      (engineEvent: EngineEvent<KeyboardEvent>) => this.onKeyDown(engineEvent)
+    this._inputHandler.keyDownEvent.subscribe((engineEvent: KeyBoardEvent) =>
+      this.onKeyDown(engineEvent)
     );
   }
 
-  private onKeyDown(engineEvent: EngineEvent<KeyboardEvent>): void {
+  private onKeyDown(engineEvent: KeyBoardEvent): void {
     if (engineEvent.eventData.key === "f" && !this._isPressed) {
       let playerEntity = this._entityManager.entities.find(
         (entity) => entity instanceof PlayerEntity
