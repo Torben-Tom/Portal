@@ -97,7 +97,6 @@ class BoundingBox {
     let inverseBaseMatrix = baseMatrix.inverse;
     if (!inverseBaseMatrix) {
       return ret; //Mathematically, this should never happen as long as no entity has a BoundingBox of height or width 0
-      return ret; //Mathematically, this should never happen as long as no entity has a BoundingBox of height or width 0
     }
     for (let location of locations) {
       let lambda: Vector2D = inverseBaseMatrix!.multiplyVector(

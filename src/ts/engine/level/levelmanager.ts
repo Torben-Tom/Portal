@@ -20,7 +20,7 @@ class LevelManager {
     return this._levels.has(name);
   }
 
-  public registerLevel(name: string, level: Level): void {
+  public register(name: string, level: Level): void {
     if (this._levels.has(name)) {
       console.warn(
         `Level with name ${name} already exists! Overwriting with new value.`
@@ -29,20 +29,24 @@ class LevelManager {
     this._levels.set(name, level);
   }
 
-  public startLevel(name: string): void {
+  public unload(): void {
+    if (this._currentLevel !== null) {
+      this._currentLevel.unload();
+      this._currentLevel = null;
+    }
+    this._entityManager.clear();
+  }
+
+  public start(name: string): void {
     let level: Level | undefined = this._levels.get(name);
     if (!level) {
       throw new Error(`Level with name ${name} does not exist!`);
     }
+    this.unload();
 
-    if (this._currentLevel !== null) {
-      this._currentLevel.unload();
-    }
-    this._entityManager.clear();
-
+    this._currentLevel = level;
     this._entityManager.registerAll(level.getEntities());
     level.load();
-    this._currentLevel = level;
   }
 
   public update(tickDelta: number): void {

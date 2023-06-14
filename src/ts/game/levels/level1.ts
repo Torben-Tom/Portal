@@ -177,7 +177,7 @@ class Level1 implements Level {
     this._goal.onTouch.subscribe((engineEvent: EngineEvent<Goal>) => {
       let levelManager: LevelManager =
         Services.resolve<LevelManager>("LevelManager");
-      levelManager.startLevel("level2");
+      levelManager.start("level2");
     });
   }
 

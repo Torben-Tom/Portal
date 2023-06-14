@@ -44,8 +44,10 @@ class DebugRenderer extends Renderer {
     glContext.fillStyle = "rgba(0, 0, 0, 0.5)";
     glContext.fillRect(600, 500, 200, 100);
 
-    glContext.fillStyle = "white";
+    glContext.textAlign = "left";
+    glContext.textBaseline = "alphabetic";
     glContext.font = "15px Arial";
+    glContext.fillStyle = "white";
     glContext.fillText(`FPS: ${this._game!.fps}`, 600, 512);
     glContext.fillText(`TPS: ${this._game!.tps}`, 600, 525);
     glContext.fillText(
@@ -80,6 +82,8 @@ class DebugRenderer extends Renderer {
     glContext.translate(centerOfMass.x, centerOfMass.y);
     glContext.rotate((entity.rotation * Math.PI) / 180);
     glContext.translate(-centerOfMass.x, -centerOfMass.y);
+
+    glContext.lineWidth = 1;
 
     let center = entity.boundingBox.centerAbsolute;
     glContext.fillStyle = "yellow";

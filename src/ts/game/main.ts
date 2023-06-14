@@ -7,6 +7,7 @@ import Services from "../engine/dependencyinjection/services.js";
 import Game from "../engine/game.js";
 import InputHandler from "../engine/input/inputhandler.js";
 import LevelManager from "../engine/level/levelmanager.js";
+import SceneManager from "../engine/scene/scenemanager.js";
 import GameSetup from "./gamesetup.js";
 
 function getGameCanvas(): HTMLCanvasElement {
@@ -36,9 +37,9 @@ function start(): void {
 
   game.startGame();
 
-  let levelManager: LevelManager =
-    Services.resolve<LevelManager>("LevelManager");
-  levelManager.startLevel("level1");
+  let sceneManager: SceneManager =
+    Services.resolve<SceneManager>("SceneManager");
+  sceneManager.switchScene("mainmenu");
 }
 
 window.addEventListener("DOMContentLoaded", start);
