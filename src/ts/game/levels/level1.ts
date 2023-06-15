@@ -176,7 +176,7 @@ class Level1 implements Level {
     );
 
     this._goal.onTouch.subscribe((engineEvent: EngineEvent<Goal>) => {
-      Services.resolve<SceneManager>("SceneManager").switchScene("level2Scene");
+      Services.resolve<SceneManager>("SceneManager").switch("level2Scene");
       let levelManager: LevelManager =
         Services.resolve<LevelManager>("LevelManager");
       levelManager.start("level2");

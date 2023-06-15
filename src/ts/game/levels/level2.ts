@@ -31,7 +31,7 @@ class Level2 implements Level {
 
   public load(): void {
     this._goal.onTouch.subscribe((engineEvent: EngineEvent<Goal>) => {
-      Services.resolve<SceneManager>("SceneManager").switchScene("ingame");
+      Services.resolve<SceneManager>("SceneManager").switch("ingame");
       let levelManager: LevelManager =
         Services.resolve<LevelManager>("LevelManager");
       levelManager.start("level3");

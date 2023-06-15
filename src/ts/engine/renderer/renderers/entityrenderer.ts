@@ -34,7 +34,8 @@ class EntityRenderer extends Renderer {
     glContext.setTransform(1, 0, 0, 1, 0, 0);
 
     if (isIComplexEntity(entity)) {
-      for (let part of entity.parts) {
+      let complexEntity = entity as IComplexEntity;
+      for (let part of complexEntity.parts) {
         this.renderEntity(glContext, part[1]);
       }
     }
