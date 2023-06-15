@@ -12,7 +12,7 @@ class InGame extends Base {
     super("rgba(0, 0, 0, 0)");
 
     let leftButton = new Button(
-      300,
+      525,
       0,
       50,
       50,

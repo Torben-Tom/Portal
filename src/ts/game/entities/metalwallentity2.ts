@@ -2,7 +2,7 @@ import AssetManager from "../../engine/assets/assetmanager.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import Entity from "../../engine/entitiy/entity.js";
 
-class MetalWallEntity extends Entity {
+class MetalWallEntity2 extends Entity {
   constructor(
     x: number,
     y: number,
@@ -27,4 +27,4 @@ class MetalWallEntity extends Entity {
   }
 }
 
-export default MetalWallEntity;
+export default MetalWallEntity2;

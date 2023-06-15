@@ -2,11 +2,12 @@ import AssetManager from "../../engine/assets/assetmanager.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import Entity from "../../engine/entitiy/entity.js";
 import EntityManager from "../../engine/entitiy/entitymanager.js";
+import MovingEntity from "../../engine/entitiy/movingentity.js";
 import EngineEvent from "../../engine/event/engineevent.js";
 import EngineEventHandler from "../../engine/event/engineventhandler.js";
 import PlayerEntity from "./playerentity.js";
 
-class Goal extends Entity {
+class Goal extends MovingEntity {
   private _isTouched;
   private _onTouch: EngineEventHandler<Goal, EngineEvent<Goal>>;
   private _entityManager: EntityManager;
@@ -33,7 +34,7 @@ class Goal extends Entity {
       scalingY,
       widthExpansion,
       heightExpansion,
-      true,
+      false,
       Services.resolve<AssetManager>("AssetManager").getTexture("goal")
     );
 
@@ -43,6 +44,7 @@ class Goal extends Entity {
   }
 
   public update(delta: number): void {
+    super.update(delta);
     if (this._entityManager) {
       let shouldBePressed =
         this._entityManager.touches.filter(

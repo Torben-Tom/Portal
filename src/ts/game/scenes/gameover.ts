@@ -29,7 +29,7 @@ class GameOver extends Base {
       400,
       100,
       "yellow",
-      "bolder 50px Arial",
+      "bolder 60px Arial",
       "center",
       "middle",
       "Game Finished!",
