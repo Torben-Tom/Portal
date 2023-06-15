@@ -26,8 +26,8 @@ class MainMenu extends Base {
     let title = new Text(
       400,
       70,
-      "white",
-      "bold 40px Arial",
+      "yellow",
+      "bolder 60px Arial",
       "center",
       "middle",
       "Portal",

@@ -61,18 +61,18 @@ class Level3 implements Level {
       this._assetManager.getTexture("level1-background")
     );
 
-    let player = new PlayerEntity(270, 400);
+    let player = new PlayerEntity(70, 400);
     let cornerBrickLeft = new LeftCornerBrickEntity(0, 550, 1.5, 1.5, 0, 0);
     let cornerBrickRight = new RightCornerBrickEntity(750, 550, 1.5, 1.5, 0, 0);
 
-    this._buttonGround1 = new ButtonGround(520, 490, 1.3, 1.3, 0, 0);
-    this._buttonGround2 = new ButtonGround(370, 490, 1.3, 1.3, 0, 0);
+    this._buttonGround1 = new ButtonGround(170, 490, 1.3, 1.3, 0, 0);
+    this._buttonGround2 = new ButtonGround(320, 490, 1.3, 1.3, 0, 0);
 
-    let companionCube1 = new CompanionCube(200, 0, 0.5, 0.5, 0, 0);
+    let companionCube1 = new CompanionCube(150, 0, 0.5, 0.5, 0, 0);
     let companionCube2 = new CompanionCube(600, 0, 0.5, 0.5, 0, 0);
     this._companionCubes = [companionCube1, companionCube2];
 
-    this._goal = new Goal(70, 470, 1.6, 1.6, 0, 0);
+    this._goal = new Goal(670, 450, 1.6, 1.6, 0, 0);
 
     let entities: Entity[] = [
       window,
@@ -100,9 +100,14 @@ class Level3 implements Level {
     }
 
     for (let i = 0; i < 4; i++) {
+      let middleBrick = new MiddleBrickEntity(50 + i * 50, 200, 1.5, 1.5, 0, 0);
+      entities.push(middleBrick);
+    }
+
+    for (let i = 0; i < 6; i++) {
       let middleBrick = new MiddleBrickEntity(
-        550 + i * 50,
-        200,
+        450 + i * 50,
+        350,
         1.5,
         1.5,
         0,
@@ -111,22 +116,24 @@ class Level3 implements Level {
       entities.push(middleBrick);
     }
 
-    for (let i = 0; i < 6; i++) {
-      let middleBrick = new MiddleBrickEntity(50 + i * 50, 350, 1.5, 1.5, 0, 0);
-      entities.push(middleBrick);
-    }
-
     for (let i = 0; i < 4; i++) {
-      let middleBrick = new MiddleBrickEntity(50 + i * 50, 400, 1.5, 1.5, 0, 0);
+      let middleBrick = new MiddleBrickEntity(
+        550 + i * 50,
+        400,
+        1.5,
+        1.5,
+        0,
+        0
+      );
       entities.push(middleBrick);
     }
 
     for (let i = 0; i < 2; i++) {
-      let bridgeEntity = new BridgeEntity(200, 450 + i * 50, 1.5, 1.5, 0, 0);
+      let bridgeEntity = new BridgeEntity(550, 450 + i * 50, 1.5, 1.5, 0, 0);
       entities.push(bridgeEntity);
 
       let metalWallEntity = new MetalWallEntity(
-        150,
+        600,
         450 + i * 50,
         1.5,
         1.5,
@@ -157,7 +164,7 @@ class Level3 implements Level {
         }
         for (let i = 0; i < 2; i++) {
           this._entityManager.register(
-            new BridgeEntity(200, 450 + i * 50, 1.5, 1.5, 0, 0)
+            new BridgeEntity(550, 450 + i * 50, 1.5, 1.5, 0, 0)
           );
         }
       }
@@ -174,7 +181,7 @@ class Level3 implements Level {
         }
         for (let i = 0; i < 2; i++) {
           this._entityManager.register(
-            new MetalWallEntity(150, 450 + i * 50, 1.5, 1.5, 0, 0)
+            new MetalWallEntity(600, 450 + i * 50, 1.5, 1.5, 0, 0)
           );
         }
       }
