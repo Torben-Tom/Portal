@@ -1,5 +1,6 @@
 import AssetLoader from "./assets/assetloader.js";
 import AssetManager from "./assets/assetmanager.js";
+import CookieManager from "./cookies/cookiemanager.js";
 import Services from "./dependencyinjection/services.js";
 import EngineSetup from "./enginesetup.js";
 import EntityManager from "./entitiy/entitymanager.js";
@@ -12,6 +13,7 @@ import SettingsManager from "./settings/settingsmanager.js";
 class Game {
   private _assetLoader: AssetLoader;
   private _assetManager: AssetManager;
+  private _cookieManager: CookieManager;
   private _settingsManager: SettingsManager;
   private _inputHandler: InputHandler;
   private _sceneManager: SceneManager;
@@ -44,6 +46,7 @@ class Game {
   constructor(htmlCanvasElement: HTMLCanvasElement, engineSetup: EngineSetup) {
     this._assetLoader = new AssetLoader();
     this._assetManager = new AssetManager();
+    this._cookieManager = new CookieManager();
     this._settingsManager = new SettingsManager();
     this._inputHandler = new InputHandler(htmlCanvasElement);
     this._sceneManager = new SceneManager(this._inputHandler);
@@ -68,6 +71,7 @@ class Game {
 
     Services.register(this._assetLoader);
     Services.register(this._assetManager);
+    Services.register(this._cookieManager);
     Services.register(this._settingsManager);
     Services.register(this._inputHandler);
     Services.register(this._sceneManager);
