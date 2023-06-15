@@ -80,6 +80,8 @@ class Game {
     Services.register(this._compositor);
     Services.register(this);
 
+    this._cookieManager.load();
+
     engineSetup.loadAssets(
       this._assetLoader,
       this._assetManager,
