@@ -28,7 +28,9 @@ A web-based 2D clone of Valve's famous puzzle game Portal
 
 ## Credits
 
-- https://www.patreon.com/posts/27430241
-- https://craftpix.net/file-licenses/
-- https://www.pixilart.com/terms
-- https://www.favicon.cc/?action=icon&file_id=359150
+- Player, Buttons, Hintergrund: https://github.com/Chinnami
+- Portale: https://www.patreon.com/posts/27430241
+- Blöcke: https://craftpix.net/file-licenses/
+- CompanionCube: https://www.pixilart.com/terms
+- favicon: https://www.favicon.cc/?action=icon&file_id=359150
+- Music: https://www.fesliyanstudios.com/policy
