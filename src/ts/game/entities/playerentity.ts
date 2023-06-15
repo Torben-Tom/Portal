@@ -15,6 +15,7 @@ import Vector2D from "../../engine/math/vector2d.js";
 import PortalEntity from "./portalentity.js";
 import PortalType from "./portaltype.js";
 import PlayerArm from "./playerarm.js";
+import MovingEntity from "../../engine/entitiy/movingentity.js";
 
 class PlayerEntity extends ComplexMovingEntity {
   private _inputHandler: InputHandler;
@@ -151,9 +152,8 @@ class PlayerEntity extends ComplexMovingEntity {
     from: Vector2D,
     radians: number,
     precision: number
-  ): [Vector2D, Entity][] {
+  ): [Vector2D, Entity] | null {
     let entities: Entity[] = this._entityManager.entities;
-    let raycastEntities: [Vector2D, Entity][] = [];
 
     //TODO: Do not hardcode limits
     let minX = 0;
@@ -167,7 +167,12 @@ class PlayerEntity extends ComplexMovingEntity {
       from.y <= maxY
     ) {
       let relevantEntities = entities
-        .filter((entity) => entity !== this && !entity.boundingBox.passThrough)
+        .filter(
+          (entity) =>
+            entity !== this &&
+            !entity.boundingBox.passThrough &&
+            !(entity instanceof MovingEntity)
+        )
         .sort((a, b) =>
           a.boundingBox.centerAbsolute.subtract(from).length >=
           b.boundingBox.centerAbsolute.subtract(from).length
@@ -176,13 +181,9 @@ class PlayerEntity extends ComplexMovingEntity {
         );
 
       for (let entity of relevantEntities) {
-        if (
-          entity !== this &&
-          !entity.boundingBox.passThrough &&
-          !raycastEntities.map(([location, entity]) => entity).includes(entity)
-        ) {
+        if (entity !== this && !entity.boundingBox.passThrough) {
           if (entity.boundingBox.isInside(from)) {
-            raycastEntities.push([from, entity]);
+            return [from, entity];
           }
         }
       }
@@ -192,7 +193,7 @@ class PlayerEntity extends ComplexMovingEntity {
       );
     }
 
-    return raycastEntities;
+    return null;
   }
 
   private onMouseClick(mouseClickEvent: MouseClickEvent) {
@@ -201,14 +202,22 @@ class PlayerEntity extends ComplexMovingEntity {
       let armCenterOfMass = armPart.centerOfMassAbsolute;
       let mouseLocation = mouseClickEvent.eventData.locationRelative;
       let radians = armCenterOfMass.radiansTo(mouseLocation);
-      let raycastEntities = this.raycast(armCenterOfMass, radians, 1);
-      if (raycastEntities.length === 0) {
+      let raycast = this.raycast(armCenterOfMass, radians, 1);
+      if (raycast == null) {
         return;
       }
 
-      let [location, firstHitEntity] = raycastEntities[0];
+      let [location, entity] = raycast;
 
-      let boundingBox = firstHitEntity.boundingBox;
+      for (let entity of this._entityManager.entities) {
+        if (entity instanceof PortalEntity) {
+          if (entity.boundingBox.isInside(location)) {
+            return;
+          }
+        }
+      }
+
+      let boundingBox = entity.boundingBox;
       let topOfBoundingBox = boundingBox.location.y;
       let rightOfBoundingBox = boundingBox.location.x + boundingBox.width;
       let bottomOfBoundingBox = boundingBox.location.y + boundingBox.height;
@@ -235,7 +244,10 @@ class PlayerEntity extends ComplexMovingEntity {
       ) {
         degrees = 180;
       }
-
+      //TODO: Workaround
+      if (degrees === 90 || degrees === 270) {
+        return;
+      }
       let portalCenterOffset = new Vector2D(37.5, 81.25);
       if (degrees !== 0) {
         portalCenterOffset.rotateDegrees(degrees);
