@@ -116,20 +116,25 @@ class PlayerEntity extends ComplexMovingEntity {
   private handleMovement(tickDelta: number) {
     if (this.collisions[Direction.Bottom]) {
       if (
-        this._inputHandler.isKeyDown("w") ||
-        this._inputHandler.isKeyDown(" ")
+        (this._inputHandler.isKeyDown("w") ||
+          this._inputHandler.isKeyDown("arrowup") ||
+          this._inputHandler.isKeyDown(" ")) &&
+        Date.now() - this._dateLastJump >= 500
       ) {
-        if (Date.now() - this._dateLastJump >= 500) {
-          console.log("test");
-          this.addVelocity(new Vector2D(0, -40));
-          this.setColliding(Direction.Bottom, false);
-          this._dateLastJump = Date.now();
-        }
+        this.addVelocity(new Vector2D(0, -40));
+        this.setColliding(Direction.Bottom, false);
+        this._dateLastJump = Date.now();
       }
-      if (this._inputHandler.isKeyDown("a")) {
+      if (
+        this._inputHandler.isKeyDown("a") ||
+        this._inputHandler.isKeyDown("arrowleft")
+      ) {
         this.addVelocity(new Vector2D(-0.1 * tickDelta, 0));
       }
-      if (this._inputHandler.isKeyDown("d")) {
+      if (
+        this._inputHandler.isKeyDown("d") ||
+        this._inputHandler.isKeyDown("arrowright")
+      ) {
         this.addVelocity(new Vector2D(0.1 * tickDelta, 0));
       }
     }
