@@ -21,6 +21,7 @@ import PortalEntity from "../entities/portalentity.js";
 import PortalType from "../entities/portaltype.js";
 import Vector2D from "../../engine/math/vector2d.js";
 import LevelManager from "../../engine/level/levelmanager.js";
+import SceneManager from "../../engine/scene/scenemanager.js";
 
 class Level1 implements Level {
   private _entityManager: EntityManager;
@@ -175,6 +176,7 @@ class Level1 implements Level {
     );
 
     this._goal.onTouch.subscribe((engineEvent: EngineEvent<Goal>) => {
+      Services.resolve<SceneManager>("SceneManager").switchScene("level2Scene");
       let levelManager: LevelManager =
         Services.resolve<LevelManager>("LevelManager");
       levelManager.start("level2");
