@@ -10,6 +10,8 @@ import Level2 from "./levels/level2.js";
 import Level3 from "./levels/level3.js";
 import GameOver from "./scenes/gameover.js";
 import InGame from "./scenes/ingame.js";
+import Level1Scene from "./scenes/level1scene.js";
+import Level2Scene from "./scenes/level2scene.js";
 import LevelOverview from "./scenes/leveloverview.js";
 import MainMenu from "./scenes/mainmenu.js";
 
@@ -988,6 +990,8 @@ class GameSetup extends EngineSetup {
     sceneManager.register("ingame", new InGame());
     sceneManager.register("leveloverview", new LevelOverview());
     sceneManager.register("gameover", new GameOver());
+    sceneManager.register("level1Scene", new Level1Scene());
+    sceneManager.register("level2Scene", new Level2Scene());
   }
 }
 

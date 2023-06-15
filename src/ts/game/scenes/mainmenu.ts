@@ -54,7 +54,7 @@ class MainMenu extends Base {
     );
 
     this._buttonStart.onClick = (mouseClickEvent: MouseClickEvent) => {
-      Services.resolve<SceneManager>("SceneManager").switchScene("ingame");
+      Services.resolve<SceneManager>("SceneManager").switchScene("level1Scene");
       Services.resolve<LevelManager>("LevelManager").start("level1");
     };
 
