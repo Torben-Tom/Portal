@@ -39,7 +39,7 @@ function start(): void {
 
   let sceneManager: SceneManager =
     Services.resolve<SceneManager>("SceneManager");
-  sceneManager.switchScene("mainmenu");
+  sceneManager.switch("mainmenu");
 }
 
 window.addEventListener("DOMContentLoaded", start);

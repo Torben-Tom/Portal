@@ -113,21 +113,21 @@ class LevelOverview extends Base {
     );
 
     this._backToMainMenu.onClick = (mouseClickEvent: MouseClickEvent) => {
-      Services.resolve<SceneManager>("SceneManager").switchScene("mainmenu");
+      Services.resolve<SceneManager>("SceneManager").switch("mainmenu");
     };
 
     this._level1.onClick = (mouseClickEvent: MouseClickEvent) => {
-      Services.resolve<SceneManager>("SceneManager").switchScene("level1Scene");
+      Services.resolve<SceneManager>("SceneManager").switch("level1Scene");
       Services.resolve<LevelManager>("LevelManager").start("level1");
     };
 
     this._level2.onClick = (mouseClickEvent: MouseClickEvent) => {
-      Services.resolve<SceneManager>("SceneManager").switchScene("level2Scene");
+      Services.resolve<SceneManager>("SceneManager").switch("level2Scene");
       Services.resolve<LevelManager>("LevelManager").start("level2");
     };
 
     this._level3.onClick = (mouseClickEvent: MouseClickEvent) => {
-      Services.resolve<SceneManager>("SceneManager").switchScene("ingame");
+      Services.resolve<SceneManager>("SceneManager").switch("ingame");
       Services.resolve<LevelManager>("LevelManager").start("level3");
     };
 

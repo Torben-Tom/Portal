@@ -3,7 +3,9 @@ import ComplexEntity from "../../entitiy/complexentity.js";
 import ComplexMovingEntity from "../../entitiy/complexmovingentity.js";
 import Entity from "../../entitiy/entity.js";
 import EntityManager from "../../entitiy/entitymanager.js";
-import { isIComplexEntity } from "../../entitiy/icomplexentity.js";
+import IComplexEntity, {
+  isIComplexEntity,
+} from "../../entitiy/icomplexentity.js";
 import Game from "../../game.js";
 import InputHandler from "../../input/inputhandler.js";
 import Renderer from "../renderer.js";
@@ -120,7 +122,9 @@ class DebugRenderer extends Renderer {
     glContext.setTransform(1, 0, 0, 1, 0, 0);
 
     if (isIComplexEntity(entity)) {
-      for (let part of entity.parts) this.drawBoundingBoxes(glContext, part[1]);
+      let complexEntity = entity as IComplexEntity;
+      for (let part of complexEntity.parts)
+        this.drawBoundingBoxes(glContext, part[1]);
     }
   }
 

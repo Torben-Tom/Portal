@@ -7,10 +7,12 @@ import InputHandler from "./input/inputhandler.js";
 import LevelManager from "./level/levelmanager.js";
 import Compositor from "./renderer/compositor.js";
 import SceneManager from "./scene/scenemanager.js";
+import SettingsManager from "./settings/settingsmanager.js";
 
 class Game {
   private _assetLoader: AssetLoader;
   private _assetManager: AssetManager;
+  private _settingsManager: SettingsManager;
   private _inputHandler: InputHandler;
   private _sceneManager: SceneManager;
   private _entityManager: EntityManager;
@@ -42,6 +44,7 @@ class Game {
   constructor(htmlCanvasElement: HTMLCanvasElement, engineSetup: EngineSetup) {
     this._assetLoader = new AssetLoader();
     this._assetManager = new AssetManager();
+    this._settingsManager = new SettingsManager();
     this._inputHandler = new InputHandler(htmlCanvasElement);
     this._sceneManager = new SceneManager(this._inputHandler);
     this._entityManager = new EntityManager();
@@ -65,6 +68,7 @@ class Game {
 
     Services.register(this._assetLoader);
     Services.register(this._assetManager);
+    Services.register(this._settingsManager);
     Services.register(this._inputHandler);
     Services.register(this._sceneManager);
     Services.register(this._entityManager);

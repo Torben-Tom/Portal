@@ -16,7 +16,7 @@ class LevelManager {
     this._entityManager = entityManager;
   }
 
-  public hasLevel(name: string): boolean {
+  public has(name: string): boolean {
     return this._levels.has(name);
   }
 
