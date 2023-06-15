@@ -102,7 +102,7 @@ class Level3 implements Level {
     for (let i = 0; i < 4; i++) {
       let middleBrick = new MiddleBrickEntity(
         550 + i * 50,
-        130,
+        200,
         1.5,
         1.5,
         0,
@@ -111,8 +111,8 @@ class Level3 implements Level {
       entities.push(middleBrick);
     }
 
-    for (let i = 0; i < 5; i++) {
-      let middleBrick = new MiddleBrickEntity(50 + i * 50, 300, 1.5, 1.5, 0, 0);
+    for (let i = 0; i < 6; i++) {
+      let middleBrick = new MiddleBrickEntity(50 + i * 50, 350, 1.5, 1.5, 0, 0);
       entities.push(middleBrick);
     }
 
