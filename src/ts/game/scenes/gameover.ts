@@ -55,7 +55,7 @@ class GameOver extends Base {
     );
 
     this._runAgain.onClick = (mouseClickEvent: MouseClickEvent) => {
-      Services.resolve<SceneManager>("SceneManager").switchScene("ingame");
+      Services.resolve<SceneManager>("SceneManager").switch("ingame");
       Services.resolve<LevelManager>("LevelManager").start("level1");
     };
 
@@ -79,7 +79,7 @@ class GameOver extends Base {
     );
 
     this._backToMainMenu.onClick = (mouseClickEvent: MouseClickEvent) => {
-      Services.resolve<SceneManager>("SceneManager").switchScene("mainmenu");
+      Services.resolve<SceneManager>("SceneManager").switch("mainmenu");
     };
 
     this._buttonLevelOverview = new Button(
@@ -102,9 +102,7 @@ class GameOver extends Base {
     );
 
     this._buttonLevelOverview.onClick = (mouseClickEvent: MouseClickEvent) => {
-      Services.resolve<SceneManager>("SceneManager").switchScene(
-        "leveloverview"
-      );
+      Services.resolve<SceneManager>("SceneManager").switch("leveloverview");
     };
 
     this.addElement(title);

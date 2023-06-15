@@ -54,7 +54,7 @@ class MainMenu extends Base {
     );
 
     this._buttonStart.onClick = (mouseClickEvent: MouseClickEvent) => {
-      Services.resolve<SceneManager>("SceneManager").switchScene("level1Scene");
+      Services.resolve<SceneManager>("SceneManager").switch("level1Scene");
       Services.resolve<LevelManager>("LevelManager").start("level1");
     };
 
@@ -78,9 +78,7 @@ class MainMenu extends Base {
     );
 
     this._buttonLevelOverview.onClick = (mouseClickEvent: MouseClickEvent) => {
-      Services.resolve<SceneManager>("SceneManager").switchScene(
-        "leveloverview"
-      );
+      Services.resolve<SceneManager>("SceneManager").switch("leveloverview");
     };
 
     this.addElement(title);

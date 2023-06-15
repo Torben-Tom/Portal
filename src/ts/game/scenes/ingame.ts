@@ -32,7 +32,7 @@ class InGame extends Base {
 
     leftButton.onClick = (mouseClickEvent: MouseClickEvent) => {
       Services.resolve<LevelManager>("LevelManager").unload();
-      Services.resolve<SceneManager>("SceneManager").switchScene("mainmenu");
+      Services.resolve<SceneManager>("SceneManager").switch("mainmenu");
     };
 
     this.addElement(leftButton);

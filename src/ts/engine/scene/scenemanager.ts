@@ -20,7 +20,7 @@ class SceneManager {
     this._inputHandler.mouseClickEvent.subscribe(this.onMouseClick.bind(this));
   }
 
-  public hasScene(name: string): boolean {
+  public has(name: string): boolean {
     return this._scenes.has(name);
   }
 
@@ -33,7 +33,7 @@ class SceneManager {
     this._scenes.set(name, scene);
   }
 
-  public switchScene(name: string): void {
+  public switch(name: string): void {
     let scene: Scene | undefined = this._scenes.get(name);
     if (!scene) {
       throw new Error(`Scene with name ${name} does not exist!`);

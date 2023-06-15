@@ -6,7 +6,7 @@ interface IComplexEntity extends Entity {
   update(tickDelta: number): void;
 }
 
-function isIComplexEntity(object: any): object is IComplexEntity {
+function isIComplexEntity(object: any): boolean {
   return "parts" in object;
 }
 
