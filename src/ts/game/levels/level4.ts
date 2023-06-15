@@ -23,6 +23,7 @@ import PlayerEntity from "../entities/playerentity.js";
 import Vector2D from "../../engine/math/vector2d.js";
 import LevelManager from "../../engine/level/levelmanager.js";
 import SceneManager from "../../engine/scene/scenemanager.js";
+import MetalWallEntity2 from "../entities/metalwallentity2.js";
 
 class Level4 implements Level {
   private _inputHandler: InputHandler;
@@ -32,6 +33,7 @@ class Level4 implements Level {
   private _buttonGround2!: ButtonGround;
   private _companionCubes!: CompanionCube[];
   private _goal!: Goal;
+  private _buttonGround3!: ButtonGround;
 
   constructor() {
     this._inputHandler = Services.resolve<InputHandler>("InputHandler");
@@ -67,8 +69,9 @@ class Level4 implements Level {
     let stopBrick = new MiddleBrickEntity(450, 300, 1.5, 1.5, 0, 0);
     this._buttonGround1 = new ButtonGround(50, 490, 1.3, 1.3, 0, 0);
     this._buttonGround2 = new ButtonGround(500, 290, 1.3, 1.3, 0, 0);
+    this._buttonGround3 = new ButtonGround(50, 340, 1.3, 1.3, 0, 0);
 
-    let companionCube1 = new CompanionCube(100, 200, 0.5, 0.5, 0, 0);
+    let companionCube1 = new CompanionCube(400, 400, 0.5, 0.5, 0, 0);
     let companionCube2 = new CompanionCube(600, 400, 0.5, 0.5, 0, 0);
     this._companionCubes = [companionCube1, companionCube2];
 
@@ -81,6 +84,7 @@ class Level4 implements Level {
       cornerBrickRight,
       this._buttonGround1,
       this._buttonGround2,
+      this._buttonGround3,
       companionCube1,
       companionCube2,
       this._goal,
@@ -123,6 +127,21 @@ class Level4 implements Level {
       entities.push(metalWallEntity);
     }
 
+    for (let i = 0; i < 2; i++) {
+      let bridgeEntity = new BridgeEntity(350 + i * 50, 100, 1.5, 1.5, 0, 0);
+      entities.push(bridgeEntity);
+
+      let metalWallEntity = new MetalWallEntity2(
+        200,
+        450 + i * 50,
+        1.5,
+        1.5,
+        0,
+        0
+      );
+      entities.push(metalWallEntity);
+    }
+
     for (let i = 0; i < 4; i++) {
       let middleBrick = new MiddleBrickEntity(
         450 + i * 50,
@@ -135,7 +154,7 @@ class Level4 implements Level {
       entities.push(middleBrick);
     }
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 4; i++) {
       let middleBrick = new MiddleBrickEntity(50 + i * 50, 400, 1.5, 1.5, 0, 0);
       entities.push(middleBrick);
     }
@@ -165,21 +184,48 @@ class Level4 implements Level {
       }
     );
 
-    this._buttonGround1.onPress.subscribe(
-      (engineEvent: EngineEvent<ButtonGround>) => {
-        this._entityManager.unregisterAll(
-          this._entityManager.entities.filter(
-            (entity) => entity instanceof BridgeEntity
-          )
-        );
-      }
-    );
-
     this._buttonGround2.onPress.subscribe(
       (engineEvent: EngineEvent<ButtonGround>) => {
         this._entityManager.unregisterAll(
           this._entityManager.entities.filter(
             (entity) => entity instanceof MetalWallEntity
+          )
+        );
+      }
+    );
+
+    this._buttonGround3.onUnpress.subscribe(
+      (engineEvent: EngineEvent<ButtonGround>) => {
+        if (
+          this._entityManager.entities.filter(
+            (entity) => entity instanceof MetalWallEntity2
+          ).length >= 5
+        ) {
+          return;
+        }
+        for (let i = 0; i < 2; i++) {
+          this._entityManager.register(
+            new MetalWallEntity2(200, 450 + i * 50, 1.5, 1.5, 0, 0)
+          );
+        }
+      }
+    );
+
+    this._buttonGround3.onPress.subscribe(
+      (engineEvent: EngineEvent<ButtonGround>) => {
+        this._entityManager.unregisterAll(
+          this._entityManager.entities.filter(
+            (entity) => entity instanceof MetalWallEntity2
+          )
+        );
+      }
+    );
+
+    this._buttonGround1.onPress.subscribe(
+      (engineEvent: EngineEvent<ButtonGround>) => {
+        this._entityManager.unregisterAll(
+          this._entityManager.entities.filter(
+            (entity) => entity instanceof BridgeEntity
           )
         );
       }
