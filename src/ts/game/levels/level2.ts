@@ -15,6 +15,7 @@ import EntityManager from "../../engine/entitiy/entitymanager.js";
 import Goal from "../entities/goal.js";
 import PlayerEntity from "../entities/playerentity.js";
 import LevelManager from "../../engine/level/levelmanager.js";
+import SceneManager from "../../engine/scene/scenemanager.js";
 
 class Level2 implements Level {
   private _inputHandler: InputHandler;
@@ -30,6 +31,7 @@ class Level2 implements Level {
 
   public load(): void {
     this._goal.onTouch.subscribe((engineEvent: EngineEvent<Goal>) => {
+      Services.resolve<SceneManager>("SceneManager").switchScene("ingame");
       let levelManager: LevelManager =
         Services.resolve<LevelManager>("LevelManager");
       levelManager.start("level3");
