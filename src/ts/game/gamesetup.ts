@@ -8,7 +8,8 @@ import SceneManager from "../engine/scene/scenemanager.js";
 import Level1 from "./levels/level1.js";
 import Level2 from "./levels/level2.js";
 import Level3 from "./levels/level3.js";
-import MainMenu from "./scenes/mainmenu.js";
+import Level4 from "./levels/level4.js";
+import GameOver from "./scenes/gameover.js";
 import InGame from "./scenes/ingame.js";
 import Level1Scene from "./scenes/level1scene.js";
 import Level2Scene from "./scenes/level2scene.js";
@@ -983,6 +984,7 @@ class GameSetup extends EngineSetup {
     levelManager.register("level1", new Level1());
     levelManager.register("level2", new Level2());
     levelManager.register("level3", new Level3());
+    levelManager.register("level4", new Level4());
   }
 
   registerScenes(sceneManager: SceneManager): void {

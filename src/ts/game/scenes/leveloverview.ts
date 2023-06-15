@@ -14,6 +14,7 @@ class LevelOverview extends Base {
   private _level2: Button;
   private _level3: Button;
   private _backToMainMenu: Button;
+  private _level4: Button;
 
   public constructor() {
     super(
@@ -22,8 +23,8 @@ class LevelOverview extends Base {
       )
     );
 
-    this.musicCheckBox.location = new Vector2D(550, 450);
-    this.soundCheckBox.location = new Vector2D(450, 450);
+    this.musicCheckBox.location = new Vector2D(550, 120);
+    this.soundCheckBox.location = new Vector2D(450, 120);
 
     let title = new Text(
       400,
@@ -38,9 +39,9 @@ class LevelOverview extends Base {
 
     this._level1 = new Button(
       100,
-      120,
-      250,
       200,
+      250,
+      150,
       "rgba(0, 0, 0, 0.5)",
       "white",
       "white",
@@ -57,9 +58,9 @@ class LevelOverview extends Base {
 
     this._level2 = new Button(
       400,
-      120,
-      250,
       200,
+      250,
+      150,
       "rgba(0, 0, 0, 0.5)",
       "white",
       "white",
@@ -78,7 +79,7 @@ class LevelOverview extends Base {
       100,
       380,
       250,
-      200,
+      150,
       "rgba(0, 0, 0, 0.5)",
       "white",
       "white",
@@ -93,9 +94,28 @@ class LevelOverview extends Base {
       true
     );
 
-    this._backToMainMenu = new Button(
+    this._level4 = new Button(
       400,
       380,
+      250,
+      150,
+      "rgba(0, 0, 0, 0.5)",
+      "white",
+      "white",
+      "black",
+      "white",
+      "green",
+      1,
+      "bold 20px Arial",
+      "center",
+      "middle",
+      "Level 4",
+      true
+    );
+
+    this._backToMainMenu = new Button(
+      100,
+      120,
       250,
       50,
       "rgba(0, 0, 0, 0.5)",
@@ -131,10 +151,16 @@ class LevelOverview extends Base {
       Services.resolve<LevelManager>("LevelManager").start("level3");
     };
 
+    this._level4.onClick = (mouseClickEvent: MouseClickEvent) => {
+      Services.resolve<SceneManager>("SceneManager").switchScene("ingame");
+      Services.resolve<LevelManager>("LevelManager").start("level4");
+    };
+
     this.addElement(title);
     this.addElement(this._level1);
     this.addElement(this._level2);
     this.addElement(this._level3);
+    this.addElement(this._level4);
     this.addElement(this._backToMainMenu);
   }
 }
