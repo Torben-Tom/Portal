@@ -25,10 +25,6 @@ class MetalWallEntity2 extends Entity {
       Services.resolve<AssetManager>("AssetManager").getTexture("bridge")
     );
   }
-
-  update(delta: number): void {
-    // Do nothing
-  }
 }
 
 export default MetalWallEntity2;
