@@ -165,7 +165,7 @@ class Level4 implements Level {
   public load(): void {
     this._goal.onTouch.subscribe((engineEvent: EngineEvent<Goal>) => {
       Services.resolve<LevelManager>("LevelManager").unload();
-      Services.resolve<SceneManager>("SceneManager").switchScene("gameover");
+      Services.resolve<SceneManager>("SceneManager").switch("gameover");
     });
     this._buttonGround2.onUnpress.subscribe(
       (engineEvent: EngineEvent<ButtonGround>) => {

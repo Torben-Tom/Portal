@@ -9,12 +9,12 @@ import Level1 from "./levels/level1.js";
 import Level2 from "./levels/level2.js";
 import Level3 from "./levels/level3.js";
 import Level4 from "./levels/level4.js";
-import GameOver from "./scenes/gameover.js";
 import InGame from "./scenes/ingame.js";
 import Level1Scene from "./scenes/level1scene.js";
 import Level2Scene from "./scenes/level2scene.js";
 import LevelOverview from "./scenes/leveloverview.js";
 import GameOver from "./scenes/gameover.js";
+import MainMenu from "./scenes/mainmenu.js";
 
 class GameSetup extends EngineSetup {
   public loadAssets(

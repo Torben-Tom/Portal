@@ -152,7 +152,7 @@ class LevelOverview extends Base {
     };
 
     this._level4.onClick = (mouseClickEvent: MouseClickEvent) => {
-      Services.resolve<SceneManager>("SceneManager").switchScene("ingame");
+      Services.resolve<SceneManager>("SceneManager").switch("ingame");
       Services.resolve<LevelManager>("LevelManager").start("level4");
     };
 
