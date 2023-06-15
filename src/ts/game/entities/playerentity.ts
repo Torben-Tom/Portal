@@ -26,6 +26,7 @@ class PlayerEntity extends ComplexMovingEntity {
 
   private _purplePortal: PortalEntity | null;
   private _greenPortal: PortalEntity | null;
+  private _dateLastJump: number;
 
   private _onMouseClickThis: (mouseClickEvent: MouseClickEvent) => void;
 
@@ -91,7 +92,7 @@ class PlayerEntity extends ComplexMovingEntity {
 
     this._purplePortal = null;
     this._greenPortal = null;
-
+    this._dateLastJump = Date.now();
     this._onMouseClickThis = this.onMouseClick.bind(this);
   }
 
@@ -118,8 +119,12 @@ class PlayerEntity extends ComplexMovingEntity {
         this._inputHandler.isKeyDown("w") ||
         this._inputHandler.isKeyDown(" ")
       ) {
-        this.addVelocity(new Vector2D(0, -50));
-        this.setColliding(Direction.Bottom, false);
+        if (Date.now() - this._dateLastJump >= 500) {
+          console.log("test");
+          this.addVelocity(new Vector2D(0, -40));
+          this.setColliding(Direction.Bottom, false);
+          this._dateLastJump = Date.now();
+        }
       }
       if (this._inputHandler.isKeyDown("a")) {
         this.addVelocity(new Vector2D(-0.1 * tickDelta, 0));
