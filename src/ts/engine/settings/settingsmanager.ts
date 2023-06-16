@@ -18,6 +18,15 @@ class SettingsManager {
   public set<T>(key: string, value: Setting<T>): void {
     this._settings.set(key, value);
   }
+
+  public getOrSet<T>(key: string, value: Setting<T>): Setting<T> {
+    if (!this.has(key)) {
+      this.set(key, value);
+      return value;
+    }
+
+    return this.get(key);
+  }
 }
 
 export default SettingsManager;

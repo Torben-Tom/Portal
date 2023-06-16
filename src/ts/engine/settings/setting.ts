@@ -1,6 +1,11 @@
+import EngineEvent from "../event/engineevent.js";
+import EngineEventHandler from "../event/engineventhandler.js";
+
 class Setting<T> {
   private _get: (() => T) | undefined;
   private _set: ((value: T) => void) | undefined;
+
+  private _valueChangEvent: EngineEventHandler<T, EngineEvent<T>>;
 
   public get(): T {
     if (!this._get) {
@@ -14,6 +19,11 @@ class Setting<T> {
       throw new Error("Set-Method not implemented for this setting.");
     }
     this._set(value);
+    this._valueChangEvent.dispatch(new EngineEvent<T>(value));
+  }
+
+  public get valueChangeEvent(): EngineEventHandler<T, EngineEvent<T>> {
+    return this._valueChangEvent;
   }
 
   public constructor(
@@ -22,6 +32,7 @@ class Setting<T> {
   ) {
     this._get = get;
     this._set = set;
+    this._valueChangEvent = new EngineEventHandler<T, EngineEvent<T>>();
   }
 }
 
