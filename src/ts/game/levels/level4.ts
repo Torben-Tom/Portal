@@ -63,7 +63,7 @@ class Level4 implements Level {
       this._assetManager.getTexture("level1-background")
     );
 
-    let player = new PlayerEntity(270, 400);
+    let player = new PlayerEntity(300, 400);
     let cornerBrickLeft = new LeftCornerBrickEntity(0, 550, 1.5, 1.5, 0, 0);
     let cornerBrickRight = new RightCornerBrickEntity(750, 550, 1.5, 1.5, 0, 0);
     let stopBrick = new MiddleBrickEntity(450, 300, 1.5, 1.5, 0, 0);
@@ -128,9 +128,6 @@ class Level4 implements Level {
     }
 
     for (let i = 0; i < 2; i++) {
-      let bridgeEntity = new BridgeEntity(350 + i * 50, 100, 1.5, 1.5, 0, 0);
-      entities.push(bridgeEntity);
-
       let metalWallEntity = new MetalWallEntity2(
         200,
         450 + i * 50,
@@ -154,7 +151,7 @@ class Level4 implements Level {
       entities.push(middleBrick);
     }
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 5; i++) {
       let middleBrick = new MiddleBrickEntity(50 + i * 50, 400, 1.5, 1.5, 0, 0);
       entities.push(middleBrick);
     }
