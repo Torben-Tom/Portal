@@ -1,5 +1,11 @@
 # Portal [![GitHub & Docker Artifacts](https://github.com/Torben-Tom/Portal/actions/workflows/main.yml/badge.svg)](https://github.com/Torben-Tom/Portal/actions/workflows/main.yml)
 
+<img
+  src="https://github.com/Torben-Tom/Portal/blob/aba7984cfa01ed13d7edea299e85b5bbbb1c7588/src/assets/character-portrait.png"
+  alt="Portal character portrait"
+  title="Portal character portrait"
+  style="width: 250px">
+
 A web-based 2D clone of Valve's famous puzzle game Portal
 
 ## Pipeline Status
