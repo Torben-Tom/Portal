@@ -1,4 +1,6 @@
 import AssetManager from "../../engine/assets/assetmanager.js";
+import Cookie from "../../engine/cookies/cookie.js";
+import CookieManager from "../../engine/cookies/cookiemanager.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import MouseClickEvent from "../../engine/event/events/mouseclickevent/mouseclickevent.js";
 import LevelManager from "../../engine/level/levelmanager.js";
@@ -23,6 +25,32 @@ class LevelOverview extends Base {
       )
     );
 
+    let cookieManager: CookieManager =
+      Services.resolve<CookieManager>("CookieManager");
+
+    console.log(cookieManager.cookies);
+
+    let level1Solved: Cookie = cookieManager.getOrSet(
+      "level1Solved",
+      new Cookie("false", new Date(Date.now() + 50000), "Lax", false)
+    );
+    let level2Solved: Cookie = cookieManager.getOrSet(
+      "level2Solved",
+      new Cookie("false", new Date(Date.now() + 50000), "Lax", false)
+    );
+    let level3Solved: Cookie = cookieManager.getOrSet(
+      "level3Solved",
+      new Cookie("false", new Date(Date.now() + 50000), "Lax", false)
+    );
+    let level4Solved: Cookie = cookieManager.getOrSet(
+      "level4Solved",
+      new Cookie("false", new Date(Date.now() + 50000), "Lax", false)
+    );
+    cookieManager.save();
+
+    cookieManager.getOrSet("true", level1Solved);
+    cookieManager.save();
+
     this.musicCheckBox.location = new Vector2D(550, 120);
     this.soundCheckBox.location = new Vector2D(450, 120);
 
@@ -46,7 +74,7 @@ class LevelOverview extends Base {
       "white",
       "white",
       "black",
-      "white",
+      cookieManager.get("level1Solved").value === "true" ? "green" : "white",
       "green",
       1,
       "bold 20px Arial",
