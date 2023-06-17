@@ -101,7 +101,7 @@ class Level1 implements Level {
     this._buttonGround = new ButtonGround(175, 490, 1.3, 1.3, 0, 0);
     this._buttonStanding = new ButtonStanding(550, 470, 1.1, 1.1, 0, 0, 0);
     this._companionCube = new CompanionCube(200, 250, 0.5, 0.5, 0, 0);
-    this._goal = new Goal(685, 275, 1.6, 1.6, 0, 0);
+    this._goal = new Goal(685, 255, 1.6, 1.6, 0, 0);
 
     let returnArray: Entity[] = [
       background,

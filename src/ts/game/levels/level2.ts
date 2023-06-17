@@ -69,7 +69,7 @@ class Level2 implements Level {
     let cornerBrickLeft = new LeftCornerBrickEntity(0, 550, 1.5, 1.5, 0, 0);
     let cornerBrickRight = new RightCornerBrickEntity(750, 550, 1.5, 1.5, 0, 0);
 
-    this._goal = new Goal(70, 170, 1.6, 1.6, 0, 0);
+    this._goal = new Goal(70, 150, 1.6, 1.6, 0, 0);
 
     let returnArray: Entity[] = [];
     returnArray.push(window);

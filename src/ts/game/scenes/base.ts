@@ -25,7 +25,7 @@ class Base extends Scene {
     super(background);
 
     this._soundCheckBox = new CheckBox(
-      375,
+      600,
       0,
       50,
       50,
@@ -52,7 +52,7 @@ class Base extends Scene {
     );
 
     this._musicCheckBox = new CheckBox(
-      450,
+      675,
       0,
       50,
       50,

@@ -3,6 +3,8 @@ import AssetManager from "../engine/assets/assetmanager.js";
 import Slice from "../engine/assets/texture/slice.js";
 import SliceTexture from "../engine/assets/texture/slicetexture.js";
 import SpriteSheet from "../engine/assets/texture/spritesheet.js";
+import Cookie from "../engine/cookies/cookie.js";
+import CookieManager from "../engine/cookies/cookiemanager.js";
 import Services from "../engine/dependencyinjection/services.js";
 import Game from "../engine/game.js";
 import InputHandler from "../engine/input/inputhandler.js";
@@ -36,10 +38,7 @@ function start(): void {
   inputHandler.addWhiteListedKeys(["F5", "F11", "F12", "Alt"]);
 
   game.startGame();
-
-  let sceneManager: SceneManager =
-    Services.resolve<SceneManager>("SceneManager");
-  sceneManager.switch("mainmenu");
+  Services.resolve<SceneManager>("SceneManager").switch("mainmenu");
 }
 
 window.addEventListener("DOMContentLoaded", start);
