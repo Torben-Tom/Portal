@@ -1,5 +1,6 @@
 import AssetLoader from "./assets/assetloader.js";
 import AssetManager from "./assets/assetmanager.js";
+import AudioPlayer from "./audio/audioplayer.js";
 import CookieManager from "./cookies/cookiemanager.js";
 import Services from "./dependencyinjection/services.js";
 import EngineSetup from "./enginesetup.js";
@@ -15,6 +16,7 @@ class Game {
   private _assetManager: AssetManager;
   private _cookieManager: CookieManager;
   private _settingsManager: SettingsManager;
+  private _audioPlayer: AudioPlayer;
   private _inputHandler: InputHandler;
   private _sceneManager: SceneManager;
   private _entityManager: EntityManager;
@@ -48,6 +50,7 @@ class Game {
     this._assetManager = new AssetManager();
     this._cookieManager = new CookieManager();
     this._settingsManager = new SettingsManager();
+    this._audioPlayer = new AudioPlayer(this._settingsManager);
     this._inputHandler = new InputHandler(htmlCanvasElement);
     this._sceneManager = new SceneManager(this._inputHandler);
     this._entityManager = new EntityManager();
@@ -73,6 +76,7 @@ class Game {
     Services.register(this._assetManager);
     Services.register(this._cookieManager);
     Services.register(this._settingsManager);
+    Services.register(this._audioPlayer);
     Services.register(this._inputHandler);
     Services.register(this._sceneManager);
     Services.register(this._entityManager);
