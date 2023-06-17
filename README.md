@@ -1,6 +1,31 @@
-# Portal [![GitHub & Docker Artifacts](https://github.com/Torben-Tom/Portal/actions/workflows/main.yml/badge.svg)](https://github.com/Torben-Tom/Portal/actions/workflows/main.yml)
+<p align="center">
+  <a
+    href="https://portal.schweren.dev"
+    target="_blank"
+    rel="noopener noreferrer">
+    <img
+      src="https://github.com/Torben-Tom/Portal/blob/aba7984cfa01ed13d7edea299e85b5bbbb1c7588/src/assets/character-portrait.png"
+      alt="Portal character portrait"
+      title="Portal character portrait"
+      style="width: 300px">
+  </a>
+</p>
 
-A web-based 2D clone of Valve's famous puzzle game Portal
+<p align="center">
+  <a
+    href="https://github.com/Torben-Tom/Portal/actions/workflows/main.yml"
+    target="_blank"
+    rel="noopener noreferrer">
+    <img
+      src="https://github.com/Torben-Tom/Portal/actions/workflows/main.yml/badge.svg"
+      alt="GitHub & Docker Artifacts"
+      title="GitHub & Docker Artifacts">
+  </a>
+</p>
+
+# Portal
+
+A web-based 2D clone of Valve's famous puzzle game, Portal
 
 ## Pipeline Status
 
@@ -11,6 +36,10 @@ A web-based 2D clone of Valve's famous puzzle game Portal
 ### Beta build
 
 [![Build and deploy release](https://github.com/Torben-Tom/Portal/actions/workflows/staging.yml/badge.svg)](https://github.com/Torben-Tom/Portal/actions/workflows/staging.yml)
+
+## Play
+
+You can play the game right in your browser on https://portal.schweren.dev
 
 ## Installation
 
@@ -26,11 +55,11 @@ A web-based 2D clone of Valve's famous puzzle game Portal
 3. Drop files into a web server like nginx or apache
 4. Connect to your web server
 
-## Credits
+## Credits & Licenses of assets
 
-- Player, Buttons, Hintergrund: https://github.com/Chinnami
-- Portale: https://www.patreon.com/posts/27430241
-- Blöcke: https://craftpix.net/file-licenses/
+- Player, Buttons, Background: https://github.com/Chinnami
+- Portals: https://www.patreon.com/posts/27430241
+- Blocks: https://craftpix.net/file-licenses/
 - CompanionCube: https://www.pixilart.com/terms
 - favicon: https://www.favicon.cc/?action=icon&file_id=359150
 - Music: https://www.fesliyanstudios.com/policy
