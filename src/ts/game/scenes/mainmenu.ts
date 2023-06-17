@@ -1,4 +1,7 @@
+import AssetLoader from "../../engine/assets/assetloader.js";
 import AssetManager from "../../engine/assets/assetmanager.js";
+import AudioPlayer from "../../engine/audio/audioplayer.js";
+import AudioType from "../../engine/audio/audiotype.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import MouseClickEvent from "../../engine/event/events/mouseclickevent/mouseclickevent.js";
 import LevelManager from "../../engine/level/levelmanager.js";
@@ -7,17 +10,27 @@ import Button from "../../engine/scene/elements/button.js";
 import Text from "../../engine/scene/elements/text.js";
 import Scene from "../../engine/scene/scene.js";
 import SceneManager from "../../engine/scene/scenemanager.js";
+import SettingsManager from "../../engine/settings/settingsmanager.js";
 import Base from "./base.js";
 
 class MainMenu extends Base {
   private _buttonStart: Button;
   private _buttonLevelOverview: Button;
+  private _audioPlayer: AudioPlayer;
+  private _settingsManager: SettingsManager;
 
   public constructor() {
     super(
       Services.resolve<AssetManager>("AssetManager").getTexture(
         "level1-background"
       )
+    );
+    this._settingsManager = new SettingsManager();
+    this._audioPlayer = new AudioPlayer(this._settingsManager);
+
+    this._audioPlayer.play(
+      AudioType.Music,
+      Services.resolve<AssetLoader>("AssetLoader").getAudio("track1")
     );
 
     this.musicCheckBox.location = new Vector2D(450, 400);
