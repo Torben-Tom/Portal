@@ -19,7 +19,7 @@ class Button extends Label {
     return this._backgroundUnhovered;
   }
 
-  protected set backgroundUnhovered(
+  public set backgroundUnhovered(
     value: string | CanvasGradient | CanvasPattern
   ) {
     this._backgroundUnhovered = value;
@@ -29,9 +29,7 @@ class Button extends Label {
     return this._backgroundHover;
   }
 
-  protected set backgroundHover(
-    value: string | CanvasGradient | CanvasPattern
-  ) {
+  public set backgroundHover(value: string | CanvasGradient | CanvasPattern) {
     this._backgroundHover = value;
   }
 
@@ -39,7 +37,7 @@ class Button extends Label {
     return this._foregroundUnhovered;
   }
 
-  protected set foregroundUnhovered(
+  public set foregroundUnhovered(
     value: string | CanvasGradient | CanvasPattern
   ) {
     this._foregroundUnhovered = value;
@@ -49,9 +47,7 @@ class Button extends Label {
     return this._foregroundHover;
   }
 
-  protected set foregroundHover(
-    value: string | CanvasGradient | CanvasPattern
-  ) {
+  public set foregroundHover(value: string | CanvasGradient | CanvasPattern) {
     this._foregroundHover = value;
   }
 
@@ -59,9 +55,7 @@ class Button extends Label {
     return this._borderUnhovered;
   }
 
-  protected set borderUnhovered(
-    value: string | CanvasGradient | CanvasPattern
-  ) {
+  public set borderUnhovered(value: string | CanvasGradient | CanvasPattern) {
     this._borderUnhovered = value;
   }
 
@@ -69,7 +63,7 @@ class Button extends Label {
     return this._borderHover;
   }
 
-  protected set borderHover(value: string | CanvasGradient | CanvasPattern) {
+  public set borderHover(value: string | CanvasGradient | CanvasPattern) {
     this._borderHover = value;
   }
 

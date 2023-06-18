@@ -35,7 +35,7 @@ class CheckBox extends Button {
     return this._checked;
   }
 
-  protected set checked(value: boolean) {
+  public set checked(value: boolean) {
     this._checked = value;
   }
 
@@ -46,7 +46,7 @@ class CheckBox extends Button {
     return this._backgroundUnhoveredUnchecked;
   }
 
-  protected set backgroundUnhoveredUnchecked(
+  public set backgroundUnhoveredUnchecked(
     value: string | CanvasGradient | CanvasPattern
   ) {
     this._backgroundUnhoveredUnchecked = value;
@@ -59,7 +59,7 @@ class CheckBox extends Button {
     return this._backgroundUnhoveredChecked;
   }
 
-  protected set backgroundUnhoveredChecked(
+  public set backgroundUnhoveredChecked(
     value: string | CanvasGradient | CanvasPattern
   ) {
     this._backgroundUnhoveredChecked = value;
@@ -72,7 +72,7 @@ class CheckBox extends Button {
     return this._backgroundHoverUnchecked;
   }
 
-  protected set backgroundHoverUnchecked(
+  public set backgroundHoverUnchecked(
     value: string | CanvasGradient | CanvasPattern
   ) {
     this._backgroundHoverUnchecked = value;
@@ -82,7 +82,7 @@ class CheckBox extends Button {
     return this._backgroundHoverChecked;
   }
 
-  protected set backgroundHoverChecked(
+  public set backgroundHoverChecked(
     value: string | CanvasGradient | CanvasPattern
   ) {
     this._backgroundHoverChecked = value;
@@ -95,7 +95,7 @@ class CheckBox extends Button {
     return this._foregroundUnhoveredUnchecked;
   }
 
-  protected set foregroundUnhoveredUnchecked(
+  public set foregroundUnhoveredUnchecked(
     value: string | CanvasGradient | CanvasPattern
   ) {
     this._foregroundUnhoveredUnchecked = value;
@@ -108,7 +108,7 @@ class CheckBox extends Button {
     return this._foregroundUnhoveredChecked;
   }
 
-  protected set foregroundUnhoveredChecked(
+  public set foregroundUnhoveredChecked(
     value: string | CanvasGradient | CanvasPattern
   ) {
     this._foregroundUnhoveredChecked = value;
@@ -121,7 +121,7 @@ class CheckBox extends Button {
     return this._foregroundHoverUnchecked;
   }
 
-  protected set foregroundHoverUnchecked(
+  public set foregroundHoverUnchecked(
     value: string | CanvasGradient | CanvasPattern
   ) {
     this._foregroundHoverUnchecked = value;
@@ -131,7 +131,7 @@ class CheckBox extends Button {
     return this._foregroundHoverChecked;
   }
 
-  protected set foregroundHoverChecked(
+  public set foregroundHoverChecked(
     value: string | CanvasGradient | CanvasPattern
   ) {
     this._foregroundHoverChecked = value;
@@ -144,7 +144,7 @@ class CheckBox extends Button {
     return this._borderUnhoveredUnchecked;
   }
 
-  protected set borderUnhoveredUnchecked(
+  public set borderUnhoveredUnchecked(
     value: string | CanvasGradient | CanvasPattern
   ) {
     this._borderUnhoveredUnchecked = value;
@@ -154,7 +154,7 @@ class CheckBox extends Button {
     return this._borderUnhoveredChecked;
   }
 
-  protected set borderUnhoveredChecked(
+  public set borderUnhoveredChecked(
     value: string | CanvasGradient | CanvasPattern
   ) {
     this._borderUnhoveredChecked = value;
@@ -164,7 +164,7 @@ class CheckBox extends Button {
     return this._borderHoverUnchecked;
   }
 
-  protected set borderHoverUnchecked(
+  public set borderHoverUnchecked(
     value: string | CanvasGradient | CanvasPattern
   ) {
     this._borderHoverUnchecked = value;
@@ -174,7 +174,7 @@ class CheckBox extends Button {
     return this._borderHoverChecked;
   }
 
-  protected set borderHoverChecked(
+  public set borderHoverChecked(
     value: string | CanvasGradient | CanvasPattern
   ) {
     this._borderHoverChecked = value;
@@ -184,7 +184,7 @@ class CheckBox extends Button {
     return this._textUnchecked;
   }
 
-  protected set textUnchecked(value: string) {
+  public set textUnchecked(value: string) {
     this._textUnchecked = value;
   }
 
@@ -192,7 +192,7 @@ class CheckBox extends Button {
     return this._textChecked;
   }
 
-  protected set textChecked(value: string) {
+  public set textChecked(value: string) {
     this._textChecked = value;
   }
 

@@ -8,38 +8,25 @@ import RightBrickEntity from "../entities/rightbrickentity.js";
 import LeftCornerBrickEntity from "../entities/leftcornerbrickentity.js";
 import RightCornerBrickEntity from "../entities/rightcornerbrickentity.js";
 import MiddleBrickEntity from "../entities/middlebrickentity.js";
-import InputHandler from "../../engine/input/inputhandler.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import EngineEvent from "../../engine/event/engineevent.js";
-import EntityManager from "../../engine/entitiy/entitymanager.js";
 import Goal from "../entities/goal.js";
 import PlayerEntity from "../entities/playerentity.js";
 import LevelManager from "../../engine/level/levelmanager.js";
 import SceneManager from "../../engine/scene/scenemanager.js";
+import CookieManager from "../../engine/cookies/cookiemanager.js";
+import Cookie from "../../engine/cookies/cookie.js";
+import { addYears } from "../../engine/time/dateutils.js";
 
 class Level2 implements Level {
-  private _inputHandler: InputHandler;
-  private _entityManager: EntityManager;
   private _assetManager: AssetManager;
+  private _cookieManager: CookieManager;
+
   private _goal!: Goal;
 
   constructor() {
-    this._inputHandler = Services.resolve<InputHandler>("InputHandler");
-    this._entityManager = Services.resolve<EntityManager>("EntityManager");
     this._assetManager = Services.resolve<AssetManager>("AssetManager");
-  }
-
-  public load(): void {
-    this._goal.onTouch.subscribe((engineEvent: EngineEvent<Goal>) => {
-      Services.resolve<SceneManager>("SceneManager").switch("ingame");
-      let levelManager: LevelManager =
-        Services.resolve<LevelManager>("LevelManager");
-      levelManager.start("level3");
-    });
-  }
-
-  public unload(): void {
-    console.log("Level2 unloaded");
+    this._cookieManager = Services.resolve<CookieManager>("CookieManager");
   }
 
   public getEntities(): Entity[] {
@@ -119,7 +106,24 @@ class Level2 implements Level {
     return returnArray;
   }
 
-  public update(tickDelta: number): void {}
+  public load(): void {
+    this._goal.onTouch.subscribe((engineEvent: EngineEvent<Goal>) => {
+      this._cookieManager.set(
+        "level2.solved",
+        new Cookie("true", addYears(new Date(), 1), "Strict", false)
+      );
+      this._cookieManager.save();
+
+      Services.resolve<SceneManager>("SceneManager").switch("ingame");
+      let levelManager: LevelManager =
+        Services.resolve<LevelManager>("LevelManager");
+      levelManager.start("level3");
+    });
+  }
+
+  unload(): void {}
+
+  update(tickDelta: number): void {}
 }
 
 export default Level2;

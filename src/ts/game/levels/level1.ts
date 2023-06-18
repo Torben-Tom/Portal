@@ -22,10 +22,14 @@ import PortalType from "../entities/portaltype.js";
 import Vector2D from "../../engine/math/vector2d.js";
 import LevelManager from "../../engine/level/levelmanager.js";
 import SceneManager from "../../engine/scene/scenemanager.js";
+import CookieManager from "../../engine/cookies/cookiemanager.js";
+import Cookie from "../../engine/cookies/cookie.js";
+import { addYears } from "../../engine/time/dateutils.js";
 
 class Level1 implements Level {
   private _entityManager: EntityManager;
   private _assetManager: AssetManager;
+  private _cookieManager: CookieManager;
 
   private _buttonGround!: ButtonGround;
   private _buttonStanding!: ButtonStanding;
@@ -37,6 +41,7 @@ class Level1 implements Level {
   constructor() {
     this._entityManager = Services.resolve<EntityManager>("EntityManager");
     this._assetManager = Services.resolve<AssetManager>("AssetManager");
+    this._cookieManager = Services.resolve<CookieManager>("CookieManager");
   }
 
   public getEntities(): Entity[] {
@@ -176,6 +181,12 @@ class Level1 implements Level {
     );
 
     this._goal.onTouch.subscribe((engineEvent: EngineEvent<Goal>) => {
+      this._cookieManager.set(
+        "level1.solved",
+        new Cookie("true", addYears(new Date(), 1), "Strict", false)
+      );
+      this._cookieManager.save();
+
       Services.resolve<SceneManager>("SceneManager").switch("level2Scene");
       let levelManager: LevelManager =
         Services.resolve<LevelManager>("LevelManager");

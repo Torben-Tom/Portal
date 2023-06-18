@@ -1,4 +1,4 @@
-import Setting from "./setting";
+import Setting from "./setting.js";
 
 class SimpleSetting<T> extends Setting<T> {
   private _value: T;
