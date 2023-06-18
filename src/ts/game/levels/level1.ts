@@ -25,6 +25,9 @@ import SceneManager from "../../engine/scene/scenemanager.js";
 import CookieManager from "../../engine/cookies/cookiemanager.js";
 import Cookie from "../../engine/cookies/cookie.js";
 import { addYears } from "../../engine/time/dateutils.js";
+import AudioPlayer from "../../engine/audio/audioplayer.js";
+import AudioType from "../../engine/audio/audiotype.js";
+import AssetLoader from "../../engine/assets/assetloader.js";
 
 class Level1 implements Level {
   private _entityManager: EntityManager;
@@ -37,11 +40,14 @@ class Level1 implements Level {
   private _greenPortal!: PortalEntity;
   private _companionCube!: CompanionCube;
   private _goal!: Goal;
+  private _audioPlayer: AudioPlayer;
 
   constructor() {
     this._entityManager = Services.resolve<EntityManager>("EntityManager");
     this._assetManager = Services.resolve<AssetManager>("AssetManager");
     this._cookieManager = Services.resolve<CookieManager>("CookieManager");
+
+    this._audioPlayer = Services.resolve<AudioPlayer>("AudioPlayer");
   }
 
   public getEntities(): Entity[] {
@@ -191,6 +197,10 @@ class Level1 implements Level {
       let levelManager: LevelManager =
         Services.resolve<LevelManager>("LevelManager");
       levelManager.start("level2");
+      this._audioPlayer.play(
+        AudioType.Music,
+        Services.resolve<AssetLoader>("AssetLoader").getAudio("track2")
+      );
     });
   }
 

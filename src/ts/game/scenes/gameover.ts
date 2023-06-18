@@ -1,4 +1,7 @@
+import AssetLoader from "../../engine/assets/assetloader.js";
 import AssetManager from "../../engine/assets/assetmanager.js";
+import AudioPlayer from "../../engine/audio/audioplayer.js";
+import AudioType from "../../engine/audio/audiotype.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import MouseClickEvent from "../../engine/event/events/mouseclickevent/mouseclickevent.js";
 import Game from "../../engine/game.js";
@@ -14,6 +17,7 @@ class GameOver extends Base {
   private _buttonLevelOverview: any;
   private _backToMainMenu: Button;
   private _runAgain: Button;
+  private _audioPlayer: AudioPlayer;
 
   public constructor() {
     super(
@@ -21,6 +25,8 @@ class GameOver extends Base {
         "level1-background"
       )
     );
+
+    this._audioPlayer = Services.resolve<AudioPlayer>("AudioPlayer");
 
     this.musicCheckBox.location = new Vector2D(450, 500);
     this.soundCheckBox.location = new Vector2D(300, 500);
@@ -57,6 +63,10 @@ class GameOver extends Base {
     this._runAgain.onClick = (mouseClickEvent: MouseClickEvent) => {
       Services.resolve<SceneManager>("SceneManager").switch("ingame");
       Services.resolve<LevelManager>("LevelManager").start("level1");
+      this._audioPlayer.play(
+        AudioType.Music,
+        Services.resolve<AssetLoader>("AssetLoader").getAudio("track1")
+      );
     };
 
     this._backToMainMenu = new Button(

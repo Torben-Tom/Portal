@@ -62,6 +62,10 @@ class MainMenu extends Base {
     this._buttonStart.onClick = (mouseClickEvent: MouseClickEvent) => {
       Services.resolve<SceneManager>("SceneManager").switch("level1Scene");
       Services.resolve<LevelManager>("LevelManager").start("level1");
+      this._audioPlayer.play(
+        AudioType.Music,
+        Services.resolve<AssetLoader>("AssetLoader").getAudio("track1")
+      );
     };
 
     this._buttonLevelOverview = new Button(
@@ -94,10 +98,16 @@ class MainMenu extends Base {
 
   public open(): void {
     super.open();
-    this._audioPlayer.play(
-      AudioType.Music,
-      Services.resolve<AssetLoader>("AssetLoader").getAudio("track4")
-    );
+    console.log(this._audioPlayer.currentMusic);
+    if (
+      this._audioPlayer.currentMusic === null ||
+      this._audioPlayer.currentMusic.id !== "track4"
+    ) {
+      this._audioPlayer.play(
+        AudioType.Music,
+        Services.resolve<AssetLoader>("AssetLoader").getAudio("track4")
+      );
+    }
   }
 }
 

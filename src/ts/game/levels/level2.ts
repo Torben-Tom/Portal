@@ -17,16 +17,22 @@ import SceneManager from "../../engine/scene/scenemanager.js";
 import CookieManager from "../../engine/cookies/cookiemanager.js";
 import Cookie from "../../engine/cookies/cookie.js";
 import { addYears } from "../../engine/time/dateutils.js";
+import AudioPlayer from "../../engine/audio/audioplayer.js";
+import AssetLoader from "../../engine/assets/assetloader.js";
+import AudioType from "../../engine/audio/audiotype.js";
 
 class Level2 implements Level {
   private _assetManager: AssetManager;
   private _cookieManager: CookieManager;
 
   private _goal!: Goal;
+  private _audioPlayer: AudioPlayer;
 
   constructor() {
     this._assetManager = Services.resolve<AssetManager>("AssetManager");
     this._cookieManager = Services.resolve<CookieManager>("CookieManager");
+
+    this._audioPlayer = Services.resolve<AudioPlayer>("AudioPlayer");
   }
 
   public getEntities(): Entity[] {
@@ -118,6 +124,10 @@ class Level2 implements Level {
       let levelManager: LevelManager =
         Services.resolve<LevelManager>("LevelManager");
       levelManager.start("level3");
+      this._audioPlayer.play(
+        AudioType.Music,
+        Services.resolve<AssetLoader>("AssetLoader").getAudio("track3")
+      );
     });
   }
 
