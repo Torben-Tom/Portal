@@ -17,7 +17,6 @@ class MainMenu extends Base {
   private _buttonStart: Button;
   private _buttonLevelOverview: Button;
   private _audioPlayer: AudioPlayer;
-  private _settingsManager: SettingsManager;
 
   public constructor() {
     super(
@@ -25,13 +24,7 @@ class MainMenu extends Base {
         "level1-background"
       )
     );
-    this._settingsManager = new SettingsManager();
-    this._audioPlayer = new AudioPlayer(this._settingsManager);
-
-    this._audioPlayer.play(
-      AudioType.Music,
-      Services.resolve<AssetLoader>("AssetLoader").getAudio("track1")
-    );
+    this._audioPlayer = Services.resolve<AudioPlayer>("AudioPlayer");
 
     this.musicCheckBox.location = new Vector2D(450, 400);
     this.soundCheckBox.location = new Vector2D(300, 400);
@@ -97,6 +90,14 @@ class MainMenu extends Base {
     this.addElement(title);
     this.addElement(this._buttonStart);
     this.addElement(this._buttonLevelOverview);
+  }
+
+  public open(): void {
+    super.open();
+    this._audioPlayer.play(
+      AudioType.Music,
+      Services.resolve<AssetLoader>("AssetLoader").getAudio("track4")
+    );
   }
 }
 

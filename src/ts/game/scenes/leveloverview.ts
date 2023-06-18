@@ -216,6 +216,7 @@ class LevelOverview extends Base {
   }
 
   public open(): void {
+    super.open();
     let level1Solved: Cookie = this._cookieManager.getOrSet(
       "level1.solved",
       new Cookie("false", addYears(new Date(), 1), "Strict", false)
