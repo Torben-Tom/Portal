@@ -11,7 +11,7 @@ class Label extends Element {
     return this._foreground;
   }
 
-  protected set foreground(value: string | CanvasGradient | CanvasPattern) {
+  public set foreground(value: string | CanvasGradient | CanvasPattern) {
     this._foreground = value;
   }
 
@@ -19,7 +19,7 @@ class Label extends Element {
     return this._font;
   }
 
-  protected set font(value: string) {
+  public set font(value: string) {
     this._font = value;
   }
 
@@ -27,7 +27,7 @@ class Label extends Element {
     return this._textAlign;
   }
 
-  protected set textAlign(value: CanvasTextAlign) {
+  public set textAlign(value: CanvasTextAlign) {
     this._textAlign = value;
   }
 
@@ -35,7 +35,7 @@ class Label extends Element {
     return this._textBaseline;
   }
 
-  protected set textBaseline(value: CanvasTextBaseline) {
+  public set textBaseline(value: CanvasTextBaseline) {
     this._textBaseline = value;
   }
 
@@ -43,7 +43,7 @@ class Label extends Element {
     return this._text;
   }
 
-  protected set text(value: string) {
+  public set text(value: string) {
     this._text = value;
   }
 

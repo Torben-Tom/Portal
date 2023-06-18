@@ -9,26 +9,27 @@ import LeftCornerBrickEntity from "../entities/leftcornerbrickentity.js";
 import RightCornerBrickEntity from "../entities/rightcornerbrickentity.js";
 import MiddleBrickEntity from "../entities/middlebrickentity.js";
 import BridgeEntity from "../entities/bridgeentity.js";
-import InputHandler from "../../engine/input/inputhandler.js";
 import Services from "../../engine/dependencyinjection/services.js";
 import EngineEvent from "../../engine/event/engineevent.js";
 import EntityManager from "../../engine/entitiy/entitymanager.js";
 import ButtonGround from "../entities/buttonground.js";
-import ButtonStanding from "../entities/buttonstanding.js";
 import Goal from "../entities/goal.js";
 import CompanionCube from "../entities/companioncube.js";
-import PlayerArmRight from "../entities/playerarm.js";
 import MetalWallEntity from "../entities/metalwallentity.js";
 import PlayerEntity from "../entities/playerentity.js";
 import Vector2D from "../../engine/math/vector2d.js";
 import LevelManager from "../../engine/level/levelmanager.js";
 import SceneManager from "../../engine/scene/scenemanager.js";
 import MetalWallEntity2 from "../entities/metalwallentity2.js";
+import CookieManager from "../../engine/cookies/cookiemanager.js";
+import Cookie from "../../engine/cookies/cookie.js";
+import { addYears } from "../../engine/time/dateutils.js";
 
 class Level4 implements Level {
-  private _inputHandler: InputHandler;
   private _entityManager: EntityManager;
   private _assetManager: AssetManager;
+  private _cookieManager: CookieManager;
+
   private _buttonGround1!: ButtonGround;
   private _buttonGround2!: ButtonGround;
   private _companionCubes!: CompanionCube[];
@@ -36,9 +37,9 @@ class Level4 implements Level {
   private _buttonGround3!: ButtonGround;
 
   constructor() {
-    this._inputHandler = Services.resolve<InputHandler>("InputHandler");
     this._entityManager = Services.resolve<EntityManager>("EntityManager");
     this._assetManager = Services.resolve<AssetManager>("AssetManager");
+    this._cookieManager = Services.resolve<CookieManager>("CookieManager");
   }
   public getEntities(): Entity[] {
     let window = new BackgroundTileEntity(
@@ -161,6 +162,12 @@ class Level4 implements Level {
 
   public load(): void {
     this._goal.onTouch.subscribe((engineEvent: EngineEvent<Goal>) => {
+      this._cookieManager.set(
+        "level4.solved",
+        new Cookie("true", addYears(new Date(), 1), "Strict", false)
+      );
+      this._cookieManager.save();
+
       Services.resolve<LevelManager>("LevelManager").unload();
       Services.resolve<SceneManager>("SceneManager").switch("gameover");
     });
@@ -229,9 +236,7 @@ class Level4 implements Level {
     );
   }
 
-  public unload(): void {
-    console.log("Level4 unloaded");
-  }
+  unload(): void {}
 
   public update(tickDelta: number): void {
     for (let companionCube of this._companionCubes) {

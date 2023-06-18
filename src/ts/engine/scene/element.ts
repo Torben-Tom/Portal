@@ -12,7 +12,7 @@ class Element extends Rectangle {
     return this._background;
   }
 
-  protected set background(value: string | CanvasGradient | CanvasPattern) {
+  public set background(value: string | CanvasGradient | CanvasPattern) {
     this._background = value;
   }
 
@@ -20,7 +20,7 @@ class Element extends Rectangle {
     return this._border;
   }
 
-  protected set border(value: string | CanvasGradient | CanvasPattern) {
+  public set border(value: string | CanvasGradient | CanvasPattern) {
     this._border = value;
   }
 
@@ -28,7 +28,7 @@ class Element extends Rectangle {
     return this._borderSize;
   }
 
-  protected set borderSize(value: number) {
+  public set borderSize(value: number) {
     this._borderSize = value;
   }
 
@@ -36,7 +36,7 @@ class Element extends Rectangle {
     return this._visible;
   }
 
-  protected set visible(value: boolean) {
+  public set visible(value: boolean) {
     this._visible = value;
   }
 
