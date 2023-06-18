@@ -41,7 +41,22 @@ A web-based 2D clone of Valve's famous puzzle game, Portal
 
 You can play the game right in your browser on https://portal.schweren.dev
 
+## Instrucitons
+
+- arrow left | a = run left
+- arrow right | d = run right
+- arrow up | w | space = jump
+
+- left click on wall = purple portal
+- right click on wall = green portal
+
+- b = dev view
+
 ## Installation
+
+### Current Version
+
+Version = 1.0.1 (creation date = 19.06.2023)
 
 ### Docker
 
@@ -57,9 +72,29 @@ You can play the game right in your browser on https://portal.schweren.dev
 
 ## Credits & Licenses of assets
 
+- Own License: Apache License view LICENSE file
+
 - Player, Buttons, Background: https://github.com/Chinnami
 - Portals: https://www.patreon.com/posts/27430241
 - Blocks: https://craftpix.net/file-licenses/
 - CompanionCube: https://www.pixilart.com/terms
 - favicon: https://www.favicon.cc/?action=icon&file_id=359150
 - Music: https://www.fesliyanstudios.com/policy
+
+## Development parts & Authors
+
+Project Board: https://github.com/orgs/Torben-Tom/projects/1
+
+- Engine: mostly Torben Schweren
+- Game: mostly Tom Moritz
+- Pipeline: Torben Schweren
+
+The exact partial contributions can be found in the "Done" column of the Broject Board.
+
+- known Bugs: view the "Backlog" column of the Project Board
+
+## Browser compatibility
+
+- Chrome
+- FireFox
+- Safari
