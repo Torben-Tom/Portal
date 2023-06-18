@@ -1,3 +1,7 @@
+import AssetLoader from "../../assets/assetloader.js";
+import AudioPlayer from "../../audio/audioplayer.js";
+import AudioType from "../../audio/audiotype.js";
+import Services from "../../dependencyinjection/services.js";
 import MouseClickEvent from "../../event/events/mouseclickevent/mouseclickevent.js";
 import Label from "./label.js";
 
@@ -12,6 +16,8 @@ class Button extends Label {
   private _borderHover: string | CanvasGradient | CanvasPattern;
 
   private _borderSizeUnhovered: number;
+
+  private _audioPlayer: AudioPlayer;
 
   private _onClick: ((mouseClickEvent: MouseClickEvent) => void) | null;
 
@@ -122,6 +128,8 @@ class Button extends Label {
 
     this._borderSizeUnhovered = borderSize;
 
+    this._audioPlayer = Services.resolve<AudioPlayer>("AudioPlayer");
+
     this._onClick = null;
   }
 
@@ -141,6 +149,10 @@ class Button extends Label {
 
   public click(mouseClickEvent: MouseClickEvent): void {
     if (this._onClick) {
+      this._audioPlayer.play(
+        AudioType.Sound,
+        Services.resolve<AssetLoader>("AssetLoader").getAudio("buttonclick")
+      );
       this._onClick(mouseClickEvent);
     }
   }

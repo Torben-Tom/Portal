@@ -6,8 +6,12 @@ import Button from "../../engine/scene/elements/button.js";
 import CheckBox from "../../engine/scene/elements/checkbox.js";
 import Scene from "../../engine/scene/scene.js";
 import SceneManager from "../../engine/scene/scenemanager.js";
+import SettingsManager from "../../engine/settings/settingsmanager.js";
+import SimpleSetting from "../../engine/settings/simplesetting.js";
 
 class Base extends Scene {
+  private _settingsManager: SettingsManager;
+
   private _soundCheckBox: CheckBox;
   private _musicCheckBox: CheckBox;
 
@@ -23,6 +27,9 @@ class Base extends Scene {
     background: string | CanvasGradient | CanvasPattern | Texture
   ) {
     super(background);
+
+    this._settingsManager =
+      Services.resolve<SettingsManager>("SettingsManager");
 
     this._soundCheckBox = new CheckBox(
       600,
@@ -45,7 +52,7 @@ class Base extends Scene {
       "bold 20px Arial",
       "center",
       "middle",
-      "⛔",
+      "🔇",
       "🔊",
       true,
       true
@@ -80,16 +87,43 @@ class Base extends Scene {
 
     this._soundCheckBox.onClick = () => {
       this._soundCheckBox.toggle();
-      console.log("Sound: " + this._soundCheckBox.checked);
+      this._settingsManager
+        .getOrSet(
+          "audio.sound",
+          new SimpleSetting<boolean>(this.soundCheckBox.checked)
+        )
+        .set(this.soundCheckBox.checked);
     };
 
     this._musicCheckBox.onClick = () => {
       this._musicCheckBox.toggle();
-      console.log("Music: " + this._musicCheckBox.checked);
+      this._settingsManager
+        .getOrSet(
+          "audio.music",
+          new SimpleSetting<boolean>(this.musicCheckBox.checked)
+        )
+        .set(this.musicCheckBox.checked);
     };
 
     this.addElement(this._soundCheckBox);
     this.addElement(this._musicCheckBox);
+  }
+
+  public open(): void {
+    super.open();
+
+    this._soundCheckBox.checked = this._settingsManager
+      .getOrSet(
+        "audio.sound",
+        new SimpleSetting<boolean>(this.soundCheckBox.checked)
+      )
+      .get();
+    this._musicCheckBox.checked = this._settingsManager
+      .getOrSet(
+        "audio.music",
+        new SimpleSetting<boolean>(this.musicCheckBox.checked)
+      )
+      .get();
   }
 }
 

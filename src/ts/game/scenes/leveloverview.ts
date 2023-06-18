@@ -1,4 +1,7 @@
+import AssetLoader from "../../engine/assets/assetloader.js";
 import AssetManager from "../../engine/assets/assetmanager.js";
+import AudioPlayer from "../../engine/audio/audioplayer.js";
+import AudioType from "../../engine/audio/audiotype.js";
 import Cookie from "../../engine/cookies/cookie.js";
 import CookieManager from "../../engine/cookies/cookiemanager.js";
 import Services from "../../engine/dependencyinjection/services.js";
@@ -22,6 +25,7 @@ class LevelOverview extends Base {
 
   private _backToMainMenu: Button;
   private _reset: Button;
+  _audioPlayer: AudioPlayer;
 
   public constructor() {
     super(
@@ -29,11 +33,12 @@ class LevelOverview extends Base {
         "level1-background"
       )
     );
+    this._audioPlayer = Services.resolve<AudioPlayer>("AudioPlayer");
 
     this._cookieManager = Services.resolve<CookieManager>("CookieManager");
 
-    this.musicCheckBox.location = new Vector2D(550, 120);
-    this.soundCheckBox.location = new Vector2D(450, 120);
+    this.musicCheckBox.location = new Vector2D(475, 120);
+    this.soundCheckBox.location = new Vector2D(400, 120);
 
     let title = new Text(
       400,
@@ -142,9 +147,9 @@ class LevelOverview extends Base {
     );
 
     this._reset = new Button(
-      700,
-      350,
-      75,
+      550,
+      120,
+      100,
       50,
       "rgba(0, 0, 0, 0.5)",
       "white",
@@ -163,21 +168,37 @@ class LevelOverview extends Base {
     this._level1.onClick = (mouseClickEvent: MouseClickEvent) => {
       Services.resolve<SceneManager>("SceneManager").switch("level1Scene");
       Services.resolve<LevelManager>("LevelManager").start("level1");
+      this._audioPlayer.play(
+        AudioType.Music,
+        Services.resolve<AssetLoader>("AssetLoader").getAudio("track1")
+      );
     };
 
     this._level2.onClick = (mouseClickEvent: MouseClickEvent) => {
       Services.resolve<SceneManager>("SceneManager").switch("level2Scene");
       Services.resolve<LevelManager>("LevelManager").start("level2");
+      this._audioPlayer.play(
+        AudioType.Music,
+        Services.resolve<AssetLoader>("AssetLoader").getAudio("track2")
+      );
     };
 
     this._level3.onClick = (mouseClickEvent: MouseClickEvent) => {
       Services.resolve<SceneManager>("SceneManager").switch("ingame");
       Services.resolve<LevelManager>("LevelManager").start("level3");
+      this._audioPlayer.play(
+        AudioType.Music,
+        Services.resolve<AssetLoader>("AssetLoader").getAudio("track3")
+      );
     };
 
     this._level4.onClick = (mouseClickEvent: MouseClickEvent) => {
       Services.resolve<SceneManager>("SceneManager").switch("ingame");
       Services.resolve<LevelManager>("LevelManager").start("level4");
+      this._audioPlayer.play(
+        AudioType.Music,
+        Services.resolve<AssetLoader>("AssetLoader").getAudio("track5")
+      );
     };
 
     this._backToMainMenu.onClick = (mouseClickEvent: MouseClickEvent) => {
@@ -216,6 +237,7 @@ class LevelOverview extends Base {
   }
 
   public open(): void {
+    super.open();
     let level1Solved: Cookie = this._cookieManager.getOrSet(
       "level1.solved",
       new Cookie("false", addYears(new Date(), 1), "Strict", false)

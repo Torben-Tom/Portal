@@ -19,8 +19,8 @@ class SimpleSetting<T> extends Setting<T> {
 
     this._value = value;
 
-    this.getValue = this.getValue.bind(this);
-    this.setValue = this.setValue.bind(this);
+    this._get = this.getValue.bind(this);
+    this._set = this.setValue.bind(this);
   }
 }
 

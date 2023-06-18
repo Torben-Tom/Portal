@@ -2,8 +2,8 @@ import EngineEvent from "../event/engineevent.js";
 import EngineEventHandler from "../event/engineventhandler.js";
 
 class Setting<T> {
-  private _get: (() => T) | undefined;
-  private _set: ((value: T) => void) | undefined;
+  protected _get: (() => T) | undefined;
+  protected _set: ((value: T) => void) | undefined;
 
   private _valueChangEvent: EngineEventHandler<T, EngineEvent<T>>;
 
