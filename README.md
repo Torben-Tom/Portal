@@ -85,7 +85,7 @@ Version = 0.1.0 (creation date = 19.06.2023)
 
 ## Credits & Licenses of assets
 
-- Sour code license: Apache License view LICENSE file
+- Sour code license: Apache License ([view LICENSE file](https://github.com/Torben-Tom/Portal/blob/main/LICENSE))
 
 - Player, Buttons, Background: https://github.com/Chinnami
 - Portals: https://www.patreon.com/posts/27430241
