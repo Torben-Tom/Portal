@@ -96,7 +96,7 @@ Version = 0.1.0 (creation date = 19.06.2023)
 
 ## Development & Authors
 
-Project Board: https://github.com/orgs/Torben-Tom/projects/1
+Project Board: [View project board](https://github.com/orgs/Torben-Tom/projects/1)
 
 - Engine: mostly Torben Schweren
 - Game: mostly Tom Moritz
@@ -104,4 +104,6 @@ Project Board: https://github.com/orgs/Torben-Tom/projects/1
 
 The exact partial contributions can be found in the "Done" column of the Broject Board.
 
-- known Bugs: view the "Backlog" column of the Project Board
+## Known Bugs
+
+View the "Backlog" column of the [Project Board](https://github.com/orgs/Torben-Tom/projects/1)
