@@ -66,16 +66,39 @@ class MovingEntity extends Entity {
   public update(tickDelta: number): void {
     super.update(tickDelta);
 
-    if (this._collisions[Direction.Top] && this._velocity.y < 0) {
+    if (
+      this._collisions[Direction.Top] &&
+      !this.collisions[Direction.Bottom] &&
+      this._velocity.y < 0
+    ) {
       this._velocity = Matrix2D.ignoreYMatrix.multiplyVector(this._velocity);
     }
-    if (this._collisions[Direction.Right] && this._velocity.x > 0) {
+
+    if (
+      this._collisions[Direction.Right] &&
+      !this.collisions[Direction.Left] &&
+      this._velocity.x > 0
+    ) {
       this._velocity = Matrix2D.ignoreXMatrix.multiplyVector(this._velocity);
     }
+
+    if (
+      this._collisions[Direction.Bottom] &&
+      !this.collisions[Direction.Top] &&
+      this._velocity.y > 0
+    ) {
+      this._velocity = Matrix2D.ignoreYMatrix.multiplyVector(this._velocity);
+    }
+
+    if (
+      this._collisions[Direction.Left] &&
+      !this.collisions[Direction.Right] &&
+      this._velocity.x < 0
+    ) {
+      this._velocity = Matrix2D.ignoreXMatrix.multiplyVector(this._velocity);
+    }
+
     if (this._collisions[Direction.Bottom]) {
-      if (this._velocity.y > 0) {
-        this._velocity = Matrix2D.ignoreYMatrix.multiplyVector(this._velocity);
-      }
       this._velocity = new Matrix2D(0.95, 0, 0, 1).multiplyVector(
         this._velocity
       );
@@ -84,9 +107,6 @@ class MovingEntity extends Entity {
       this._velocity = new Matrix2D(0.99, 0, 0, 1).multiplyVector(
         this._velocity
       );
-    }
-    if (this._collisions[Direction.Left] && this._velocity.x < 0) {
-      this._velocity = Matrix2D.ignoreXMatrix.multiplyVector(this._velocity);
     }
 
     let newLocation = this.location.add(

@@ -237,6 +237,9 @@ class EntityManager {
         continue;
       }
 
+      let bothEntitiesAreMovingEntities =
+        entityIsMovingEntity && otherEntityIsMovingEntity;
+
       let movingEntities: MovingEntity[] = [];
       if (entityIsMovingEntity) {
         movingEntities.push(entity as MovingEntity);
@@ -244,8 +247,6 @@ class EntityManager {
       if (otherEntityIsMovingEntity) {
         movingEntities.push(otherEntity as MovingEntity);
       }
-      let bothEntitiesAreMovingEntities =
-        entityIsMovingEntity && otherEntityIsMovingEntity;
 
       let intersection = entity.boundingBox.intersect(otherEntity.boundingBox);
       if (intersection.points.length === 0) {
@@ -287,18 +288,24 @@ class EntityManager {
           .subtract(intersection.center)
           .normalize();
 
-        if (
-          movingEntityCollisions.get(Direction.Top) ||
-          movingEntityCollisions.get(Direction.Bottom)
-        ) {
-          pushDirection = Matrix2D.ignoreXMatrix.multiplyVector(pushDirection);
-        }
+        if (movingEntityCollisions.size === 4) {
+          pushDirection = pushDirection.multiplyScalar(0.25);
+        } else {
+          if (
+            movingEntityCollisions.get(Direction.Top) ||
+            movingEntityCollisions.get(Direction.Bottom)
+          ) {
+            pushDirection =
+              Matrix2D.ignoreXMatrix.multiplyVector(pushDirection);
+          }
 
-        if (
-          movingEntityCollisions.get(Direction.Left) ||
-          movingEntityCollisions.get(Direction.Right)
-        ) {
-          pushDirection = Matrix2D.ignoreYMatrix.multiplyVector(pushDirection);
+          if (
+            movingEntityCollisions.get(Direction.Left) ||
+            movingEntityCollisions.get(Direction.Right)
+          ) {
+            pushDirection =
+              Matrix2D.ignoreYMatrix.multiplyVector(pushDirection);
+          }
         }
 
         pushDirection = pushDirection.multiplyScalar(
