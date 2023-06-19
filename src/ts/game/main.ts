@@ -41,17 +41,13 @@ function init(): void {
 
   let assetLoader = Services.resolve<AssetLoader>("AssetLoader");
 
-  if (!assetLoader.areAssetsReady()) {
-    assetLoader.assetsLoadedEvent.subscribe(
-      (engineEvent: EngineEvent<boolean>) => {
-        if (engineEvent.eventData) {
-          start(game);
-        }
+  assetLoader.assetsLoadedEvent.subscribe(
+    (engineEvent: EngineEvent<boolean>) => {
+      if (engineEvent.eventData) {
+        start(game);
       }
-    );
-  } else {
-    start(game);
-  }
+    }
+  );
 }
 
 function start(game: Game): void {

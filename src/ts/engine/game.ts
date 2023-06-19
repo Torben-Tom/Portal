@@ -94,11 +94,15 @@ class Game {
       this._levelManager
     );
 
-    this._assetLoader.assetsLoadedEvent.subscribe(
+    this._assetLoader.assetsLoadedPreEvent.subscribe(
       (engineEvent: EngineEvent<boolean>) => {
         if (!engineEvent.eventData) {
-          console.log("Loading assets...");
+          console.log(
+            `Loading assets: ${this._assetLoader.getAssetsReadyCount()}/${this._assetLoader.getAssetsCount()}`
+          );
         } else {
+          console.log(`${this._assetLoader.getAssetsCount()} assets loaded`);
+
           engineSetup.registerTextures(
             this._assetLoader,
             this._assetManager,

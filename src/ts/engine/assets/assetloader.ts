@@ -8,6 +8,10 @@ class AssetLoader {
 
   private _imagesLoadedEvent: EngineEventHandler<boolean, EngineEvent<boolean>>;
   private _audiosLoadedEvent: EngineEventHandler<boolean, EngineEvent<boolean>>;
+  private _assetsLoadedPreEvent: EngineEventHandler<
+    boolean,
+    EngineEvent<boolean>
+  >;
   private _assetsLoadedEvent: EngineEventHandler<boolean, EngineEvent<boolean>>;
 
   private _imageLoadTrackerTask: number | undefined;
@@ -28,6 +32,13 @@ class AssetLoader {
     return this._audiosLoadedEvent;
   }
 
+  public get assetsLoadedPreEvent(): EngineEventHandler<
+    boolean,
+    EngineEvent<boolean>
+  > {
+    return this._assetsLoadedPreEvent;
+  }
+
   public get assetsLoadedEvent(): EngineEventHandler<
     boolean,
     EngineEvent<boolean>
@@ -44,6 +55,10 @@ class AssetLoader {
       EngineEvent<boolean>
     >();
     this._audiosLoadedEvent = new EngineEventHandler<
+      boolean,
+      EngineEvent<boolean>
+    >();
+    this._assetsLoadedPreEvent = new EngineEventHandler<
       boolean,
       EngineEvent<boolean>
     >();
@@ -177,6 +192,9 @@ class AssetLoader {
 
     this._assetLoadTrackerTask = setInterval(() => {
       let assetsReady = this.areAssetsReady();
+      this._assetsLoadedPreEvent.dispatch(
+        new EngineEvent<boolean>(assetsReady)
+      );
       this._assetsLoadedEvent.dispatch(new EngineEvent<boolean>(assetsReady));
 
       if (assetsReady) {
