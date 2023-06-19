@@ -5,6 +5,7 @@ import CookieManager from "./cookies/cookiemanager.js";
 import Services from "./dependencyinjection/services.js";
 import EngineSetup from "./enginesetup.js";
 import EntityManager from "./entitiy/entitymanager.js";
+import EngineEvent from "./event/engineevent.js";
 import InputHandler from "./input/inputhandler.js";
 import LevelManager from "./level/levelmanager.js";
 import Compositor from "./renderer/compositor.js";
@@ -93,25 +94,31 @@ class Game {
       this._levelManager
     );
 
-    while (!this._assetLoader.areAssetsReady()) {
-      console.log("Loading assets...");
-    }
+    this._assetLoader.assetsLoadedEvent.subscribe(
+      (engineEvent: EngineEvent<boolean>) => {
+        if (!engineEvent.eventData) {
+          console.log("Loading assets...");
+        } else {
+          engineSetup.registerTextures(
+            this._assetLoader,
+            this._assetManager,
+            this._entityManager,
+            this._levelManager
+          );
 
-    engineSetup.registerTextures(
-      this._assetLoader,
-      this._assetManager,
-      this._entityManager,
-      this._levelManager
+          engineSetup.registerLevels(
+            this._assetLoader,
+            this._assetManager,
+            this._entityManager,
+            this._levelManager
+          );
+
+          engineSetup.registerScenes(this._sceneManager);
+        }
+      }
     );
 
-    engineSetup.registerLevels(
-      this._assetLoader,
-      this._assetManager,
-      this._entityManager,
-      this._levelManager
-    );
-
-    engineSetup.registerScenes(this._sceneManager);
+    this._assetLoader.startTracking();
   }
 
   public startUpdateLoop(): void {
