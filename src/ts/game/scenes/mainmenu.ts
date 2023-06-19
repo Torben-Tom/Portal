@@ -98,9 +98,8 @@ class MainMenu extends Base {
 
   public open(): void {
     super.open();
-    console.log(this._audioPlayer.currentMusic);
     if (
-      this._audioPlayer.currentMusic === null ||
+      !this._audioPlayer.currentMusic ||
       this._audioPlayer.currentMusic.id !== "track4"
     ) {
       this._audioPlayer.play(

@@ -6,6 +6,7 @@ import SpriteSheet from "../engine/assets/texture/spritesheet.js";
 import Cookie from "../engine/cookies/cookie.js";
 import CookieManager from "../engine/cookies/cookiemanager.js";
 import Services from "../engine/dependencyinjection/services.js";
+import EngineEvent from "../engine/event/engineevent.js";
 import Game from "../engine/game.js";
 import InputHandler from "../engine/input/inputhandler.js";
 import LevelManager from "../engine/level/levelmanager.js";
@@ -28,17 +29,34 @@ function getGameCanvas(): HTMLCanvasElement {
   return canvas;
 }
 
-function start(): void {
+function init(): void {
   let htmlCanvasElement: HTMLCanvasElement = getGameCanvas();
   let game: Game = new Game(htmlCanvasElement, new GameSetup());
+
   window.addEventListener("beforeunload", game.stopGame.bind(game));
 
   let inputHandler: InputHandler =
     Services.resolve<InputHandler>("InputHandler");
   inputHandler.addWhiteListedKeys(["F5", "F11", "F12", "Alt"]);
 
-  game.startGame();
-  Services.resolve<SceneManager>("SceneManager").switch("mainmenu");
+  let assetLoader = Services.resolve<AssetLoader>("AssetLoader");
+
+  if (!assetLoader.areAssetsReady()) {
+    assetLoader.assetsLoadedEvent.subscribe(
+      (engineEvent: EngineEvent<boolean>) => {
+        if (engineEvent.eventData) {
+          start(game);
+        }
+      }
+    );
+  } else {
+    start(game);
+  }
 }
 
-window.addEventListener("DOMContentLoaded", start);
+function start(game: Game): void {
+  Services.resolve<SceneManager>("SceneManager").switch("mainmenu");
+  game.startGame();
+}
+
+window.addEventListener("DOMContentLoaded", init);

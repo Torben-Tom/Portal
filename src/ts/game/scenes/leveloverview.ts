@@ -25,7 +25,7 @@ class LevelOverview extends Base {
 
   private _backToMainMenu: Button;
   private _reset: Button;
-  _audioPlayer: AudioPlayer;
+  private _audioPlayer: AudioPlayer;
 
   public constructor() {
     super(
