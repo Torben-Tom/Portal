@@ -102,7 +102,7 @@ Project Board: [View project board](https://github.com/orgs/Torben-Tom/projects/
 - Game: mostly Tom Moritz
 - Pipeline: Torben Schweren
 
-The exact partial contributions can be found in the "Done" column of the Broject Board.
+The exact partial contributions can be found in the "Done" column of the Project Board.
 
 ## Known Bugs
 
